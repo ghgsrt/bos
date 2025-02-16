@@ -46,7 +46,8 @@
 (define (filter-os-base-services svcs)
 	;; Dedup base os services to facilitate operating-system composition.
 	(filter (lambda (svc)
-			(not (member (service-kind svc) os-base-service-types)))
+			(and (not (member (service-kind svc) os-base-service-types)))
+				 (not (string-prefix? "swap-" (service-kind svc))))
 		svcs))
 (define (operating-system-services-safe os)
 	;; Returns the operating-system's services without the implicit base services for safe composition.
