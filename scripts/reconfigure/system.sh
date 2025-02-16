@@ -4,9 +4,9 @@ alias srec='echo Error: your current distro '$BOS_DISTRO' does not support recon
 
 srec_guix() {
 	if [ -z "$1" ]; then
-        echo "srec: using current system '$SYSTEM'"
+        echo "srec: using current system '$BOS_SYSTEM'"
     fi
-	local SYSTEM="${1-$SYSTEM}"
+	local SYSTEM="${1-$BOS_SYSTEM}"
 
     SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" sudo guix system -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/system.scm
 }
@@ -33,12 +33,12 @@ fi
 
 srec_nix() {
 	if [ -z "$1" ]; then
-		echo "srec: using current system '$SYSTEM'"
+		echo "srec: using current system '$BOS_SYSTEM'"
 	fi
-	local SYSTEM="${1-$SYSTEM}"
+	local SYSTEM="${1-$BOS_SYSTEM}"
 
 	cd $BOS_CONFIG_DIR
-	TARGET="$SYTEM" should_sudo nixos-rebuild switch --flake .#${SYSTEM} --impure
+	TARGET="$SYSTEM" should_sudo nixos-rebuild switch --flake .#${SYSTEM} --impure
 	cd -
 }
 
