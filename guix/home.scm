@@ -19,7 +19,8 @@
 
 (define base-home
 	;;TODO make the target home dir (target config) a configurable option
-  (load (string-append home-config-dir "/" target ".scm")))
+  (if (and target home-config-dir)
+  		(load (string-append home-config-dir "/" target ".scm"))))
 
 (define bash-profile-service (simple-service 'bash-profile-service-type home-bash-service-type
 					(home-bash-extension (bash-profile (list (local-file "/etc/bos/profile")
@@ -36,6 +37,7 @@
 						(home-environment-services-safe base-home)))))
 
 (define extended-home
-	(extend-home base-home))
+	(if base-home
+		(extend-home base-home)))
 
 extended-home
