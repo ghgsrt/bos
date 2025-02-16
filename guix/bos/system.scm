@@ -15,7 +15,7 @@
 (define (extend-system base-system)
 	(operating-system
 		(inherit base-system)
-		(services (modify-services (operating-system-services-safe base-system)
+(services (modify-services (operating-system-user-services base-system)
 						(guix-home-service-type homes =>
 						;; Ensure any default homes are extended for compatibility with the
 						;; bos dotfile setup

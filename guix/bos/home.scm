@@ -15,7 +15,7 @@
 
 (define bash-profile-service (simple-service 'bash-profile-service-type home-bash-service-type
 					(home-bash-extension (bash-profile (list (local-file "/etc/bos/profile")
-															 "if [ -d \"$HOME/.bos\" ]; then\n${BOS_DIR}/init.sh -M home\nfi")))))
+															(plain-file "bos_dinit.sh" "if [ -d \"$HOME/.bos\" ]; then\n${BOS_DIR}/init.sh -M home\nfi"))))))
 
 (define (extend-home base-home)
 	(home-environment
@@ -25,4 +25,4 @@
 							`(("BOS_HOME_PROFILE" . "$HOME/.guix-home/profile")
 					 		 ; ("BOS_HOME_NAME" . ,target)
 							  ("BOS_HOME_TYPE" . "guix")))
-						(home-environment-services-safe base-home)))))
+						(home-environment-user-services base-home)))))
