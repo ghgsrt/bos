@@ -8,12 +8,12 @@ echo "Using bos directory: $BOS_DIR"
 source $BOS_DIR/scripts/utils.sh
 source $BOS_DIR/scripts/link.sh
 
-config=$BOS_CONFIG
-distro=$BOS_DISTRO
-system=$BOS_SYSTEM
-home=$BOS_HOME_NAME
-home_type=$BOS_HOME_TYPE
-dotfiles=$BOS_DOTFILES
+config=${BOS_CONFIG:-}
+distro=${BOS_DISTRO:-}
+system=${BOS_SYSTEM:-}
+home=${BOS_HOME_NAME:-}
+home_type=${BOS_HOME_TYPE:-}
+dotfiles=${BOS_DOTFILES:-}
 mode="all"
 force_link=false
 force_unlink=false
