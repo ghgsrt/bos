@@ -1,4 +1,3 @@
-
 [submodule "configs/guix"]
 	path = configs/guix
 	url = https://github.com/ghgsrt/guix
