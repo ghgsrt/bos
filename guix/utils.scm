@@ -24,6 +24,20 @@
 	;; Returns the home-environment's services without the implicit base services for safe composition.
 	(filter-home-base-services (home-environment-services home)))
 
+
+(define %minimal-os
+	(operating-system
+		(bootloader (bootloader-configuration
+						(bootloader grub-efi-bootloader)
+						(targets (list "/boot/efi"))))
+
+		(file-systems (cons (file-system
+								(device (file-system-label "root"))
+								(mount-point "/")
+								(type "ext4"))
+							%base-file-systems))))
+
+
 (define os-base-service-types
 	;; Get the os services which are implicitly included in every operating-system.
 	(map service-kind (operating-system-services (operating-system))))
