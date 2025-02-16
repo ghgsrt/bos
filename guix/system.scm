@@ -13,6 +13,14 @@
 
 (define system-dir (getenv "SYSTEM_DIR"))
 (define target (getenv "TARGET"))
+
+(display "SYSTEM_DIR: ")
+(display system-dir)
+(newline)
+(display "TARGET: ")
+(display target)
+(newline)
+
 ;(unless target
 ;  (error "Environment variable 'TARGET' not set! Usage: TARGET=<name> guix home ..."))
 
