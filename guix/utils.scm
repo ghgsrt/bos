@@ -27,6 +27,7 @@
 
 (define %minimal-os
 	(operating-system
+		(host-name "guix")
 		(bootloader (bootloader-configuration
 						(bootloader grub-efi-bootloader)
 						(targets (list "/boot/efi"))))
