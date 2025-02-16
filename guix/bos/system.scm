@@ -1,7 +1,6 @@
-(load "/bos/guix/utils.scm")
-(define-module (system)
-	#:use-module (utils)
-	#:use-module (home)
+(define-module (bos system)
+	#:use-module (bos utils)
+	#:use-module (bos home)
 	#:use-module (guix)
 	#:use-module (gnu)
 	#:use-module (gnu system)
@@ -11,27 +10,6 @@
 
 ;; Handles augmenting any arbitrary home environment to be compatible
 ;; with the bos dotfile setup
-
-(define system-dir (getenv "SYSTEM_DIR"))
-(define target (getenv "TARGET"))
-
-(display "SYSTEM_DIR: ")
-(display system-dir)
-(newline)
-(display "TARGET: ")
-(display target)
-(newline)
-
-;(unless target
-;  (error "Environment variable 'TARGET' not set! Usage: TARGET=<name> guix home ..."))
-
-(define base-system
-  (if (and target system-dir)
-	(load (string-append system-dir "/" target ".scm"))
-	#f))
-
-;(display base-system)
-;(newline)
 
 (define (extend-system base-system)
 	(operating-system
@@ -44,9 +22,3 @@
 									(list (list-ref home 0)
 										  (extended-home (list-ref home 1))))
 								  homes))))))
-
-(define extended-system
-	(if base-system
-		(extend-system base-system)))
-
-extended-system

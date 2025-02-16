@@ -1,5 +1,5 @@
-(define-module (home)
-	#:use-module (utils)
+(define-module (bos home)
+	#:use-module (bos utils)
 	#:use-module (guix)
 	#:use-module (gnu)
 	#:use-module (gnu home)
@@ -11,24 +11,6 @@
 
 ;; Handles augmenting any arbitrary home environment to be compatible
 ;; with the bos dotfile setup
-
-(define home-config-dir (getenv "HOME_CONFIG_DIR"))
-(define target (getenv "TARGET"))
-;(unless target
-;  (error "Environment variable 'TARGET' not set! Usage: TARGET=<name> guix home ..."))
-
-(define base-home
-	;;TODO make the target home dir (target config) a configurable option
-  (if (and target home-config-dir)
-  		(load (string-append home-config-dir "/" target ".scm"))
-	#f))
-
-(newline)
-(display base-home)
-(newline)
-(newline)
-(newline)
-(newline)
 
 (define bash-profile-service (simple-service 'bash-profile-service-type home-bash-service-type
 					(home-bash-extension (bash-profile (list (local-file "/etc/bos/profile")
@@ -43,9 +25,3 @@
 					 		  ("BOS_HOME_NAME" . ,target)
 							  ("BOS_HOME_TYPE" . "guix")))
 						(home-environment-services-safe base-home)))))
-
-(define extended-home
-	(if base-home
-		(extend-home base-home)))
-
-extended-home

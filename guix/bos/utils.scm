@@ -1,4 +1,4 @@
-(define-module (utils)
+(define-module (bos utils)
 	#:use-module (guix)
 	#:use-module (gnu)
 	#:use-module (gnu home)
