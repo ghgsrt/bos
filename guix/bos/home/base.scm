@@ -8,7 +8,7 @@
 ; 	#:use-module (guix gexp)     ; For local-file
 ; 	#:use-module (ice-9 rdelim))  ; For reading environment variables
 
-(use-modules (home)
+(use-modules (bos home)
 			 (gnu)
 			 (gnu home)
 			 (gnu home services)

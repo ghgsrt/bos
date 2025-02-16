@@ -7,6 +7,7 @@
 	#:use-module (gnu home services shells)
 	#:use-module (guix gexp)     ; For local-file
 	#:use-module (ice-9 rdelim)  ; For reading environment variables
+	#:use-module (ice-9 match)
 	#:export (extend-home))
 
 ;; Handles augmenting any arbitrary home environment to be compatible

@@ -1,5 +1,5 @@
-(use-modules (system)
-			 (gnu)
+(use-modules		(bos system) 
+			(gnu)
 			 (gnu system)
 			 (guix gexp)
 			 (ice-9 rdelim))
