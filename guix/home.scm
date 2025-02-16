@@ -20,7 +20,15 @@
 (define base-home
 	;;TODO make the target home dir (target config) a configurable option
   (if (and target home-config-dir)
-  		(load (string-append home-config-dir "/" target ".scm"))))
+  		(load (string-append home-config-dir "/" target ".scm"))
+	#f))
+
+(newline)
+(display base-home)
+(newline)
+(newline)
+(newline)
+(newline)
 
 (define bash-profile-service (simple-service 'bash-profile-service-type home-bash-service-type
 					(home-bash-extension (bash-profile (list (local-file "/etc/bos/profile")

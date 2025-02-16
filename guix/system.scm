@@ -1,3 +1,4 @@
+(load "/bos/guix/utils.scm")
 (define-module (system)
 	#:use-module (utils)
 	#:use-module (home)
@@ -25,10 +26,12 @@
 ;  (error "Environment variable 'TARGET' not set! Usage: TARGET=<name> guix home ..."))
 
 (define base-system
-  (load (string-append system-dir "/" target ".scm")))
+  (if (and target system-dir)
+	(load (string-append system-dir "/" target ".scm"))
+	#f))
 
-(display base-system)
-(newline)
+;(display base-system)
+;(newline)
 
 (define (extend-system base-system)
 	(operating-system
@@ -43,6 +46,7 @@
 								  homes))))))
 
 (define extended-system
-	(extend-system base-system))
+	(if base-system
+		(extend-system base-system)))
 
 extended-system
