@@ -25,7 +25,7 @@
 	(filter-home-base-services (home-environment-services home)))
 
 
-(define %minimal-os
+(define minimal-os
 	(operating-system
 		(host-name "guix")
 		(bootloader (bootloader-configuration
@@ -41,7 +41,7 @@
 
 (define os-base-service-types
 	;; Get the os services which are implicitly included in every operating-system.
-	(map service-kind (operating-system-services (operating-system))))
+	(map service-kind (operating-system-services minimal-os)))
 (define (filter-os-base-services svcs)
 	;; Dedup base os services to facilitate operating-system composition.
 	(filter (lambda (svc)
