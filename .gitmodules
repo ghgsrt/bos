@@ -1,0 +1,9 @@
+[submodule "dotfiles"]
+	path = dotfiles/dotfiles
+	url = https://github.com/ghgsrt/dots
+[submodule "guix"]
+	path = configs/guix
+	url = https://github.com/ghgsrt/guix
+[submodule "nix"]
+	path = configs/nix
+	url = https://github.com/ghgsrt/nix
