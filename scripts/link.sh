@@ -1,4 +1,4 @@
-source ./scripts/utils.sh
+source $BOS_DIR/scripts/utils.sh
 
 create_symlink() {
     local src="$1"

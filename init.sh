@@ -2,8 +2,11 @@ set -euo pipefail
 
 USER=${USER:-$(whoami)}
 
-source ./scripts/utils.sh
-source ./scripts/link.sh
+BOS_DIR="$(dirname "$(readlink -f "$0")")"
+echo "Using bos directory: $BOS_DIR"
+
+source $BOS_DIR/scripts/utils.sh
+source $BOS_DIR/scripts/link.sh
 
 config=$BOS_CONFIG_DIR
 distro=$BOS_DISTRO
@@ -174,8 +177,6 @@ if [ $mode = "all" ] || [ $mode = "home" ]; then
 	fi
 fi
 
-BOS_DIR="$(dirname "$(readlink -f "$0")")"
-echo "Using bos directory: $BOS_DIR"
 BOS_DOTFILES_DIR="$BOS_DIR/dotfiles/$dotfiles"
 BOS_CONFIG_DIR="$BOS_DIR/configs/$config"
 BOS_SYSTEM_DIR="$BOS_CONFIG_DIR/system"

@@ -1,4 +1,4 @@
-source ./scripts/utils.sh
+source $BOS_DIR/scripts/utils.sh
 
 alias srec='echo Error: your current distro '$BOS_DISTRO' does not support reconfiguration'
 

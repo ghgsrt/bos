@@ -1,4 +1,4 @@
-source ./scripts/utils.sh
+source $BOS_DIR/scripts/utils.sh
 
 alias hrec='echo Error: no home manager installed'
 
