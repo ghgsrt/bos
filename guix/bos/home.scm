@@ -23,6 +23,6 @@
 		(services (cons* bash-profile-service
 						(simple-service 'bos-home-environment-variables-service home-environment-variables-service-type
 							`(("BOS_HOME_PROFILE" . "$HOME/.guix-home/profile")
-					 		  ("BOS_HOME_NAME" . ,target)
+					 		 ; ("BOS_HOME_NAME" . ,target)
 							  ("BOS_HOME_TYPE" . "guix")))
 						(home-environment-services-safe base-home)))))
