@@ -38,7 +38,7 @@
 						;; Ensure any default homes are extended for compatibility with the
 						;; bos dotfile setup
 							(map (lambda (home)
-									(list (car home)
+									(list (list-ref home 0)
 										  (extended-home (list-ref home 1))))
 								  homes))))))
 
