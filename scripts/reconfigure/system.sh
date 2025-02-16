@@ -8,7 +8,7 @@ srec_guix() {
     fi
 	local SYSTEM="${1-$BOS_SYSTEM}"
 
-    sudo SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" guix system -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/system.scm
+     SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" guix system -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/system.scm
 }
 
 if [ "$BOS_DISTRO" = "guix" ]; then

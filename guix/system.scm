@@ -27,6 +27,9 @@
 (define base-system
   (load (string-append system-dir "/" target ".scm")))
 
+(display base-system)
+(newline)
+
 (define (extend-system base-system)
 	(operating-system
 		(inherit base-system)
