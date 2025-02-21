@@ -80,7 +80,7 @@ recursive_symlink() {
         if create_symlink "$src_path" "$dst_path"; then
             # Only add to tracking if not already present
             if ! grep -Fxq "$dst_path" "$track_file"; then
-                echo "$dst_path" >> "$track_file"
+                should_sudo echo "$dst_path" >> "$track_file"
             fi
         fi
     done
