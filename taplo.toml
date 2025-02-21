@@ -1,0 +1,9 @@
+[[rule]]
+	include = ["taplo.toml"]
+	[rule.schema]
+		path = "taplo://taplo.toml"
+
+[[rule]]
+	include = ["configs/*.toml", "dotfiles/*.toml"]
+	[rule.schema]
+		path = "bos.schema.json"

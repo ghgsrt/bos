@@ -1,0 +1,69 @@
+{
+	"title": "Bos",
+	"description": "Schema for the Bos configuration",
+	"type": "object",
+	"definitions": {
+		"ix": {
+			"type": "object",
+			"definitions": {
+				"home-system": {
+					"type": "object",
+					"description": "ix home and system properties schema",
+					"properties": {
+						"path": {
+							"description": "The path(s) to the system configuration file, relative to the provided 'config' path",
+							"anyOf": [
+								{ "type": "string" },
+								{ "type": "array", "items": { "type": "string" } }
+							]
+						}
+					}
+				}
+			},
+			"properties": {
+				"config": {
+					"type": "string",
+					"description": "The path to the configuration folder, relative to $BOS_DIR/configs"
+				},
+				"load": {
+					"anyOf": [
+						{ "type": "string" },
+						{ "type": "array", "items": { "type": "string" } }
+					],
+					"description": "The path(s) to directories which should be loaded on reconfigure, relative to the provided 'config' path"
+				},
+				"home": {
+					"$ref": "home-system",
+					"description": "Home configuration"
+				},
+				"system": {
+					"$ref": "home-system",
+					"description": "System configuration"
+				}
+			}
+		}
+	},
+	"properties": {
+		"packages": {
+			"type": "array",
+			"items": { "type": "string" },
+			"description": "The names of packages to install automatically in the system (alternatively, paths to other .bos files with package lists)"
+		},
+		"environment": {
+			"type": "object",
+			"description": "Environment variables to set on the system level",
+			"additionalProperties": { "type": "string" }
+		},
+		"guix": {
+			"type": "array",
+			"description": "Guix configurations",
+			"items": { "$ref": "ix", "description": "Guix configuration" }
+		},
+		"nix": {
+			"type": "array",
+			"description": "Nix configurations",
+			"items": { "$ref": "ix", "description": "Nix configuration" }
+		}
+	},
+	"additionalProperties": false
+}
