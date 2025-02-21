@@ -1,4 +1,5 @@
 (define-module (bos home)
+	#:use-module (bos packages base)
 	#:use-module (bos utils)
 	#:use-module (guix)
 	#:use-module (gnu)
@@ -20,6 +21,7 @@
 (define (extend-home base-home)
 	(home-environment
 		(inherit base-home)
+		(packages (cons glibc-locales-us (home-environment-packages base-home)))
 		(services (cons* bash-profile-service
 						(simple-service 'bos-home-environment-variables-service home-environment-variables-service-type
 							`(("BOS_HOME_PROFILE" . "$HOME/.guix-home/profile")
