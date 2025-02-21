@@ -170,7 +170,7 @@ if [ $mode = "all" ] || [ $mode = "system" ]; then
 fi
 
 if [ $mode = "all" ] || [ $mode = "home" ]; then
-	if [ $force_unlink = false ] && [ $BOS_DOTFILES = $dotfiles ] && [ $BOS_HOME_NAME = $home ]; then
+	if [ $force_unlink = false ] && [[ -v BOS_DOTFILES ]] && [ $BOS_DOTFILES = $dotfiles ] && [ $BOS_HOME_NAME = $home ]; then
 			relink_home=false
 	else
 		unlink_home
