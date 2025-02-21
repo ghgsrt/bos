@@ -15,15 +15,15 @@
 			 (guix gexp)
 			 (ice-9 rdelim))
 
-(define home-config-dir (getenv "HOME_CONFIG_DIR"))
+(define home-dir (getenv "HOME_DIR"))
 (define target (getenv "TARGET"))
 ;(unless target
 ;  (error "Environment variable 'TARGET' not set! Usage: TARGET=<name> guix home ..."))
 
 (define base-home
 	;;TODO make the target home dir (target config) a configurable option
-  (if (and target home-config-dir)
-  		(load (string-append home-config-dir "/" target ".scm"))
+  (if (and target home-dir)
+  		(load (string-append home-dir "/" target ".scm"))
 	#f))
 
 
