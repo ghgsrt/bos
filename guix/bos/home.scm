@@ -15,7 +15,7 @@
 ;; with the bos dotfile setup
 
 (define bash-profile-service (simple-service 'bash-profile-service-type home-bash-service-type
-					(home-bash-extension (bash-profile (list (local-file "/etc/bos/profile")
+					(home-bash-extension (bash-profile (list (plain-file "bos_pinit.sh" "source /etc/bos/profile")
 															(plain-file "bos_dinit.sh" "if [ -d \"$HOME/.bos\" ]; then\n${BOS_DIR}/init.sh -M home\nfi"))))))
 
 (define (extend-home base-home)
