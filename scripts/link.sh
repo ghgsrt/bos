@@ -49,7 +49,7 @@ recursive_symlink() {
     fi
 
 	if [ ! -f "$track_file" ]; then
-        touch "$track_file"
+        should_sudo touch "$track_file"
     fi
 
 	local exclude_expr=""
