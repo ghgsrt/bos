@@ -8,6 +8,11 @@ hrec_guix() {
 	fi
 	local HOME_NAME="${1-$BOS_HOME_NAME}"
 
+	if [ ! -d /var/guix/profiles/per-user/$USER ]; then
+		should_sudo mkdir -p /var/guix/profiles/per-user/$USER
+		should_sudo chown $USER /var/guix/profiles/per-user/$USER
+	fi
+
 	#! DO NOT SUDO ON HOME RECONFIGURES
 	HOME_DIR="$BOS_HOME_DIR" TARGET="$HOME_NAME" guix home -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/bos/home/base.scm
 }
