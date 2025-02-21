@@ -149,7 +149,7 @@ relink_system=true
 relink_home=true
 
 if [ $mode = "all" ] || [ $mode = "system" ]; then
-	if [ $force_unlink = false ] && [ test -v "$BOS_DOTFILES" ] && [ $BOS_DOTFILES = $dotfiles ]; then
+	if [ $force_unlink = false ] && [[ -v BOS_DOTFILES ]] && [ $BOS_DOTFILES = $dotfiles ]; then
 		relink_root=false
 		if [ $BOS_DISTRO = $distro ]; then
 			relink_distro=false
