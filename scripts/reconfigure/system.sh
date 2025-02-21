@@ -1,14 +1,16 @@
 source $BOS_DIR/scripts/utils.sh
 
+export WORKVC="HUH??"
+
 alias srec='echo Error: your current distro '$BOS_DISTRO' does not support reconfiguration'
 
 srec_guix() {
 	if [ -z "$1" ]; then
-        echo "srec: using current system '$BOS_SYSTEM'"
+        echo "srec: using current system '$BOS_SYSTEM' with dotfiles '$BOS_DOTFILES'"
     fi
 	local SYSTEM="${1-$BOS_SYSTEM}"
 
-     SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" guix system -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/bos/system/base.scm
+     DOTFILES_DIR="$BOS_DOTFILES_DIR" SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" guix system -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/bos/system/base.scm
 }
 
 if [ "$BOS_DISTRO" = "guix" ]; then

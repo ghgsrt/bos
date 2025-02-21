@@ -170,7 +170,7 @@ if [ $mode = "all" ] || [ $mode = "system" ]; then
 fi
 
 if [ $mode = "all" ] || [ $mode = "home" ]; then
-	if [ $force_unlink = false ] && [ $BOS_DOTFILES_DIR = $dotfiles ] && [ $BOS_HOME_NAME = $home ]; then
+	if [ $force_unlink = false ] && [ $BOS_DOTFILES = $dotfiles ] && [ $BOS_HOME_NAME = $home ]; then
 			relink_home=false
 	else
 		unlink_home
@@ -227,10 +227,13 @@ export BOS_HOME_DIR="${BOS_HOME_DIR}"
 export BOS_DISTRO="${BOS_DISTRO}"
 export BOS_SYSTEM="${BOS_SYSTEM}"
 
-if [ '$BOS_DISTRO' = "guix" ] || [ '$BOS_DISTRO' = "nix" ]; then
+export WHATTHE="fuck"
+
+if [ \$BOS_DISTRO = "guix" ] || [ \$BOS_DISTRO = "nix" ]; then
+	export DEEZ="nuts"
 	source "${BOS_DIR}/scripts/reconfigure/system.sh"
 	source "${BOS_DIR}/scripts/reconfigure/home.sh"
-elif [ '$BOS_HOME_TYPE' = "guix" ] || [ '$BOS_HOME_TYPE' = "nix" ]; then
+elif [ \$BOS_HOME_TYPE = "guix" ] || [ \$BOS_HOME_TYPE = "nix" ]; then
 	source "${BOS_DIR}/scripts/reconfigure/home.sh"
 fi
 
