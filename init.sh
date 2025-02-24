@@ -125,7 +125,7 @@ link_home() {
 	fi
 
     # If user-specific configs exist, link them
-    if [ -d "$BOS_DOTFILES_DIR/users/$USER" ]; then
+	if [ -d "$BOS_DOTFILES_DIR/users/$USER" ]; then
         recursive_symlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME/.config"
     fi
 }
@@ -233,7 +233,7 @@ if [ \$BOS_DISTRO = "guix" ] || [ \$BOS_DISTRO = "nix" ]; then
 	export DEEZ="nuts"
 	source "${BOS_DIR}/scripts/reconfigure/system.sh"
 	source "${BOS_DIR}/scripts/reconfigure/home.sh"
-elif [ \$BOS_HOME_TYPE = "guix" ] || [ \$BOS_HOME_TYPE = "nix" ]; then
+elif [ "\$BOS_HOME_TYPE" = "guix" ] || [ "\$BOS_HOME_TYPE" = "nix" ]; then
 	source "${BOS_DIR}/scripts/reconfigure/home.sh"
 fi
 
