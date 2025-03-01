@@ -14,7 +14,7 @@ hrec_guix() {
 	fi
 
 	#! DO NOT SUDO ON HOME RECONFIGURES
-	HOME_DIR="$BOS_HOME_DIR" TARGET="$HOME_NAME" guix home -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/bos/home/base.scm
+	DOTFILES_DIR="$BOS_DOTFILES_DIR" HOME_DIR="$BOS_HOME_DIR" TARGET="$HOME_NAME" guix home -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/bos/home/base.scm
 }
 
 if [ "$BOS_HOME_TYPE" = "guix" ]; then
