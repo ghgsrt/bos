@@ -17,7 +17,7 @@ dotfiles=${BOS_DOTFILES:-}
 mode="all"
 force_link=false
 force_unlink=false
-ignore_unlink=true
+ignore_unlink=false
 verbose=false
 
 # Parse command line arguments
