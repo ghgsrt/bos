@@ -20,6 +20,8 @@ force_link=false
 force_unlink=false
 no_relink=false
 ignore_unlink=false
+no_reconfigure_system=false
+no_reconfigure_home=false
 verbose=false
 
 # Parse command line arguments
@@ -69,6 +71,19 @@ while [[ $# -gt 0 ]]; do
 		;;
 	-i | --ignore-unlink)
 		ignore_unlink=false
+		shift
+		;;
+	-nr | --no-reconfigure)
+		no_reconfigure_system=true
+		no_reconfigure_home=true
+		shift
+		;;
+	-nrs | --no-reconfigure-system)
+		no_reconfigure_system=true
+		shift
+		;;
+	-nrh | --no-reconfigure-home)
+		no_reconfigure_home=true
 		shift
 		;;
 	-v | --verbose)
@@ -197,6 +212,13 @@ BOS_HOME_DIR="$BOS_CONFIG_DIR/home"
 
 setup_system() {
 	echo "Setting up system configuration..."
+
+	if [ $no_reconfigure_system = false ]; then
+		source "$BOS_DIR/scripts/reconfigure/system.sh"
+		if command -v srec &>/dev/null; then
+			srec
+		fi
+	fi
 
 	if [ $force_link = true ] || [ $relink_root = true ]; then
 		link_root
