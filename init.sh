@@ -5,8 +5,8 @@ USER=${USER:-$(whoami)}
 BOS_DIR="$(dirname "$(readlink -f "$0")")"
 echo "Using bos directory: $BOS_DIR"
 
-source $BOS_DIR/scripts/utils.sh
-source $BOS_DIR/scripts/link.sh
+source "$BOS_DIR/scripts/utils.sh"
+source "$BOS_DIR/scripts/link.sh"
 
 config=${BOS_CONFIG:-}
 distro=${BOS_DISTRO:-}
@@ -14,64 +14,71 @@ system=${BOS_SYSTEM:-}
 home=${BOS_HOME_NAME:-}
 home_type=${BOS_HOME_TYPE:-}
 dotfiles=${BOS_DOTFILES:-}
+
 mode="all"
 force_link=false
 force_unlink=false
+no_relink=false
 ignore_unlink=false
 verbose=false
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
 	case $1 in
-		-C|--config)
+	-C | --config)
 		echo "Config: $2"
-			config="$2"
-			shift 2  # Move past flag and its value
-			;;
-		-O|--distro)
-			distro="$2"
-			shift 2
-			;;
-		-S|--system)
-			system="$2"
-			shift 2
-			;;
-		-H|--home)
-			home="$2"
-			shift 2
-			;;
-		-T|--home-type)
-			home_type="$2"
-			shift 2
-			;;
-		-D|--dotfiles)
-			dotfiles="$2"
-			shift 2
-			;;
-		-M|--mode)
-			mode="$2"
-			shift 2
-			;;
-		-f|--force-link)
-			force_link=true
-			shift
-			;;
-		-u|--force-unlink)
-			force_unlink=true
-			shift
-			;;
-		-i|--ignore-unlink)
-			ignore_unlink=false
-			shift
-			;;
-		-v|--verbose)
-			verbose=true
-			shift    # Move past flag only (no value needed)
-			;;
-		*)
-			echo "Unknown option: $1"
-			return 1
-			;;
+		config="$2"
+		shift 2 # Move past flag and its value
+		;;
+	-O | --distro)
+		distro="$2"
+		shift 2
+		;;
+	-S | --system)
+		system="$2"
+		shift 2
+		;;
+	-H | --home)
+		home="$2"
+		shift 2
+		;;
+	-T | --home-type)
+		home_type="$2"
+		shift 2
+		;;
+	-D | --dotfiles)
+		dotfiles="$2"
+		shift 2
+		;;
+	-M | --mode)
+		mode="$2"
+		shift 2
+		;;
+	-f | --force-link)
+		force_link=true
+		shift
+		;;
+	-un | --force-unlink-no-relink)
+		force_unlink=true
+		no_relink=true
+		shift
+		;;
+	-u | --force-unlink)
+		force_unlink=true
+		shift
+		;;
+	-i | --ignore-unlink)
+		ignore_unlink=false
+		shift
+		;;
+	-v | --verbose)
+		verbose=true
+		shift # Move past flag only (no value needed)
+		;;
+	*)
+		echo "Unknown option: $1"
+		return 1
+		;;
 	esac
 done
 
@@ -87,73 +94,78 @@ fi
 
 link_root() {
 	if [ -d "$BOS_DOTFILES_DIR/root" ]; then
-		recursive_symlink "$BOS_DOTFILES_DIR/root" "/"
+		recursive_symlink "$BOS_DOTFILES_DIR/root" "/" "$verbose"
 	fi
 }
 unlink_root() {
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/root" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/root" "/"
+		recursive_unlink "$BOS_DOTFILES_DIR/root" "/" "$verbose"
 	fi
 }
 link_distro() {
 	if [ -d "$BOS_DOTFILES_DIR/distros/$BOS_DISTRO" ]; then
-		recursive_symlink "$BOS_DOTFILES_DIR/distros/$BOS_DISTRO" "/"
+		recursive_symlink "$BOS_DOTFILES_DIR/distros/$BOS_DISTRO" "/" "$verbose"
 	fi
 }
 unlink_distro() {
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/distros/$BOS_DISTRO" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/distros/$BOS_DISTRO" "/"
+		recursive_unlink "$BOS_DOTFILES_DIR/distros/$BOS_DISTRO" "/" "$verbose"
 	fi
 }
 link_system() {
 	if [ -d "$BOS_DOTFILES_DIR/systems/$BOS_SYSTEM" ]; then
-		recursive_symlink "$BOS_DOTFILES_DIR/systems/$BOS_SYSTEM" "/"
+		recursive_symlink "$BOS_DOTFILES_DIR/systems/$BOS_SYSTEM" "/" "$verbose"
 	fi
 }
 unlink_system() {
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/systems/$BOS_SYSTEM" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/systems/$BOS_SYSTEM" "/"
+		recursive_unlink "$BOS_DOTFILES_DIR/systems/$BOS_SYSTEM" "/" "$verbose"
 	fi
 }
 
 link_home() {
 	if [ -d "$BOS_DOTFILES_DIR/~" ]; then
-		recursive_symlink "$BOS_DOTFILES_DIR/~" "$HOME"
+		recursive_symlink "$BOS_DOTFILES_DIR/~" "$HOME" "$verbose"
 	fi
 	if [ -d "$BOS_DOTFILES_DIR/.config" ]; then
-		recursive_symlink "$BOS_DOTFILES_DIR/.config" "$XDG_CONFIG_HOME"
+		recursive_symlink "$BOS_DOTFILES_DIR/.config" "$XDG_CONFIG_HOME" "$verbose"
 	fi
 
-    # If user-specific configs exist, link them
+	# If user-specific configs exist, link them
 	if [ -d "$BOS_DOTFILES_DIR/users/$USER" ]; then
-        recursive_symlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME/.config"
-    fi
+		recursive_symlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME/.config" "$verbose"
+	fi
 }
 unlink_home() {
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/~" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/~" "$HOME"
+		recursive_unlink "$BOS_DOTFILES_DIR/~" "$HOME" "$verbose"
 	fi
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/.config" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/.config" "$XDG_CONFIG_HOME"
+		recursive_unlink "$BOS_DOTFILES_DIR/.config" "$XDG_CONFIG_HOME" "$verbose"
 	fi
 
 	# If user-specific configs exist, unlink them
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/users/$USER" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME/.config"
+		recursive_unlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME/.config" "$verbose"
 	fi
 }
 
-relink_root=true
-relink_distro=true
-relink_system=true
-relink_home=true
+if [ $no_relink = false ]; then
+	relink_def=true
+else
+	relink_def=false
+fi
+relink_root=$relink_def
+relink_distro=$relink_def
+relink_system=$relink_def
+relink_home=$relink_def
 
-if [ $mode = "all" ] || [ $mode = "system" ]; then
-	if [ $force_unlink = false ] && [[ -v BOS_DOTFILES ]] && [ $BOS_DOTFILES = $dotfiles ]; then
+if [ "$mode" = "all" ] || [ "$mode" = "system" ]; then
+	if [ "$force_unlink" = false ] && [[ -v BOS_DOTFILES ]] && [ "$BOS_DOTFILES" = "$dotfiles" ]; then
 		relink_root=false
-		if [ $BOS_DISTRO = $distro ]; then
+		if [ "$BOS_DISTRO" = "$distro" ]; then
 			relink_distro=false
-			if [ $BOS_SYSTEM = $system ]; then
+			if [ "$BOS_SYSTEM" = "$system" ]; then
 				relink_system=false
 			else
 				unlink_system
@@ -169,9 +181,9 @@ if [ $mode = "all" ] || [ $mode = "system" ]; then
 	fi
 fi
 
-if [ $mode = "all" ] || [ $mode = "home" ]; then
-	if [ $force_unlink = false ] && [[ -v BOS_DOTFILES ]] && [ $BOS_DOTFILES = $dotfiles ] && [ $BOS_HOME_NAME = $home ]; then
-			relink_home=false
+if [ "$mode" = "all" ] || [ "$mode" = "home" ]; then
+	if [ "$force_unlink" = false ] && [[ -v BOS_DOTFILES ]] && [ "$BOS_DOTFILES" = "$dotfiles" ] && [ "$BOS_HOME_NAME" = "$home" ]; then
+		relink_home=false
 	else
 		unlink_home
 	fi
@@ -190,7 +202,7 @@ BOS_SYSTEM_DIR="$BOS_CONFIG_DIR/system"
 BOS_HOME_DIR="$BOS_CONFIG_DIR/home"
 
 setup_system() {
-    echo "Setting up system configuration..."
+	echo "Setting up system configuration..."
 
 	if [ $force_link = true ] || [ $relink_root = true ]; then
 		link_root
@@ -211,7 +223,7 @@ setup_system() {
 		should_sudo mkdir /etc/bos
 	fi
 
-	cat << EOF | should_sudo tee "/etc/bos/profile" > /dev/null
+	cat <<EOF | should_sudo tee "/etc/bos/profile" >/dev/null
 # Generated by init script - DO NOT EDIT
 
 export BOS_DIR="${BOS_DIR}"
@@ -241,7 +253,7 @@ EOF
 }
 
 setup_home() {
-    echo "Setting up home configuration for $USER..."
+	echo "Setting up home configuration for $USER..."
 
 	if [ $force_link = true ] || [ $relink_home = true ]; then
 		link_home
@@ -256,7 +268,7 @@ setup_home() {
 
 	echo "Generating ~/.bash_profile ..."
 
-	cat << EOF | should_sudo tee "$HOME/.bash_profile" > /dev/null
+	cat <<EOF | should_sudo tee "$HOME/.bash_profile" >/dev/null
 # Generated by init script - DO NOT EDIT
 
 # Source system-wide profile
@@ -264,7 +276,7 @@ source /etc/bos/profile
 EOF
 
 	# Ensure the generated file is readable
-    should_sudo chmod 644 "$HOME/.bash_profile"
+	should_sudo chmod 644 "$HOME/.bash_profile"
 
 	# ATM, only for indicating that dotfiles have already been linked to guix home
 	mkdir "$HOME/.bos"
@@ -273,23 +285,22 @@ EOF
 # Main
 echo "Setting up configuration for $USER on $BOS_SYSTEM with ${BOS_DISTRO}..."
 case "$mode" in
-    "all")
-        setup_system
-        setup_home
-        ;;
-    "system")
-        setup_system
-        ;;
-    "home")
-        setup_home
-        ;;
-    *)
-        echo "Invalid mode: $mode"
-        exit 1
-        ;;
+"all")
+	setup_system
+	setup_home
+	;;
+"system")
+	setup_system
+	;;
+"home")
+	setup_home
+	;;
+*)
+	echo "Invalid mode: $mode"
+	exit 1
+	;;
 esac
 
 #TODO detect if guix or nix homes are available and hrec automatically
 #TODO		if HOME_NAME is provided
 #TODO detect if guix or nix systems are available and srec automatically
-
