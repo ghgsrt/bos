@@ -117,29 +117,29 @@ unlink_system() {
 }
 
 link_home() {
-	if [ -d "$BOS_DOTFILES_DIR/~" ]; then
-		recursive_symlink "$BOS_DOTFILES_DIR/~" "$HOME"
+	if [ -d "$BOS_DOTFILES_DIR/home" ]; then
+		recursive_symlink "$BOS_DOTFILES_DIR/home" "$HOME"
 	fi
-	if [ -d "$BOS_DOTFILES_DIR/.config" ]; then
-		recursive_symlink "$BOS_DOTFILES_DIR/.config" "$XDG_CONFIG_HOME"
-	fi
+#	if [ -d "$BOS_DOTFILES_DIR/home/.config" ]; then
+#		recursive_symlink "$BOS_DOTFILES_DIR/home/.config" "$XDG_CONFIG_HOME"
+#	fi
 
     # If user-specific configs exist, link them
 	if [ -d "$BOS_DOTFILES_DIR/users/$USER" ]; then
-        recursive_symlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME/.config"
-    fi
+		recursive_symlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME"
+	fi
 }
 unlink_home() {
-	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/~" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/~" "$HOME"
+	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/home" ]; then
+		recursive_unlink "$BOS_DOTFILES_DIR/home" "$HOME"
 	fi
-	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/.config" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/.config" "$XDG_CONFIG_HOME"
-	fi
+#	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/home/.config" ]; then
+#		recursive_unlink "$BOS_DOTFILES_DIR/home/.config" "$XDG_CONFIG_HOME"
+#	fi
 
 	# If user-specific configs exist, unlink them
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/users/$USER" ]; then
-		recursive_unlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME/.config"
+		recursive_unlink "$BOS_DOTFILES_DIR/users/$USER" "$HOME"
 	fi
 }
 
@@ -227,11 +227,18 @@ export BOS_HOME_DIR="${BOS_HOME_DIR}"
 export BOS_DISTRO="${BOS_DISTRO}"
 export BOS_SYSTEM="${BOS_SYSTEM}"
 
-if [ \$BOS_DISTRO = "guix" ] || [ \$BOS_DISTRO = "nix" ]; then
+if [ "\$BOS_DISTRO" = "guix" ] || [ "\$BOS_DISTRO" = "nix" ]; then
 	source "${BOS_DIR}/scripts/reconfigure/system.sh"
 	source "${BOS_DIR}/scripts/reconfigure/home.sh"
 elif [ "\$BOS_HOME_TYPE" = "guix" ] || [ "\$BOS_HOME_TYPE" = "nix" ]; then
 	source "${BOS_DIR}/scripts/reconfigure/home.sh"
+fi
+
+export GPG_TTY=\$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+unset SSH_AGENT_PID
+if [ "\${gnupg_SSH_AUTH_SOCK_by:-0}" -ne \$\$ ]; then
+	export SSH_AUTH_SOCK="\$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
 EOF
