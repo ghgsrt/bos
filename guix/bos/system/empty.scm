@@ -6,6 +6,7 @@
   #:use-module (gnu bootloader)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu system file-systems)
+  #:use-module (gnu services base)
   #:export (empty-system
 	    empty-system-free
 	    empty-system-non-free))
