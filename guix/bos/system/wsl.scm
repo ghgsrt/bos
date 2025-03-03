@@ -1,6 +1,5 @@
 (define-module (bos system wsl)
   #:use-module (bos utils)
-  #:use-module (bos system)
   #:use-module (guix)
   #:use-module (gnu)
   #:use-module (gnu services guix)
