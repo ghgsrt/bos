@@ -1,4 +1,5 @@
 set -euo pipefail
+shopt -s expand_aliases
 
 USER=${USER:-$(whoami)}
 
@@ -171,12 +172,12 @@ relink_home=$relink_def
 
 if [ "$mode" = "all" ] || [ "$mode" = "system" ]; then
 	if [ "$force_unlink" = false ] && [[ -v BOS_DOTFILES ]] && [ "$BOS_DOTFILES" = "$dotfiles" ]; then
-		relink_root=false
+		#		relink_root=false
 		if [ "$BOS_DISTRO" = "$distro" ]; then
-			relink_distro=false
-			if [ "$BOS_SYSTEM" = "$system" ]; then
-				relink_system=false
-			else
+			#			relink_distro=false
+			if [ ! "$BOS_SYSTEM" = "$system" ]; then
+				#				relink_system=false
+				#else
 				unlink_system
 			fi
 		else
@@ -191,9 +192,9 @@ if [ "$mode" = "all" ] || [ "$mode" = "system" ]; then
 fi
 
 if [ "$mode" = "all" ] || [ "$mode" = "home" ]; then
-	if [ "$force_unlink" = false ] && [[ -v BOS_DOTFILES ]] && [ "$BOS_DOTFILES" = "$dotfiles" ] && [ "$BOS_HOME_NAME" = "$home" ]; then
-		relink_home=false
-	else
+	if [ "$force_unlink" = true ] && [[ ! -v BOS_DOTFILES ]] && [ ! "$BOS_DOTFILES" = "$dotfiles" ]; then
+		#		relink_home=false
+		#else
 		unlink_home
 	fi
 fi
@@ -213,7 +214,7 @@ BOS_HOME_DIR="$BOS_CONFIG_DIR/home"
 setup_system() {
 	echo "Setting up system configuration..."
 
-	if [ $no_reconfigure_system = false ]; then
+	if [ $no_reconfigure_system = false ] && [ ! -z "$BOS_SYSTEM" ]; then
 		source "$BOS_DIR/scripts/reconfigure/system.sh"
 		if command -v srec &>/dev/null; then
 			srec
@@ -278,7 +279,19 @@ EOF
 setup_home() {
 	echo "Setting up home configuration for $USER..."
 
+	if [ $no_reconfigure_home = false ] && [ ! -z "$BOS_HOME_NAME" ]; then
+		source "$BOS_DIR/scripts/reconfigure/home.sh"
+		if command -v hrec &>/dev/null; then
+			hrec
+		fi
+	fi
+
+	if [ -f "$BOS_DOTFILES_DIR/home/.gnupg/sshcontrol" ] && [ -f "$HOME/.gnupg/sshcontrol" ]; then
+		should_sudo rm "$HOME/.gnupg/sshcontrol"
+	fi
+
 	if [ $force_link = true ] || [ $relink_home = true ]; then
+		echo "HUH"
 		link_home
 	fi
 

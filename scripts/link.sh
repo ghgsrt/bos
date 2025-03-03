@@ -24,7 +24,7 @@ create_symlink() {
         fi
     elif [ -e "$dst" ]; then
         # If it's a regular file, warn and skip
-        echo "Warning: $dst exists and is not a symlink"
+        [ "$verbose" = true ] && echo "Warning: $dst exists and is not a symlink"
         return 1
     fi
 
@@ -66,7 +66,7 @@ recursive_symlink() {
     if [ -n "$exclude_expr" ]; then
         eval "find \"$src_dir\" -type f ! \( $exclude_expr \) -print0"
     else
-        find "$src_dir" -type f -print0
+        eval "find \"$src_dir\" -type f ! \( -name "_*" \) -print0"
     fi | while IFS= read -r -d $'\0' src_path; do
         # Calculate relative path from source directory
         local rel_path="${src_path#$src_dir/}"
@@ -79,7 +79,7 @@ recursive_symlink() {
         fi
 
         # If symlink was created successfully, track it
-        if create_symlink "$src_path" "$dst_path"; then
+        if create_symlink "$src_path" "$dst_path" $verbose; then
             # Only add to tracking if not already present
             if ! grep -Fxq "$dst_path" "$track_file"; then
                 should_sudo echo "$dst_path" >>"$track_file"
@@ -88,7 +88,7 @@ recursive_symlink() {
         else
             [ "$verbose" = true ] && echo "Failed to create symlink: $src_path"
         fi
-    done
+    done || true
 }
 
 recursive_unlink() {
