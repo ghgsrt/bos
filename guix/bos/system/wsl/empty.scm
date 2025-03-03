@@ -1,55 +1,18 @@
 (define-module (bos system wsl empty)
+  #:use-module (bos system)
+  #:use-module (bos system empty)
+  #:use-module (bos system wsl)
   #:use-module (gnu)
-  #:use-module (gnu packages tls)
-  #:use-module (gnu services ssh)
-  #:use-module (gnu services networking)
-  #:use-module (gnu packages version-control)
-  #:use-module (guix channels)
-  #:use-module (guix packages)
-  #:use-module (guix profiles)
-  #:use-module (ice-9 pretty-print)
-  #:use-module (srfi srfi-1))
+  #:export (empty-wsl-system
+            empty-wsl-system-free
+            empty-wsl-system-nonfree))
 
-(define-public empty-wsl-system
+(define* (empty-wsl-system #:key (non-free? #f))
   (operating-system
-   (host-name "bos-guix")
-   (keyboard-layout (keyboard-layout "us"))
-   (locale "en_US.utf8")
-   (timezone "America/New_York")
+    (inherit (extend-wsl-system (empty-system #:non-free? non-free?)))))
 
-   ;; User account
-   (users (cons (user-account
-                 (name "wsl")
-                 (group "users")
-                 (home-directory "/home/wsl")
-                 (supplementary-groups '("wheel")))
-                %base-user-accounts))
+(define empty-wsl-system-free (extend-system (empty-wsl-system)))
+(define empty-wsl-system-free (extend-system (empty-wsl-system #:non-free? #t)))
 
-   (kernel hello)
-   (initrd (lambda* (. rest) (plain-file "dummyinitrd" "dummyinitrd")))
-   (initrd-modules '())
-   (firmware '())
+empty-wsl-system-free
 
-   (packages (list openssl))
-
-   (bootloader
-    (bootloader-configuration
-     (bootloader
-      (bootloader
-       (name 'dummybootloader)
-       (package hello)
-       (configuration-file "/dev/null")
-       (configuration-file-generator (lambda* (. rest) (computed-file "dummybootloader" #~(mkdir #$output))))
-       (installer #~(const #t))))))
-
-   (file-systems (list (file-system
-                        (device "/dev/sdb")
-                        (mount-point "/")
-                        (type "ext4")
-                        (mount? #t))))
-
-   (services (list (service guix-service-type)
-                   (service special-files-service-type
-                            `(("/usr/bin/env" ,(file-append coreutils "/bin/env"))))))))
-
-empty-wsl-system
