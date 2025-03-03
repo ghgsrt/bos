@@ -27,6 +27,7 @@
 	     (newline)))
   (operating-system
     (host-name "guix")
+    (timezone "America/New_York") ;; has a default yet forces you to initialize???
 
     (users (cons (user-account
 		   (name "guix")
