@@ -1,12 +1,12 @@
-; (define-module (home base)
-; 	#:use-module (utils)
-; 	#:use-module (guix)
-; 	#:use-module (gnu)
-; 	#:use-module (gnu home)
-; 	#:use-module (gnu home services)
-; 	#:use-module (gnu home services shells)
-; 	#:use-module (guix gexp)     ; For local-file
-; 	#:use-module (ice-9 rdelim))  ; For reading environment variables
+ ;(define-module (home base)
+ ;	#:use-module (utils)
+ ;	#:use-module (guix)
+ ;	#:use-module (gnu)
+ ;	#:use-module (gnu home)
+ ;	#:use-module (gnu home services)
+ ;	#:use-module (gnu home services shells)
+ ;	#:use-module (guix gexp)     ; For local-file
+ ;	#:use-module (ice-9 rdelim))  ; For reading environment variables
 
 (use-modules (bos home)
 			 (gnu)
