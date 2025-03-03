@@ -1,0 +1,4 @@
+[submodule]
+	remote = true
+	recurse = true
+	stickyRecursiveClone = true
