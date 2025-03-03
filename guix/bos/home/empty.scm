@@ -1,5 +1,8 @@
 (define-module (bos home empty)
 	#:use-module (bos channels)
+	#:use-module (bos home)
+	#:use-module (gnu)
+	#:use-module (gnu services)
 	#:use-module (gnu home)
 	#:use-module (gnu home services)
 	#:export (empty-home

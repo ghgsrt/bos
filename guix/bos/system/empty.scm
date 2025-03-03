@@ -1,5 +1,6 @@
 (define-module (bos system empty)
   #:use-module (bos channels)
+  #:use-module (bos system)
   #:use-module (gnu)
   #:use-module (gnu system)
   #:use-module (gnu bootloader)
