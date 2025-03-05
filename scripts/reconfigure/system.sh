@@ -1,22 +1,35 @@
 source $BOS_DIR/scripts/utils.sh
 
-export WORKVC="HUH??"
+srec() {
+	if [ "$BOS_DISTRO" = "guix" ]; then
+		s_guix 'guix' 'system' 'reconfigure' "$@"
+	elif [ "$BOS_DISTRO" = "nix" ]; then
+		s_nix "$@"
+	else
+		echo "Error: '$BOS_DISTRO' does not support reconfiguration"
+	fi
+}
 
-alias srec='echo Error: your current distro '$BOS_DISTRO' does not support reconfiguration'
+srep() {
+	if [ "$BOS_DISTRO" = "guix" ]; then
+		s_guix 'guix' 'repl' '' "$@"
+	elif [ "$BOS_DISTRO" = "nix" ]; then
+		s_nix "$@"
+	else
+		echo "Error: '$BOS_DISTRO' does not support reconfiguration"
+	fi
+}
 
-srec_guix() {
-	if [ -z "$1" ]; then
+s_guix() {
+	if [ -z "${4:-}" ]; then
         echo "srec: using current system '$BOS_SYSTEM' with dotfiles '$BOS_DOTFILES'"
     fi
-	local SYSTEM="${1-$BOS_SYSTEM}"
+	local SYSTEM="${4-$BOS_SYSTEM}"
 
-     DOTFILES_DIR="$BOS_DOTFILES_DIR" SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" guix system -L $BOS_DIR/guix -L $BOS_CONFIG_DIR reconfigure $BOS_DIR/guix/bos/system/base.scm
+     DOTFILES_DIR="$BOS_DOTFILES_DIR" SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" "$1" "$2" -L "$BOS_DIR/guix" -L "$BOS_CONFIG_DIR" $3 "$BOS_DIR/guix/bos/system/base.scm"
 }
 
 if [ "$BOS_DISTRO" = "guix" ]; then
-	alias srec='srec_guix'
-	alias system='guix system'
-
 	alias pull='should_sudo guix pull'
 	alias herd='should_sudo herd'
 	alias sdesc='system describe'
@@ -33,7 +46,7 @@ if [ "$BOS_DISTRO" = "guix" ]; then
 	alias plist='package -p'
 fi
 
-srec_nix() {
+s_nix() {
 	if [ -z "$1" ]; then
 		echo "srec: using current system '$BOS_SYSTEM'"
 	fi
@@ -45,7 +58,5 @@ srec_nix() {
 }
 
 if [ "$BOS_DISTRO" = "nix" ]; then
-	alias srec='srec_nix'
-
 	alias upflake='nix flake update'
 fi
