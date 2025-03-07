@@ -5,6 +5,8 @@
   #:use-module (gnu)
   #:use-module (gnu packages ssh)
   #:use-module (gnu packages gnupg)
+  #:use-module (gnu packages tmux)
+  #:use-module (gnu packages version-control)
   #:use-module (gnu)
   #:use-module (gnu)
   #:use-module (gnu services guix)
