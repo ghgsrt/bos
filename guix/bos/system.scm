@@ -3,6 +3,10 @@
   #:use-module (bos home)
   #:use-module (guix)
   #:use-module (gnu)
+  #:use-module (gnu packages ssh)
+  #:use-module (gnu packages gnupg)
+  #:use-module (gnu)
+  #:use-module (gnu)
   #:use-module (gnu services guix)
   #:use-module (gnu system)
   #:use-module (guix gexp)     ; For local-file
@@ -16,6 +20,10 @@
   (let ((base-services (operating-system-user-services base-system)))
     (operating-system
       (inherit base-system)
+	  (packages (cons* openssh
+	  					gnupg
+						pinentry
+						(operating-system-packages base-system)))
       (services
 	(if (find (lambda (svc)
 		    (equal? (service-kind svc)
