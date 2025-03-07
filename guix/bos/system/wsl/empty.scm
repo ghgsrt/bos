@@ -9,7 +9,7 @@
 
 (define* (empty-wsl-system #:key (non-free? #f))
   (operating-system
-    (inherit (extend-wsl-system (empty-system #:non-free? non-free?)))))
+    (inherit (extend-wsl-system (empty-system #:non-free? non-free?) "root"))))
 
 (define empty-wsl-system-free (extend-system (empty-wsl-system)))
 (define empty-wsl-system-free (extend-system (empty-wsl-system #:non-free? #t)))
