@@ -22,7 +22,5 @@
     (when base-system
       (wsl2-image
         (extend-system base-system) 
-        (if user
-          user
-          "root")))))
+        (or user "root")))))
 

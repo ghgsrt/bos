@@ -41,7 +41,11 @@
 	     ;; other services which shouldn't be fcky with wsl
 	     )
 	(append (if guix-home-service (list guix-home-service) '())
-		(operating-system-user-services wsl-os))))))
+		(modify-services (operating-system-user-services wsl-os)
+			(guix-service-type config =>
+					(guix-configuration
+					(inherit config)
+					(environment '(("BOS_WSL" . "true")))))))))))
 ;	(append (if (not (find-service guix-service-type
 ;				       base-services))
 ;		  (list (service guix-service-type))
