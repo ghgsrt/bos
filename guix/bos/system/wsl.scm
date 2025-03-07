@@ -1,4 +1,5 @@
 (define-module (bos system wsl)
+  #:use-module (bos channels)
   #:use-module (bos utils)
   #:use-module (guix)
   #:use-module (gnu)
@@ -45,6 +46,7 @@
 			(guix-service-type config =>
 					(guix-configuration
 					(inherit config)
+					(channels %non-free-channels)
 					(environment '(("BOS_WSL" . "true")))))))))))
 ;	(append (if (not (find-service guix-service-type
 ;				       base-services))
