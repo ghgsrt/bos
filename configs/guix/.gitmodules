@@ -1,0 +1,6 @@
+[submodule "dotfiles"]
+	path = dotfiles
+	url = https://github.com/ghgsrt/dotfiles
+[submodule "dots"]
+	path = dots
+	url = https://github.com/ghgsrt/dots
