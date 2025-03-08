@@ -1,0 +1,9 @@
+.vim/envs.vim
+.vim/autoload/plug.vim
+.vim/autoload/plug.vim.old
+.vim/sessions
+.config/fcitx5/conf
+*.pkg.tar.zst
+scripts/arch/pkgs/*/pkg
+scripts/arch/pkgs/*/src
+scripts/arch/pkgs/palette-scripts-git/palette-scripts-git

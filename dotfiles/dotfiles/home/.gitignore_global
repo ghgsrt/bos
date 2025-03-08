@@ -1,0 +1,7 @@
+.DS_Store
+.vscode
+.vim/coc-settings.json
+.vim-bookmarks
+.editorconfig
+staticcheck.conf
+.tool-versions

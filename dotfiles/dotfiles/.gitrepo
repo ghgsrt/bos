@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:ghgsrt/dots.git
+	branch = master
+	commit = f2a5c55f5f36f477fdea66f937432726943c68c8
+	parent = 463e08cbf3a37ffbbebc6949a5a28fb3f5c9ca36
+	method = merge
+	cmdver = 0.4.9

@@ -1,0 +1,29 @@
+theme = "gruvbox_material_dark"
+
+[editor]
+completion-trigger-len = 1
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "block"
+
+[editor.file-picker]
+hidden = false
+
+[editor.auto-pairs]
+'(' = ')'
+'{' = '}'
+'[' = ']'
+'"' = '"'
+'`' = '`'
+'<' = '>'
+
+[keys.normal]
+C-s = ":w"
+g = { a = "code_action" }
+
+[keys.insert]
+"A-x" = "normal_mode"
+
+#TODO  setup sessionizer keybinds;; get vim statusbar;; get repos on ssh stuff (reclone);; update p10k to only show user;; learn the billion things i've added;; qutebrowser on laptop;; make sure everything good on laptop;; reconcile sway keybinds as necessary

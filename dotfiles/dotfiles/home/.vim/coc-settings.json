@@ -1,0 +1,427 @@
+{
+  "suggest.labelMaxLength": 50,
+  "suggest.snippetIndicator": " ",
+  "suggest.timeout": 5000,
+  "suggest.triggerCompletionWait": 30,
+  "suggest.removeDuplicateItems": true,
+  "suggest.noselect": true,
+  "suggest.completionItemKindLabels": {
+    "text": "󰦨",
+    "method": "",
+    "function": "󰊕",
+    "constructor": "",
+    "field": "",
+    "variable": "",
+    "class": "",
+    "interface": "",
+    "module": "󰕳",
+    "property": "",
+    "unit": "",
+    "value": "",
+    "enum": "",
+    "keyword": "",
+    "snippet": "",
+    "color": "",
+    "file": "",
+    "reference": "",
+    "folder": "",
+    "enumMember": "",
+    "constant": "",
+    "struct": "",
+    "event": "",
+    "operator": "",
+    "typeParameter": "",
+    "default": ""
+  },
+  "diagnostic.level": "hint",
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": true,
+  "diagnostic.virtualTextPrefix": " ▸ ",
+  "diagnostic.errorSign": "󰅜",
+  "diagnostic.warningSign": "󰀦",
+  "diagnostic.infoSign": "󰋼",
+  "diagnostic.hintSign": "󰋗",
+  "diagnostic.displayByAle": true,
+  "inlayHint.enable": true,
+  "inlayHint.refreshOnInsertMode": true,
+  "tree.closedIcon": "",
+  "tree.openedIcon": "",
+  "tree.key.toggle": "o",
+  "tree.key.collapseAll": "O",
+  "tree.key.actions": "<tab>",
+  "tree.key.toggleSelection": "s",
+  "outline.keepWindow": true,
+  "outline.togglePreviewKey": "<C-p>",
+  "outline.sortBy": "position",
+  "signature.triggerSignatureWait": 300,
+  "codeLens.enable": true,
+  "codeLens.separator": "▸",
+  "semanticTokens.enable": true,
+  "list.indicator": "❯",
+  "list.source.grep.command": "rg",
+  "list.source.grep.args": [
+    "--ignore-vcs",
+    "--hidden",
+    "--glob=!.git/*",
+    "--smart-case"
+  ],
+  "list.insertMappings": {
+    "<C-p>": "action:preview",
+    "<Down>": "do:next",
+    "<Up>": "do:previous",
+    "<C-s>": "do:toggle",
+    "<C-f>": "do:switch",
+    "<A-x>": "do:togglemode",
+    "<A-z>": "do:togglemode",
+    "<C-z>": "do:togglemode",
+    "<C-v>": "prompt:paste"
+  },
+  "coc.preferences.enableLinkedEditing": true,
+  "coc.preferences.enableMessageDialog": true,
+  "coc.preferences.formatOnType": true,
+  "links.tooltip": true,
+  "git.changedSign.text": "▌",
+  "git.addedSign.text": "▌",
+  "git.removedSign.text": "▁",
+  "git.changeRemovedSign.text": "▁",
+  "git.topRemovedSign.text": "▔",
+  "git.changedDecorator": " ",
+  "git.stagedDecorator": " ",
+  "git.untrackedDecorator": " 󰐕",
+  "git.conflictedDecorator": "",
+  "git.virtualTextPrefix": "  ",
+  "git.addGBlameToVirtualText": false,
+  "git.blameUseRealTime": false,
+  "todo-tree.tags": [
+    {
+      "tagName": "todo",
+      "regex": "TODO",
+      "icon": {
+        "text": "",
+        "hlGroup": "Green"
+      }
+    },
+    {
+      "tagName": "fixme",
+      "regex": "FIXME",
+      "icon": {
+        "text": "",
+        "hlGroup": "Blue"
+      }
+    }
+  ],
+  "snippets.ultisnips.enable": false,
+  "snippets.snipmate.enable": true,
+  "snippets.shortcut": "S",
+  "snippets.priority": 99,
+  "snippets.extends": {
+    "javascriptreact": [
+      "javascript"
+    ],
+    "typescript": [
+      "javascript"
+    ]
+  },
+  "suggest.languageSourcePriority": 98,
+  "coc.source.file.shortcut": "F",
+  "coc.source.file.priority": 89,
+  "coc.source.file.ignoreHidden": false,
+  "coc.source.around.shortcut": "A",
+  "coc.source.around.priority": 88,
+  "coc.source.buffer.shortcut": "B",
+  "coc.source.buffer.priority": 87,
+  "coc.source.buffer.ignoreGitignore": false,
+  "coc.source.syntax.shortcut": "X",
+  "coc.source.syntax.priority": 79,
+  "coc.source.tag.shortcut": "T",
+  "coc.source.tag.priority": 78,
+  "coc.source.dictionary.shortcut": "D",
+  "coc.source.dictionary.priority": 9,
+  "coc.source.dictionary.filetypes": [
+    "latex",
+    "bibtex",
+    "typst",
+    "markdown",
+    "org",
+    "restructuredtext",
+    "plaintext"
+  ],
+  "coc.source.word.shortcut": "W",
+  "coc.source.word.priority": 8,
+  "coc.source.word.filetypes": [
+    "latex",
+    "bibtex",
+    "typst",
+    "markdown",
+    "org",
+    "restructuredtext",
+    "plaintext"
+  ],
+  "coc.source.emoji.shortcut": "E",
+  "coc.source.emoji.priority": 7,
+  "coc.source.emoji.filetypes": [
+    "latex",
+    "bibtex",
+    "typst",
+    "markdown",
+    "org",
+    "restructuredtext",
+    "plaintext"
+  ],
+  "colors.enable": true,
+  "highlight.colors.enable": true,
+  "highlight.colorNames.enable": false,
+  "highlight.document.enable": true,
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    "javascript": "javascriptreact"
+  },
+  "imselect.defaultInput": "com.apple.keylayout.ABC",
+  "eslint.packageManager": "pnpm",
+  "eslint.run": "onSave",
+  "eslint.autoFixOnSave": true,
+  "eslint.format.enable": true,
+  "eslint.experimental.useFlatConfig": true,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.width": 30,
+  "explorer.focus": false,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.buffer.tabOnly": true,
+  "explorer.keyMappingMode": "none",
+  "explorer.keyMappings.global": {
+    "s": "toggleSelection",
+    "<tab>": "actionMenu",
+    "h": "indentPrev",
+    "l": "indentNext",
+    "o": [
+      "expandable?",
+      [
+        "expanded?",
+        "collapse",
+        "expand"
+      ],
+      "open"
+    ],
+    "<cr>": "open",
+    "t": "open:tab",
+    "<bs>": "gotoParent",
+    "Y": "copyFilepath",
+    "y": "copyFilename",
+    "c": "copyFile",
+    "x": "cutFile",
+    "p": "pasteFile",
+    "d": "delete",
+    "D": "deleteForever",
+    "n": "addFile",
+    "N": "addDirectory",
+    "r": "rename",
+    ".": "toggleHidden",
+    "R": "refresh",
+    "<C-p>": "preview:content",
+    "?": "help",
+    "<esc>": "esc",
+    "e": "systemExecute",
+    "f": "searchRecursive",
+    "gf": "gotoSource:file",
+    "gb": "gotoSource:buffer",
+    "gk": "gitPrev",
+    "gj": "gitNext",
+    "ga": "gitStage",
+    "gu": "gitUnstage"
+  },
+  "yaml.format.enable": true,
+  "yaml.schemas": {
+    "Kubernetes": [
+      "/k8s*.yaml",
+      "/k8s*.yml",
+      "/kubernetes*.yaml",
+      "/kubernetes*.yml"
+    ]
+  },
+  "tsserver.implicitProjectConfig.experimentalDecorators": true,
+  "tsserver.npm": "npm",
+  "tsserver.useLocalTsdk": true,
+  "typescript.referencesCodeLens.enabled": true,
+  "typescript.referencesCodeLens.showOnAllFunctions": true,
+  "typescript.implementationsCodeLens.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.parameterNames.enabled": "literals",
+  "typescript.inlayHints.enumMemberValues.enabled": true,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "typescript.format.semicolons": "insert",
+  "javascript.referencesCodeLens.enabled": true,
+  "javascript.referencesCodeLens.showOnAllFunctions": true,
+  "javascript.implementationsCodeLens.enabled": true,
+  "javascript.inlayHints.variableTypes.enabled": true,
+  "javascript.inlayHints.parameterTypes.enabled": true,
+  "javascript.inlayHints.parameterNames.enabled": "literals",
+  "javascript.inlayHints.enumMemberValues.enabled": true,
+  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "javascript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "javascript.format.semicolons": "insert",
+  "angular.forceStrictTemplates": true,
+  "clangd.path": "clangd",
+  "clangd.arguments": [
+    "--clang-tidy",
+    "--background-index",
+    "--completion-style=detailed",
+    "--fallback-style=google",
+    "--header-insertion=never"
+  ],
+  "go.goplsPath": "gopls",
+  "go.checkForUpdates": "disabled",
+  "go.goplsOptions": {
+    "staticcheck": true,
+    "semanticTokens": true,
+    "usePlaceholders": true,
+    "codelenses": {
+      "gc_details": false,
+      "generate": true,
+      "regenerate_cgo": true,
+      "run_govulncheck": true,
+      "tidy": true,
+      "upgrade_dependency": true,
+      "vendor": true
+    },
+    "vulncheck": "Imports",
+    "hints": {
+      "assignVariableTypes": true,
+      "compositeLiteralFields": true,
+      "compositeLiteralTypes": true,
+      "constantValues": true,
+      "functionTypeParameters": true,
+      "parameterNames": true,
+      "rangeVariableTypes": true
+    }
+  },
+  "rust-analyzer.server.path": "rust-analyzer",
+  "rust-analyzer.lens.enable": true,
+  "rust-analyzer.lens.run.enable": false,
+  "rust-analyzer.lens.debug.enable": false,
+  "rust-analyzer.lens.references.adt.enable": true,
+  "rust-analyzer.lens.implementations.enable": true,
+  "rust-analyzer.lens.references.trait.enable": true,
+  "rust-analyzer.lens.references.method.enable": true,
+  "rust-analyzer.lens.references.enumVariant.enable": true,
+  "rust-analyzer.inlayHints.typeHints.enable": true,
+  "rust-analyzer.inlayHints.chainingHints.enable": true,
+  "rust-analyzer.inlayHints.reborrowHints.enable": "mutable",
+  "rust-analyzer.inlayHints.parameterHints.enable": true,
+  "rust-analyzer.inlayHints.bindingModeHints.enable": true,
+  "rust-analyzer.inlayHints.closingBraceHints.enable": true,
+  "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "skip_trivial",
+  "rust-analyzer.inlayHints.closureReturnTypeHints.enable": "with_block",
+  "basedpyright.analysis.typeCheckingMode": "standard",
+  "ruff.nativeServer": true,
+  "ruff.run": "onType",
+  "ruff.lint.run": "onType",
+  "ruff.autoFixOnSave": true,
+  "lua.installPreReleases": true,
+  "Lua.hint.enable": true,
+  "Lua.codeLens.enable": true,
+  "Lua.workspace.library": [
+    "/opt/local/share/nvim/runtime/lua",
+    "/opt/local/share/nvim/runtime/lua/vim",
+    "/opt/local/share/nvim/runtime/lua/vim/lsp",
+    "/usr/share/nvim/runtime/lua",
+    "/usr/share/nvim/runtime/lua/vim",
+    "/usr/share/nvim/runtime/lua/vim/lsp"
+  ],
+  "Lua.diagnostics.globals": [
+    "vim"
+  ],
+  "texlab.path": "texlab",
+  "texlab.build.onSave": true,
+  "texlab.build.args": [
+    "-pdf",
+    "-xelatex",
+    "-interaction=nonstopmode",
+    "-synctex=1",
+    "%f"
+  ],
+  "sql.database": "mysql",
+  "xml.codeLens.enabled": true,
+  "java.maxConcurrentBuilds": 4,
+  "java.signatureHelp.description.enabled": true,
+  "java.codeGeneration.generateComments": true,
+  "java.saveActions.organizeImports": true,
+  "java.referencesCodeLens.enabled": true,
+  "java.implementationsCodeLens.enabled": true,
+  "java.typeHierarchy.lazyLoad": true,
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.cleanup.actions": [
+    "qualifyMembers",
+    "qualifyStaticMembers",
+    "addOverride",
+    "addDeprecated",
+    "stringConcatToTextBlock",
+    "invertEquals",
+    "addFinalModifier",
+    "instanceofPatternMatch",
+    "lambdaExpressionFromAnonymousClass",
+    "lambdaExpression",
+    "switchExpression",
+    "tryWithResource",
+    "renameFileToType"
+  ],
+  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "markdown-preview-enhanced.enableScriptExecution": true,
+  "markdownlint.config": {
+    "MD010": false,
+    "MD013": false,
+    "MD014": false,
+    "MD024": false,
+    "MD028": false,
+    "MD033": false,
+    "MD036": false,
+    "MD041": false
+  },
+  "diagnostic-languageserver.formatters": {
+    "typstyle": {
+      "command": "typstyle"
+    }
+  },
+  "diagnostic-languageserver.formatFiletypes": {
+    "typst": [
+      "typstyle"
+    ]
+  },
+  "languageserver": {
+    "markdown": {
+      "filetypes": [
+        "markdown"
+      ],
+      "command": "marksman",
+      "args": [
+        "server"
+      ]
+    },
+    "typst": {
+      "filetypes": [
+        "typst"
+      ],
+      "command": "tinymist",
+      "args": [
+        "lsp"
+      ]
+    },
+    "protobuf": {
+      "command": "protols",
+      "filetypes": [
+        "proto"
+      ]
+    },
+    "sql": {
+      "command": "sqls",
+      "filetypes": [
+        "sql"
+      ]
+    }
+  }
+}

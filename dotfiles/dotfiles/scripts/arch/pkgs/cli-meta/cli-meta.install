@@ -1,0 +1,7 @@
+post_install() {
+    systemctl enable --now clash-meta
+    systemctl enable --now podman
+    systemctl enable --now sshd
+    systemctl enable --now nftables
+    systemctl enable --now ufw
+}

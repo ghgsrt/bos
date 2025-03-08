@@ -1,0 +1,19 @@
+# Maintainer: Sainnhe Park <i@sainnhe.dev>
+pkgname=fonts-meta
+pkgdesc='Meta package to install some fonts'
+pkgver=2024.10.21
+pkgrel=1
+arch=(any)
+url='https://www.sainnhe.dev/'
+provides=("${pkgname}")
+conflicts=("${pkgname}")
+depends=(fontconfig
+         noto-fonts
+         noto-fonts-cjk
+         noto-fonts-emoji
+         noto-fonts-extra
+         ttf-ms-win11-auto)
+
+pkgver() {
+    date --utc +"%Y.%m.%d"
+}
