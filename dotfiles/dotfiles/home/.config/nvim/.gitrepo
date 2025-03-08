@@ -4,9 +4,9 @@
 ; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
 ;
 [subrepo]
-	remote = git@github.com:ghgsrt/dots.git
+	remote = git@github.com:ghgsrt/k-nvim.git
 	branch = master
-	commit = eaad3c9a124c9985d287036046cd3bd7509155b0
-	parent = f6c8ef403f85f82aedfa88e6ad49e9321959c3a5
+	commit = 1858bd41b81bda8d18aca6db1ea3644b5b25df4c
+	parent = 75fe82651877c582480a123d1d0754282a4d859e
 	method = merge
 	cmdver = 0.4.9
