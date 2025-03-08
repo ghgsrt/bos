@@ -1,9 +1,0 @@
-[submodule "configs/guix"]
-	path = configs/guix
-	url = git@github.com:ghgsrt/guix.git
-[submodule "configs/nix"]
-	path = configs/nix
-	url = git@github.com:ghgsrt/nix.git
-[submodule "dotfiles/dotfiles"]
-	path = dotfiles/dotfiles
-	url = git@github.com:ghgsrt/dots.git
