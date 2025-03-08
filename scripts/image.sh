@@ -1,5 +1,5 @@
 image() {
-	if [ "$BOS_DISTRO" = "guix" ] || [ "$BOS_HOME_TYPE" = "guix"]; then
+	if [ "$BOS_DISTRO" = "guix" ] || [ "$BOS_HOME_TYPE" = "guix" ]; then
 		i_guix 'guix' 'system' 'image' "$@"
 	elif [ "$BOS_DISTRO" = "nix" ]; then
 		echo "Not implemented"
