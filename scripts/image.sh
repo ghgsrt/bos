@@ -9,7 +9,7 @@ image() {
 }
 
 rimage() {
-	if [ "$BOS_DISTRO" = "guix" ]; then
+	if [ "$BOS_DISTRO" = "guix" ] || [ "$BOS_HOME_TYPE" = "guix" ]; then
 		i_guix 'guix' 'repl' '' "$@"
 	elif [ "$BOS_DISTRO" = "nix" ]; then
 		echo "Not implemented"
