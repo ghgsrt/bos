@@ -114,7 +114,7 @@ link_root() {
 	fi
 }
 unlink_root() {
-	if [[ -v BOS_DOTFILES_DIR ]]; then return; fi
+	if [[ ! -v BOS_DOTFILES_DIR ]]; then return; fi
 
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/root" ]; then
 		recursive_unlink "$BOS_DOTFILES_DIR/root" "/" "$verbose"
@@ -126,7 +126,7 @@ link_distro() {
 	fi
 }
 unlink_distro() {
-	if [[ -v BOS_DOTFILES_DIR ]]; then return; fi
+	if [[ ! -v BOS_DOTFILES_DIR ]]; then return; fi
 
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/distros/$BOS_DISTRO" ]; then
 		recursive_unlink "$BOS_DOTFILES_DIR/distros/$BOS_DISTRO" "/" "$verbose"
@@ -138,7 +138,7 @@ link_system() {
 	fi
 }
 unlink_system() {
-	if [[ -v BOS_DOTFILES_DIR ]]; then return; fi
+	if [[ ! -v BOS_DOTFILES_DIR ]]; then return; fi
 
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/systems/$BOS_SYSTEM" ]; then
 		recursive_unlink "$BOS_DOTFILES_DIR/systems/$BOS_SYSTEM" "/" "$verbose"
@@ -156,7 +156,7 @@ link_home() {
 	fi
 }
 unlink_home() {
-	if [[ -v BOS_DOTFILES_DIR ]]; then return; fi
+	if [[ ! -v BOS_DOTFILES_DIR ]]; then return; fi
 
 	# If user-specific configs exist, unlink them
 	if [ $ignore_unlink = false ] && [ -d "$BOS_DOTFILES_DIR/users/$USER" ]; then
