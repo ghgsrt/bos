@@ -28,7 +28,7 @@ create_symlink() {
         return 1
     fi
 
-    should_sudo ln -sf "$src" "$dst"
+    should_sudo ln -f "$src" "$dst"
     return $?
 }
 
@@ -130,7 +130,7 @@ recursive_unlink() {
 
     # Replace original tracking file with new one if any entries remain
     if [ -s "$temp_track_file" ]; then
-        mv "$temp_track_file" "$track_file"
+        should_sudo mv "$temp_track_file" "$track_file"
         echo "Warning: Some symlinks could not be removed"
     else
         rm "$track_file"
