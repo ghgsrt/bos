@@ -1,4 +1,5 @@
 (define-module (system base)
+  #:use-module (users)
   #:use-module (gnu bootloader)
   #:use-module (gnu bootloader grub)
   #:use-module (packages)
@@ -91,6 +92,7 @@
 				   (@ (nongnu packages linux) linux-firmware))
 			   %base-firmware))
 		
+		(users (append bos-users %base-user-accounts))
 		(packages (append %bos-base-packages %base-packages))
 		(services %base-services)
 
@@ -114,7 +116,9 @@
 				      (type "ext4"))
 			      %base-file-systems))))
 
+(newline)
 (display "Loading BASE-OS from module system")
+(newline)
 
 %bos-base-os
 

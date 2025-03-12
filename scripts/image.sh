@@ -72,9 +72,9 @@ i_guix() {
         echo "image: using system '$SYSTEM' as image type '$IMAGE_TYPE'"
     fi
 
-	USER="${inputs[6]:-root}"
+	BOOT_USER="${inputs[6]:-root}"
 
-      USER=$USER DOTFILES_DIR="$BOS_DOTFILES_DIR" FREE=$using_free SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" "$1" "$2"\
+        BOOT_USER=$BOOT_USER DOTFILES_DIR="$BOS_DOTFILES_DIR" FREE=$using_free SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" "$1" "$2"\
         -L "$BOS_DIR/guix"\
         -L "$BOS_CONFIG_DIR"\
         $3\

@@ -289,8 +289,10 @@ echo "WHAT WE GOT: $BOS_DISTRO, $BOS_DIR, $BOS_HOME_TYPE"
 if [ "\$BOS_DISTRO" = "guix" ] || [ "\$BOS_DISTRO" = "nix" ]; then
 	source "\${BOS_DIR}/scripts/reconfigure/system.sh"
 	source "\${BOS_DIR}/scripts/reconfigure/home.sh"
+	source "\${BOS_DIR}/scripts/image.sh"
 elif [ "\$BOS_HOME_TYPE" = "guix" ] || [ "\$BOS_HOME_TYPE" = "nix" ]; then
 	source "\${BOS_DIR}/scripts/reconfigure/home.sh"
+	source "\${BOS_DIR}/scripts/image.sh"
 fi
 
 EOF

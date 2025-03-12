@@ -2,7 +2,6 @@
   #:use-module (system base)
   #:use-module (services)
   #:use-module (packages)
-  #:use-module (users)
   #:use-module (home primary)
   #:use-module (dotfiles guix channels)
   #:use-module (home services desktop)
@@ -35,8 +34,6 @@
     (inherit %bos-base-os)
 
     (host-name "thinkpad")
-    (users (cons bosco-user
-		 (operating-system-users %bos-base-os)))
 
     (kernel-arguments (append '("modprobe.blacklist=b43,b43legacy,ssb,bcm43xx,brcm80211,brcmfmac,brcmsmac,bcma")
 			      (operating-system-kernel-arguments %bos-base-os "/dev/disk/by-label/root")))

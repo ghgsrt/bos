@@ -7,6 +7,8 @@
 	       #:use-module (packages tmux)
 	       #:use-module (packages fonts)
 	       #:use-module (gnu packages crates-vcs)
+	       #:use-module (gnu packages crates-io)
+	       #:use-module (gnu packages rust-apps)
 	       #:use-module (gnu packages emacs)
 
 
@@ -34,13 +36,16 @@
 (define %bos-base-home-service-type
   (bos-home-service-type 'bos-base-home
 			 #:packages (list git
+					  rust-bat-0.24
+					  zoxide
 					  nss-certs
 					  gcc-toolchain
 					  podman
 					  neovim@0.10.4
 					  tmux
 					  tmux-tpm
-					  tmux-sessionizer
+					  ;tmux-sessionizer
+					  tmux-sesh
 					  hyperfine
 					  shellcheck
 					  shfmt
