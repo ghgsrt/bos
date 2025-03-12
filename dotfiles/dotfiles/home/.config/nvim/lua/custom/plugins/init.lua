@@ -3,6 +3,10 @@
 --
 -- See the kickstart.nvim README for more information
 return {
+  'tpope/vim-surround',
+  'tpope/vim-repeat',
+  'tpope/vim-unimpaired',
+  'tpope/vim-speeddating',
   'HiPhish/rainbow-delimiters.nvim',
   'mbbill/undotree',
   'aymericbeaumet/vim-symlink',
