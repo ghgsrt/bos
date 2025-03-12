@@ -18,11 +18,11 @@ export LC_CTYPE=en_US.UTF-8
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=999999999
 export SAVEHIST=$HISTSIZE
-#if [ -x "$(command -v vim)" ]; then
-#    export EDITOR="vim"
-#    export PAGER="vim --cmd 'let g:vim_pager = 1' -c PAGER -"
-#    export MANPAGER="vim --cmd 'let g:vim_pager = 1' -c ASMANPAGER -"
-#fi
+if [ -x "$(command -v nvim)" ]; then
+    export EDITOR="nvim"
+    export PAGER="nvim -c \"BaleiaColorize\" -c \"set nomodifiable\" -c \"set noswapfile\" -c \"nnoremap q q!\""
+    #export MANPAGER="vim --cmd 'let g:vim_pager = 1' -c ASMANPAGER -"
+fi
 export FuzzyFinder="fzf"
 if [[ "$(uname)" == "Darwin" ]]; then
     fpath=(/opt/local/share/zsh/site-functions $fpath)
@@ -305,7 +305,7 @@ should_sudo() {
     # }}}
     # }}}
 
-# {{{
+## {{{
 alias gpghelp='echo gpggen -> gpglist -> pass the string after the first / in sec to gpgexport; second line in sec is signing key for .gitconfig'
 alias gpggen='gpg --full-generate-key'
 alias gpglist='gpg --list-secret-keys --keyid-format=long'
@@ -327,6 +327,10 @@ alias lt='ls -t'  # sort by time
 alias lu='ls -u'  # sort by last access
 alias lss='ls -s' # show size
 
+export BAT_THEME=ansi
+alias cat='bat --paging=never'
+alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -335,6 +339,7 @@ alias q='exit'
 alias c='clear'
 alias h='history'
 
+export PAGER='less -R --color=auto'
 alias du='du -sh'
 alias df='df -h'
 alias cp='cp -p'
@@ -382,7 +387,8 @@ zinit ice wait'0' lucid depth=1; zinit light zsh-users/zsh-history-substring-sea
 zinit ice wait'1' lucid depth=1; zinit light ytet5uy4/fzf-widgets
 zinit ice wait'0' lucid depth=1; zinit light urbainvaes/fzf-marks
 zinit ice wait'1' lucid depth=1; zinit light hlissner/zsh-autopair
-zinit ice wait'0' lucid depth=1 \
+zinit ice wait'0' lucid depth=1; zinit light jeffreytse/zsh-vi-mode
+zinit ice wait'1' lucid depth=1 \
     atload"zcomp_init" \
     atpull"zinit cclear && zinit creinstall sainnhe/zsh-completions"
     zinit light sainnhe/zsh-completions
@@ -418,12 +424,13 @@ zinit ice wait'0' lucid depth=1 \
                                                             --height=50%
                                                             --layout=reverse
                                                             --prompt='❯ '
-                                                            --pointer='-'
+                                                            --pointer='>'
                                                             --marker='+'
                                                             --ansi
-                                                            --tabstop=4
                                                             --color=dark
-                                                            --color=hl:2:bold,fg+:4:bold,bg+:-1,hl+:2:bold,info:3:bold,border:0,prompt:2,pointer:5,marker:1,header:6
+                                                            --preview \"bat --theme=ansi --color=always --style=numbers --line-range=:500 {}\"
+                                                            --tabstop=4
+                                                            --color=hl:3:bold,fg+:green:bold,bg+:-1,hl+:3:bold,info:3:bold,border:11,prompt:2,pointer:5,marker:1,header:6
                                                             --bind=tab:down,btab:up,ctrl-s:toggle,ctrl-p:toggle-preview
                                                             --separator=
                                                             "
@@ -478,4 +485,29 @@ export PB_DOMAIN="share.sainnhe.dev"
 # }}}
 # vim: set fdm=marker fmr={{{,}}}:
 
+export ZVM_INIT_MODE=sourcing
+source /etc/bos/bashrc
+eval "$(zoxide init --cmd cd zsh)"
+
+
+function sesh-sessions() {
+  {
+    exec </dev/tty
+    exec <&1
+    local session
+    session=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
+    zle reset-prompt > /dev/null 2>&1 || true
+    [[ -z "$session" ]] && return
+    sesh connect $session
+  }
+}
+
+zle     -N             sesh-sessions
+bindkey -M emacs '\es' sesh-sessions
+bindkey -M vicmd '\es' sesh-sessions
+bindkey -M viins '\es' sesh-sessions
+
+
+[ ! -d "$HOME/.git-subrepo" ] && git clone https://github.com/ingydotnet/git-subrepo "$HOME/.git-subrepo"
+source "$HOME/.git-subrepo/.rc"
 
