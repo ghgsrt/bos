@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:ghgsrt/dots.git
 	branch = master
-	commit = eaad3c9a124c9985d287036046cd3bd7509155b0
-	parent = f6c8ef403f85f82aedfa88e6ad49e9321959c3a5
+	commit = 52993b857f837f6d3db6a8bb631acd68bf5eb189
+	parent = a1ca1274739ef5b6b8437dca9a9663724d2d4065
 	method = merge
 	cmdver = 0.4.9
