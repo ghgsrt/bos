@@ -32,36 +32,74 @@
 
 (define channels (load (string-append dotfiles-dir "/guix/channels.scm")))
 
+(define %bos-light-packages
+  (list httpie ; http cli for stuff
+	feh ; image viewer
+	parallel ; parallel commands and jobs (across computers?)
+
+	lm-sensors ; hardware sensors stuff
+
+	bluez ; bluetooth stuff
+
+	nyxt ; keyboard browser
+
+	bitlbee
+	bitlbee-discord
+	spotifyd
+	))
+
+(define %bos-full-packages
+  (list flatpak ; containerized package manager or something
+	nginx ; server stuff or something
+
+	wireshark
+	bind ; domain-name-to-ip conversion for dns stuff
+	drill ; dns info stuff
+	
+	flameshot ; screenshot ?
+
+	shotcut ; AVI editing
+	inkscape ; svg editor
+	vlc
+	obs ; or find leaner screen recorder
+
+	ungoogled-chromium
+	icecat ; firefox derivative
+
+	;; Spellcheck
+	enchant
+	ispell
+        aspell
+        aspell-dict-es
+        aspell-dict-en
+        aspell-dict-ca
+	))
+
 (define %bos-base-home-service-type
   (bos-home-service-type 'bos-base-home
 			 #:packages (list git
-					  rust-bat-0.24
-					  zoxide
 					  nss-certs
-					  gcc-toolchain
-					  podman
-					  neovim@0.10.4
-					  tmux
-					  tmux-tpm
-					  ;tmux-sessionizer
-					  tmux-sesh
-					  hyperfine
-					  shellcheck
-					  shfmt
-					  fzf
+					  ncurses
+					  coreutils
 					  openssl
 					  net-tools
-					  font-fira-code
-					  font-ghgsrt
 					  curl
+					  wget2
 					  ripgrep
 					  fd
-					  tree
 					  dstat
-					  ncurses
-					  dconf-editor
-					  coreutils
+					  lz4
 
+					  git:send-email
+					  gcc-toolchain
+					  make
+					  watchexec
+					  
+					  shellcheck
+					  shfmt
+					  font-fira-code
+					  font-ghgsrt
+					 
 					  ;; EMACS
 					  emacs-lucid ; blazingly fast
 					  emacs-geiser
