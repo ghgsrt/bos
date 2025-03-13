@@ -4,7 +4,16 @@
   #:use-module (guix packages)
   #:use-module (guix git-download)
   #:use-module (guix build-system copy)
-  #:use-module ((guix licenses) #:prefix license:))
+  #:use-module ((guix licenses) #:prefix license:)
+  #:export (core-packages-cli))
+
+(define core-packages-cli
+  (list rust-bat-0.24
+	zoxide
+	fzf
+	ripgrep
+	hyperfine ; cli benchmarking
+	fd))
 
 (define-public zsh-antigen
   (package

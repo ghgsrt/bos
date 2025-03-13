@@ -2,15 +2,16 @@
   #:use-module (home)
   #:use-module (packages)
   #:use-module (services)
+  #:use-module (packages shells)
   #:export (zsh-services))
+
+(define core-packages-cli-service-type
+  (bos-home-service-type 'bos-core-packages-cli
+			 #:packages core-packages-cli))
 
 ;; ~~ ZSH ~~
 
-(define zsh-packages-service-type
-  (bos-home-service-type 'bos-zsh-packages
-	#:packages (list )))
-
 (define zsh-services
-  (list (service zsh-packages-service-type)
-		(service home-zsh-service-type)
-		))
+  (list (service core-packages-cli-service-type) 
+	(service home-zsh-service-type)))
+

@@ -1,7 +1,7 @@
 (define-module (home)
 	       #:use-module (services)
 	       #:export (compose-home
-			  bos-home-service-type))
+			  bos-home-service))
 
 (define (compose-home base . extensions)
   (home-environment
@@ -10,8 +10,8 @@
     (services (append (home-environment-services base)
 		      (apply append (map home-environment-user-services extensions))))))
 
-(define* (bos-home-service-type name #:key (packages '()) (env-vars '()))
-	 (service-type
+(define* (bos-home-service type name #:key (packages '()) (env-vars '()))
+	 (service (service-type
 	   (name name)
 	   (description "A convenience service type for associating packages and environment variables for home environments.")
 	   (extensions 
@@ -25,5 +25,5 @@
 		       (list (service-extension
 			       home-environment-variables-service-type
 			       (lambda (_) env-vars))))))
-	   (default-value #f)))
+	   (default-value #f))))
 

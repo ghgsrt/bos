@@ -21,7 +21,7 @@
 	(list git
 		  tmux
 		  tmux-tpm
-		  tmux-sessionizer
+		  tmux-sesh
 		  neovim@0.10.4
 		  openssl
 		  openssh

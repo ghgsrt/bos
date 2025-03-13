@@ -3,125 +3,110 @@
   #:use-module (packages)
   #:use-module (services)
   #:export (%bos-desktop-packages
-		%bos-desktop-services
-  			qt-services
-			kvantum-services
-			wayland-services
-			sway@minimal-services
-;			sway-services
-;			sway:fx-services
-))
+	     home-pipewire-services
+	     home-qt-services
+	     home-kvantum-services
+	     home-wayland-services
+	     home-sway@minimal-services
+	     home-sway-services))
 
-;; ~~ Base ~~ -- NOTE: 'desktop-services' MUST be used directly on the OS, NOT ON A HOME ENV
+;; ~~ Base ~~ 
 
 (define %bos-desktop-packages
-		(list shared-mime-info
-						 xdg-utils
-						 xdg-dbus-proxy
-						 xdg-desktop-portal
-						 xdg-desktop-portal-gtk
-						 fontconfig
-						 (list glib "bin")))
+  (list shared-mime-info
+	libnotify ; library for sending notifications to notif daemon
+	dunst ; notification daemon
+        libxkbcommon
+	mesa
+	xdg-utils
+	xdg-dbus-proxy
+	xdg-desktop-portal
+	xdg-desktop-portal-gtk
+	fontconfig
+	(list glib "bin")))
 
-(define %bos-desktop-services
-	(list
-		(service elogind-service-type)
-        fontconfig-file-system-service
-        polkit-wheel-service
-        (service polkit-service-type)
-        (service dbus-root-service-type)
-  		(service upower-service-type)
-		(service x11-socket-directory-service-type)))
+;; ~~ Pipewire ~~
+
+(define home-pipewire-services
+  (list (bos-home-service
+	  'bos-home-pipewire
+	  #:packages (list qpwgraph
+			   ;pavucontrol
+			   pamixer))
+	(service home-pipewire-service-type)))
 
 ;; ~~ QT ~~
 
-(define qt-packages-service-type
-	(bos-home-service-type 'bos-qt-packages
-		#:packages (list qt5ct
-						 qt5ct)
-		#:env-vars `(("QT_QPA_PLATFORMTHEME" . "qt5ct")
-					 ("QT_PLATFORMTHEME" . "qt5ct")
-					 ("QT_AUTO_SCREEN_SCALE_FACTOR" . "1"))))
-
-(define qt-services
-	(list (service qt-packages-service-type)))
+(define home-qt-services
+  (list (bos-home-service
+	  'bos-home-qt
+	  #:packages (list qt5ct
+			   qt6ct
+			   qtsvg
+			   qtwayland-5)
+	  #:env-vars `(("QT_QPA_PLATFORMTHEME" . "qt5ct")
+		       ("QT_PLATFORMTHEME" . "qt5ct")
+		       ("QT_AUTO_SCREEN_SCALE_FACTOR" . "1")))))
 
 ;; ~~ Kvantum ~~
 
-(define kvantum-packages-service-type
-	(bos-home-service-type 'bos-kvantum-packages
-		#:packages (list kvantum)))
-
 (define kvantum-services
-	(list (service kvantum-packages-service-type)))
+  (list (bos-home-service
+	  'bos-home-kvantum
+	  #:packages (list kvantum))))
 
 ;; ~~ Wayland ~~
 
-(define wayland-service-type
-	(bos-home-service-type 'bos-wayland
-		#:packages (cons* ;qtwayland-5
-						;wayland
-;						egl-wayland
-						 wl-clipboard
-						 wl-color-picker
-						 rofi-wayland
-						 libxkbcommon
-						 mesa
-						 xdg-desktop-portal-wlr
-						 xorg-server-xwayland
-						 %bos-desktop-packages)
-    	#:env-vars `(
-				 	 ("XDG_SESSION_TYPE" . "wayland")
-					 ("GDK_BACKEND" . "wayland")
-					 ("GTK_IM_MODULE" . "wayland")
-					 ("QT_IM_MODULE" . "wayland")
-					 ("QT_QPA_PLATFORM" . "wayland-egl")
-					 ("QT_QPT_PLATFORM" . "wayland")
-					 ("QT_WAYLAND_DISABLE_WINDOWDECORATION" . "1")
-					 ("SDL_VIDEODRIVER" . "wayland")
-					 ("CLUTTER_BACKEND" . "wayland")
-					 ("ELM_ENGINE" . "wayland-egl")
-					 ("ECORE_EVAS_ENGINE" . "wayland-egl")
-					 ("XMODIFIERS" . "@im=wayland")
-					 ("XCURSOR_SIZE" . "24"))))
-
-(define wayland-services
-	(list (service wayland-service-type)))
+(define home-wayland-services
+  (list (bos-home-service
+	  'bos-home-wayland
+	  #:packages (cons* 
+		       ;egl-wayland
+		       wl-clipboard
+		       wl-color-picker
+		       tofi
+		       ;rofi-wayland
+		       ;fuzzel
+		       ;mako ; wayland-specific notif daemon
+		       xdg-desktop-portal-wlr
+		       xorg-server-xwayland
+		       %bos-desktop-packages)
+	  #:env-vars `(("XDG_SESSION_TYPE" . "wayland")
+		       ("GDK_BACKEND" . "wayland")
+		       ("GTK_IM_MODULE" . "wayland")
+		       ("QT_IM_MODULE" . "wayland")
+		       ("QT_QPA_PLATFORM" . "wayland-egl")
+		       ("QT_QPT_PLATFORM" . "wayland")
+		       ("QT_WAYLAND_DISABLE_WINDOWDECORATION" . "1")
+		       ("SDL_VIDEODRIVER" . "wayland")
+		       ("CLUTTER_BACKEND" . "wayland")
+		       ("ELM_ENGINE" . "wayland-egl")
+		       ("ECORE_EVAS_ENGINE" . "wayland-egl")
+		       ("XMODIFIERS" . "@im=wayland")
+		       ("XCURSOR_SIZE" . "24")))))
 
 ;; ~~ Sway ~~
 
-;; Sway@minimal
-(define sway@minimal-service-type
-	(bos-home-service-type 'bos-sway@minimal
-		#:packages (list swaylock
-				swayfx
-						 swayidle
-						 mako
-						 swaybg)
-		#:env-vars `(("XDG_CURRENT_DESKTOP" . "sway"))))
+(define home-sway@minimal-services
+  (cons (bos-home-service-type
+	  'bos-home-sway@minimal
+	  #:packages (list swayfx
+			   swaylock	
+			   swaybg)
+	  #:env-vars `(("XDG_CURRENT_DESKTOP" . "sway")))
+	home-wayland-services))
 
-(define sway@minimal-services
-	(append (list (service sway@minimal-service-type))
-		 wayland-services))
+(define home-sway-services
+  (cons (bos-home-service
+	  'bos-home-sway
+	  #:packages (list swayfx
+			   swayidle
+			   swww
+			   swaylock-effects
+			   gdk-pixbuf ; swaylock-effects dependency
+			   cairo ; swaylock-effects dependency
+			   grim
+			   slurp
+			   waybar))
+	home-wayland-services))
 
-;; Sway
-(define sway-service-type
-	(bos-home-service-type 'bos-sway
-		#:packages (list fuzzel
-						 grim
-						 slurp
-						 waybar)))
-
-;(define sway-services
-;	(cons (service sway-service-type)
-;		  (sway@minimal-services)))
-
-;(display sway-services)
-
-;; Sway:fx
-;(define sway:fx-services
-;	(modify-services sway-services
-;					 (list (home-sway-service-type config =>
-;							(sway-configuration
-;								(inherit config)
-;								(packages (list swayfx)))))))

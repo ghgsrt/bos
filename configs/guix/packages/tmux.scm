@@ -3,11 +3,18 @@
                #:use-module (guix git-download)
                #:use-module (guix build-system copy)
                #:use-module ((guix licenses) #:prefix license:)
+               #:use-module (gnu packages tmux)
                #:use-module (packages tmux sessionizer)
                #:use-module (packages tmux sesh)
+               #:export (core-packages-tmux)
                #:re-export (list tmux-sesh
                                  tmux-sessionizer))
 
+;; current tmux setup
+(define core-packages-tmux
+  (list tmux
+        tmux-tpm
+        tmux-sesh))
 
 (define-public tmux-tpm
   (package

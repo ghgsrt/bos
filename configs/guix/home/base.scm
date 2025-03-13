@@ -1,5 +1,4 @@
 (define-module (home base)
-;	       #:use-module (dotfiles guix channels)
 	       #:use-module (home)
 	       #:use-module (services)
 	       #:use-module (packages)
