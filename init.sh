@@ -264,7 +264,6 @@ export BOS_HOME_DIR="${BOS_HOME_DIR}"
 export BOS_DISTRO="${BOS_DISTRO}"
 export BOS_SYSTEM="${BOS_SYSTEM}"
 
-export GPG_TTY=\$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 unset SSH_AGENT_PID
 if [ "\${gnupg_SSH_AUTH_SOCK_by:-0}" -ne \$\$ ]; then
@@ -286,6 +285,8 @@ EOF
 
 echo "WHAT WE GOT: $BOS_DISTRO, $BOS_DIR, $BOS_HOME_TYPE"
 
+# needs to be set whenever a shell changes (otherwise pinentry curses in tmux can cause weird behavior and crash; at least I hope this is the culprit lol)
+export GPG_TTY=\$(tty)
 if [ "\$BOS_DISTRO" = "guix" ] || [ "\$BOS_DISTRO" = "nix" ]; then
 	source "\${BOS_DIR}/scripts/reconfigure/system.sh"
 	source "\${BOS_DIR}/scripts/reconfigure/home.sh"
