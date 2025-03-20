@@ -31,7 +31,7 @@ h_guix() {
 		should_sudo chown $USER /var/guix/profiles/per-user/$USER
 	fi
 
-	DOTFILES_DIR="$BOS_DOTFILES_DIR" HOME_DIR="$BOS_HOME_DIR" TARGET="$HOME_NAME" "$1" "$2" -L "$BOS_DIR/guix" -L "$BOS_CONFIG_DIR" $3 "$BOS_DIR/guix/bos/home/base.scm"
+	DOTFILES_DIR="$BOS_DOTFILES_DIR" HOME_DIR="$BOS_HOME_DIR" TARGET="$HOME_NAME" "$1" "$2" -L "$BOS_DIR/guix" -L "$BOS_CONFIG_DIR" $3 "$BOS_DIR/guix/bos/home/object.scm"
 }
 
 if [ "$BOS_HOME_TYPE" = "guix" ]; then

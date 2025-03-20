@@ -1,4 +1,5 @@
 (define-module (bos home)
+  #:use-module (bos channels)
   #:use-module (bos packages base)
   #:use-module (bos utils)
   #:use-module (guix)
@@ -35,3 +36,16 @@
 				       ; ("BOS_HOME_NAME" . ,target)
 				       ("BOS_HOME_TYPE" . "guix")))
 		     (home-environment-user-services base-home)))))
+
+(define* (empty-home #:key (non-free? #f)) 
+  (home-environment
+    (services (modify-services %base-services
+	        (guix-service-type config => (guix-configuration
+	 				       (inherit config)
+					       (channels (if non-free? 
+							   %non-free-channels
+							   %free-channels))))))))
+
+(define (empty-home-free) (extend-home (empty-home)))
+(define (empty-home-non-free) (extend-home (empty-home #:non-free? #t)))
+

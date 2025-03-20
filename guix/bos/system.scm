@@ -22,45 +22,6 @@
 	    empty-system-free
 	    empty-system-non-free))
 
-
-;; Handles augmenting any arbitrary operating system to be compatible
-;; with the bos dotfile setup
-;
-;(define gpg-agent-file
-;  (mixed-text-file "gpg-agent.conf"
-;		   "pinentry-program " (file-append pinentry "/bin/pinentry-curses") "\n"))
-;
-;;; gnu/home/services/gnupg.scm
-;(define gpg-agent-activation
-;  (with-imported-modules (source-module-closure
-;                          '((gnu build activation)))
-;    #~(begin
-;        (use-modules (gnu build activation))
-;
-;        ;; Make sure ~/.gnupg is #o700.
-;        (let* ((home (getenv "HOME"))
-;               (dot-ssh (string-append home "/.gnupg")))
-;          (mkdir-p/perms dot-ssh (getpw (getuid)) #o700)))))
-;
-;(define bos-gpg-agent-service-type
-;  (service-type
-;   (name 'bos-gpg-agent)
-;   (extensions
-;    (list (service-extension home-files-service-type
-;                             home-gpg-agent-files)
-;          (service-extension home-shepherd-service-type
-;                             home-gpg-agent-shepherd-services)
-;          (service-extension home-activation-service-type
-;                             (const gpg-agent-activation))
-;          (service-extension home-environment-variables-service-type
-;                             home-gpg-agent-environment-variables)))
-;   (default-value (home-gpg-agent-configuration))
-;   (description
-;    "Configure GnuPG's agent, @command{gpg-agent}, which is responsible for
-;managing OpenPGP and optionally SSH private keys.  When SSH support is
-;enabled, @command{gpg-agent} acts as a drop-in replacement for OpenSSH's
-;@command{ssh-agent}.")))
-
 (define %sudoers-file
   (plain-file "sudoers"
 	      (string-join '("root ALL=(ALL) NOPASSWD:ALL"
@@ -71,13 +32,7 @@
   (let ((base-services (operating-system-user-services base-system)))
     (operating-system
       (inherit base-system)
-;      (skeletons (if (find (lambda (skel)
-;			     (string=? (car skel) ".gnupg/gpg-agent.conf"))
-;			   (operating-system-skeletons base-system))
-;		   (operating-system-skeletons base-system)
-;		   (cons `(".gnupg/gpg-agent.conf" 
-;			   ,)
-;			 (default-skeletons))))
+
       (sudoers-file (if (equal? 
 			  (operating-system-sudoers-file base-system)
 			  %sudoers-specification)
@@ -157,30 +112,6 @@
 			  (mount? #t))
 			%base-file-systems)))))
 
-(define empty-system-free (extend-system (empty-system)))
-(define empty-system-non-free (extend-system (empty-system #:non-free? #t)))
-
-;; == MAIN =======================================================
-
-(define system-dir (getenv "SYSTEM_DIR"))
-(define target (getenv "TARGET"))
-(define free (getenv "FREE"))
-
-(define base-system
-  (when (and target system-dir)
-	(load (string-append system-dir "/" target ".scm"))))
-
-(newline)
-(define extended-system
-  (if (operating-system? base-system)
-    (begin
-      (display (string-append "Bos-Guix: Using system '" target "'"))
-      (extend-system base-system))
-    (begin
-      (display (string-append "Bos-Guix: Using empty (minimal) system "
-			      (if free "[free]" "[nonfree]")))
-      (extend-system (empty-system #:non-free? (not free))))))
-(newline)
-
-extended-system
+(define (empty-system-free) (extend-system (empty-system)))
+(define (empty-system-non-free) (extend-system (empty-system #:non-free? #t)))
 

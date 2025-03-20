@@ -11,9 +11,9 @@
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 rdelim) ; For reading environment variables
   #:export (extend-wsl-system
-	     empty-wsl-system
-	     empty-wsl-system-free
-	     empty-wsl-system-non-free))
+	    empty-wsl-system
+	    empty-wsl-system-free
+	    empty-wsl-system-non-free))
 
 ;; Handles augmenting any arbitrary operating system to be compatible
 ;; with a WSL environment
@@ -34,7 +34,7 @@
     (bootloader (operating-system-bootloader wsl-os))
     (hurd (operating-system-hurd wsl-os))
     (kernel (operating-system-kernel wsl-os))
-    (kernel-arguments %default-kernel-arguments)
+    (kernel-arguments (operating-system-user-kernel-arguments wsl-os))
     (kernel-loadable-modules (operating-system-kernel-loadable-modules wsl-os))
     (initrd (operating-system-initrd wsl-os))
     (initrd-modules (operating-system-initrd-modules wsl-os))
@@ -76,28 +76,8 @@
 					(channels %non-free-channels)))))))))
 
 (define* (empty-wsl-system #:key (non-free? #f))
-  (operating-system
-    (inherit (extend-wsl-system (empty-system #:non-free? non-free?) "root"))))
+  (extend-wsl-system (empty-system #:non-free? non-free?) "root"))
 
-(define empty-wsl-system-free (extend-system (empty-wsl-system)))
-(define empty-wsl-system-non-free (extend-system (empty-wsl-system #:non-free? #t)))
-
-;; == MAIN =======================================================
-
-(define boot-user (getenv "BOOT_USER"))
-
-(define base-system (load "../system.scm"))
-
-(define extended-wsl-system
-  (if (operating-system? base-system)
-    (extend-wsl-system base-system (or boot-user "root"))
-    (begin
-      (newline)
-      (display (string-append 
-		 "ERROR: operating system definition for target "
-		 (getenv "TARGET")
-		 " not found!"))
-      (newline))))
-
-extended-wsl-system
+(define (empty-wsl-system-free) (extend-system (empty-wsl-system)))
+(define (empty-wsl-system-non-free) (extend-system (empty-wsl-system #:non-free? #t)))
 
