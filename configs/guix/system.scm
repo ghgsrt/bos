@@ -1,92 +1,141 @@
 (define-module (system)
-      #:use-module (gnu)
-      #:use-module (srfi srfi-1))
+  #:use-module (utils)
+  #:use-module (gnu)
+  #:use-module (gnu services guix)
+  #:use-module (srfi srfi-1)
+  #:export (bos-services
+	    system/empty
+	    bos-operating-system
 
-;(define default)
+	    profile-service-prefix
+	    environment-service?
 
-(define* (pick a b nullish leqp)
-  (define (nullish? arg)
-    (equal? arg nullish))
-  (cond
-    ((nullish? a) b)
-    ((nullish? b) a)
-    ((and (list? a) (list? b))
-     (lset-union leqp a b))
-    (else arg2)))
+	    environment-service-prefix
+	    profile-service?))
 
-(define (svc-eq a b)
-  (apply string=?
-	 (map (lambda (s)
-		(symbol->string
-		  (service-type-name
-		    (service-kind s))))
-	      (list a b))))
+(define profile-service-prefix 'profile-)
+(define environment-service-prefix 'session-environment-)
 
+(define profile-service? (service-has-prefix profile-service-prefix))
+(define environment-service? (service-has-prefix environment-service-prefix))
 
-(define operating-system-fields (@@ (gnu system) <operating-system>))
-(define operating-system-fields-to-ignore
-  (list "mapped-devices" "file-systems" "swap-devices" "users" "groups" "label" "essential-services"))
+(define* (bos-services name #:key (modules #f) (packages #f) (env-vars #f) (services #f))
+  (append (if modules
+	    (bos-module->services modules)
+	    '())
+	  (if packages
+	    `(,(simple-service (symbol-append profile-service-prefix name '-bos)
+			       profile-service-type
+			       (ensure-list packages)))
+	    '())
+	  (if env-vars
+	    `(,(simple-service (symbol-append environment-service-prefix name '-bos)
+			       session-environment-service-type
+			       env-vars))
+	    '())
+	  (if services (ensure-list services) '())))
 
-(define accessor-overrides
-  (list '("services" . "user-services")))
+(define system/empty
+  (operating-system
+    (host-name "empty")
+    (bootloader (bootloader-configuration
+		  (bootloader grub-efi-bootloader)
+		  (targets (list "/boot/efi"))))
+    (file-systems %base-file-systems)))
 
-(define-syntax mo
-  (syntax-rules ()
-    ((mo func)
-     `(operating-system
-	,@(map (lambda (field)
-		 `(,field (,func ,(string-append "operating-system" field)))
-	       operating-system-fields))))))
-
-(define (merge-systems a b)
-  ;(define (pick-field field #:optional (leqp equal?))
-   ; (apply pick (append (map field (list a b default)) `(,leqp))))
-  (mo (lambda (field)
-	(apply pick (append (map field (list a b a))))
-
-)))
+;(define operating-system-fields (@@ (gnu system) <operating-system>))
+;(define operating-system-fields-to-ignore
+;  (list "mapped-devices" "file-systems" "swap-devices" "users" "groups" "label" "essential-services"))
+;
+;(define accessor-overrides
+;  '(("services" . "user-services")
+;    ("kernel-arguments" . "user-kernel-arguments")))
+;
+;(define-syntax mo
+;  (syntax-rules ()
+;    ((mo func)
+;     `(operating-system
+;	,@(map (lambda (field)
+;		 `(,field (,func ,(string-append "operating-system" field)))
+;	       operating-system-fields))))))
+;
+;(define (merge-systems a b)
+;  ;(define (pick-field field #:optional (leqp equal?))
+;   ; (apply pick (append (map field (list a b default)) `(,leqp))))
+;  (mo (lambda (field)
+;	(apply pick (append (map field (list a b a))))
+;
+;)))
 
 ;; ignores the following fields:
-;;    mapped-devices
-;;    file-systems
-;;    swap-devices
-;;    users
-;;    groups
 ;;    essential-services
-;(define (merge-systems a b)
-;  (define (pick-field field #:optional (leqp equal?))
-;    (apply pick (append (map field (list a b default)) `(,leqp))))
-;  (operating-system
-;    (inherit b) ; give last in list precedence and ensures no uninitialized errors
-;    (kernel (pick-field operating-system-kernel))
-;    (hurd (pick-field operating-system-hurd))
-;    (kernel-loadable-modules (pick-field operating-system-kernel-loadable-modules))
-;    (kernel-arguments (pick-field operating-system-kernel-arguments))
-;    (bootloader (pick-field operating-system-bootloader))
-;    (label (pick-field operating-system-label))
-;    (keyboard-layout (pick-field operating-system-keyboard-layout))
-;    (initrd (pick-field operating-system-initrd))
-;    (firmware (pick-field operating-system-firmware))
-;    (host-name (pick-field operating-system-host-name))
-;    (hosts-file (pick-field operating-system-hosts-file))
-;    (skeletons (pick-field operating-system-skeletons))
-;    (issue (pick-field operating-system-issue))
-;    (packages (pick-field operating-system-packages))
-;    (timezone (pick-field operating-system-timezone))
-;    (locale (pick-field operating-system-locale))
-;    (locale-definitions (pick-field operating-system-locale-definitions))
-;    (locale-libcs (pick-field operating-system-locale-libcs))
-;    (name-service-switch (pick-field operating-system-name-service-switch))
-;    (services (pick-field operating-system-services svc-eq))
-;    (pam-services (pick-field operating-system-pam-services svc-eq))
-;    (setuid-programs (pick-field operating-system-setuid-programs))
-;    (sudoers-file (pick-field operating-system-sudoers-file))))
-;
-;
-;
-;(define* (compose-system base . extensions #:key (exclude #f))
-;	       (let ((last (car (reverse extensions)))
-;		     (os (fold merge-systems base extensions))
-;	       (operating-system
-;
-;		 ))))
+(define (merge-systems _b a) ; fold order
+  (let ((b (if (procedure? _b) (_b a) _b)))
+    (define pick (pick-field a b system/empty))
+    (operating-system
+      (inherit a)
+      (file-systems (pick operating-system-file-systems #:replace? #t))
+      (mapped-devices (pick operating-system-mapped-devices #:replace? #t))
+      (swap-devices (pick operating-system-swap-devices #:replace? #t))
+      (users (pick operating-system-users #:replace? #t))
+      (groups (pick operating-system-groups))
+      (kernel (pick operating-system-kernel))
+      (hurd (pick operating-system-hurd))
+      (kernel-loadable-modules (pick operating-system-kernel-loadable-modules))
+      (kernel-arguments (pick operating-system-user-kernel-arguments))
+      (bootloader (pick operating-system-bootloader))
+      (label (pick operating-system-label))
+      (keyboard-layout (pick operating-system-keyboard-layout))
+      (initrd (pick operating-system-initrd))
+      (firmware (pick operating-system-firmware))
+      (host-name (pick operating-system-host-name))
+      (hosts-file (pick operating-system-hosts-file))
+      (skeletons (pick operating-system-skeletons))
+      (issue (pick operating-system-issue))
+      (packages (pick operating-system-packages pkg-eq?))
+      (timezone (pick operating-system-timezone))
+      (locale (pick operating-system-locale))
+      (locale-definitions (pick operating-system-locale-definitions))
+      (locale-libcs (pick operating-system-locale-libcs))
+      (name-service-switch (pick operating-system-name-service-switch))
+      (services (pick operating-system-user-services svc-eq?))
+      (pam-services (pick operating-system-pam-services svc-eq?))
+      (setuid-programs (pick operating-system-setuid-programs))
+      (sudoers-file (pick operating-system-sudoers-file)))))
+
+(define (default-home-service os default)
+  (service guix-home-service-type 
+	   (map (lambda (user)
+		  `(,(user-account-name user) ,default))
+		(operating-system-users os))))
+
+(define* (bos-operating-system name #:key (modules #f)
+					  (inherits '())
+					  (modified-by '())
+					  (default-home #f)
+					  (env-vars '())
+					  (system system/empty))
+  (let ((os (fold merge-systems
+		  system/empty
+		  (append (ensure-list inherits)
+			  `(,system) 
+			  (ensure-list modified-by)))))
+    (operating-system
+      (inherit os)
+      (services
+	(let ((user-services (operating-system-user-services os)))
+	  ;; realistically, this shouldn't be necessary as modules semantically should consist solely of
+	  ;;  simple services. But there may be conflict with extra services provided
+	  (lset-union 
+	    svc-eq? 
+	    (bos-services name
+	      #:modules modules
+	      #:env-vars (cons `("BOS_SYSTEM_NAME" . ,(symbol->string name))
+			       env-vars))
+	    (if default-home
+	      (cons (default-home-service this-operating-system default-home)
+		    (remove (lambda (svc) 
+			      (equal? (service-kind svc) guix-home-service-type))
+			    user-services))
+	      user-services)))))))
+

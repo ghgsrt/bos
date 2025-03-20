@@ -1,8 +1,8 @@
 (define-module (home services manifest)
   #:use-module (services)
-  #:export (manifest-services))
+  #:export (home/services/manifest))
 
-(define manifest-services
+(define home/services/manifest
 	(list (service home-files-service-type
 			`((".local/bin/generate-manifest"
 				,(local-file "../../scripts/generate-manifests.sh" "generate-manifest"))
@@ -14,3 +14,4 @@
 					"manifest-source.sh"
 					"\n# Source manifest cd function source ~/.config/bash/manifest-cd.sh\n")))
 				(aliases '(("regenerate-manifest" . "generate-manifest --force")))))))
+

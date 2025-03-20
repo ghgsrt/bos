@@ -1,22 +1,23 @@
 (define-module (packages emacs)
-               #:use-module (gnu packages emacs)
-               #:export (core-packages-emacs
-                          core-packages-emacs-no-x
-                          supplementary-packages-emacs
-                          guile-packages-emacs))
+  #:use-module (gnu packages emacs)
+  #:use-module (gnu packages emacs-xyz)
+  #:export (packages/emacs
+            packages/emacs:no-x
+            packages/emacs@guile
+            packages/emacs:supplementary))
 
-(define guile-packages-emacs
+(define packages/emacs@guile
   (list emacs-geiser
         emacs-geiser-guile))
 
-(define supplementary-packages-emacs
-  (append guile-packages-emacs))
+(define packages/emacs:supplementary
+  (append packages/emacs@guile))
 
-(define core-packages-emacs
+(define packages/emacs
   (cons emacs-lucid
-        supplementary-packages-emacs))
+        packages/emacs:supplementary))
 
-(define core-packages-emacs-no-x
+(define packages/emacs:no-x
   (cons emacs-no-x-toolkit
-        supplementary-packages-emacs))
+        packages/emacs:supplementary))
 

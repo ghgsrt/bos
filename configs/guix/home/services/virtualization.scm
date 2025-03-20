@@ -1,19 +1,15 @@
 (define-module (home services virtualization)
   #:use-module (home)
-  #:use-module (gnu packages virtualization)
-  #:export (core-packages-virtualization
-	    podman-services))
-
-(define core-packages-virtualization
-  (list podman
-	podman-compose
-	passt
-	qemu))
+  #:use-module (packages virtualization)
+  #:export (home/services/podman))
 
 ;; ~~ PODMAN ~~
 
-(define podman-services
-	(list (bos-home-service 'bos-podman
-	#:packages core-packages-virtualization
-	#:env-vars `(("DOCKER_HOST" . "unix:///tmp/podman.sock")))))
+(define home/services/podman
+  (list (bos-home-service
+	  'bos-podman
+	  #:packages packages/podman
+	  #:env-vars `(("DOCKER_HOST" . "unix:///tmp/podman.sock")))))
+
+;; ~~ QEMU ~~
 

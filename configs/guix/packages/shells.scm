@@ -1,13 +1,16 @@
 (define-module (packages shells)
   #:use-module (gnu packages shells)
   #:use-module (gnu packages bash)
+  #:use-module (gnu packages rust-apps)
+  #:use-module (gnu packages crates-io) ; bat
+  #:use-module (gnu packages terminals)
   #:use-module (guix packages)
   #:use-module (guix git-download)
   #:use-module (guix build-system copy)
   #:use-module ((guix licenses) #:prefix license:)
-  #:export (core-packages-cli))
+  #:export (packages/cli))
 
-(define core-packages-cli
+(define packages/cli
   (list rust-bat-0.24
 	zoxide
 	fzf

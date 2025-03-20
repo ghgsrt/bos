@@ -17,7 +17,8 @@
   #:use-module (guix build-system vim)
   #:use-module (guix git-download)
   #:use-module (guix build-system copy)
-  #:use-module ((guix licenses) #:prefix license:))
+  #:use-module ((guix licenses) #:prefix license:)
+  #:export (packages/vim))
 
 (define-public tree-sitter@0.24.3
   (package
@@ -166,4 +167,7 @@ refactor Vim in order to:
     ;; Neovim is licensed under the terms of the Apache 2.0 license,
     ;; except for parts that were contributed under the Vim license.
     (license (list license:asl2.0 license:vim))))
+
+(define packages/vim
+  (list neovim@0.10.4))
 

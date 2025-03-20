@@ -1,7 +1,7 @@
 (define-module (users)
   #:use-module (gnu system accounts))
 
-(define-public ghgsrt-user
+(define-public user/ghgsrt
   (user-account
     (name "ghgsrt")
     (comment "ghgsrt")
@@ -16,7 +16,7 @@
 			    "seat"
 			    "lp"))))
 
-(define-public bosco-user
+(define-public user/bosco
   (user-account
     (name "bosco")
     (comment "Bosco")
@@ -31,7 +31,7 @@
 			    "seat"
 			    "lp"))))
 
-(define-public bos-users 
-  (list ghgsrt-user
-	bosco-user))
+(define-public users/bos 
+  (list user/ghgsrt
+	user/bosco))
 
