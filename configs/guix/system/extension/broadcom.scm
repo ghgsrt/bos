@@ -3,7 +3,7 @@
   #:use-module (gnu system)
   #:use-module (nongnu packages linux))
 
-(define-public system/broadcom:ext
+(define-public extension/broadcom
   (operating-system
     (inherit system/empty)
     (kernel-arguments '("modprobe.blacklist=b43,b43legacy,ssb,bcm43xx,brcm80211,brcmfmac,brcmsmac,bcma"))

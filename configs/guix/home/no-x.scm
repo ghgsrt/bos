@@ -4,6 +4,8 @@
   #:use-module (packages emacs)
   #:use-module (packages guix)
   #:use-module (packages misc)
+  #:use-module (packages zellij)
+  #:use-module (packages zellij2)
   #:use-module (home services virtualization)
   #:use-module (gnu packages rust-apps) ; spotifyd
   #:use-module (gnu home))

@@ -1,10 +1,11 @@
 (define-module (manifests)
+  #:use-module (guix records)
+  #:use-module (srfi srfi-1)
   #:use-module (ice-9 match)
   #:use-module (ice-9 regex)
   #:use-module (ice-9 format)
-  #:use-module (srfi srfi-1)
-  #:use-module (guix records)
-  #:export (generate-project-manifest feature->manifest))
+  #:export (generate-project-manifest
+            feature->manifest))
 
 (define* (feature->manifest feature #:key (versions '()))
   (let ((override-versions

@@ -12,7 +12,7 @@
     (name 'wsl2-image)))
 
 ;; == MAIN =======================================================
-(display "\n\nIMAGE\n\n")
+
 (define return (getenv "RETURN"))
 
 (when return

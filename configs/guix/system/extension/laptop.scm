@@ -4,7 +4,7 @@
   #:use-module (gnu packages linux)
   #:use-module (gnu services pm))
 
-(define-public system/laptop:ext
+(define-public extension/laptop
   (operating-system
     (inherit system/empty)
     (packages (list tlp

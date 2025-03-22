@@ -1,22 +1,25 @@
 (define-module (home base)
-  #:use-module (home)
-  #:use-module (services)
   #:use-module (channels)
 
+  #:use-module (home)
+  #:use-module (home services shells)
+  #:use-module (home services manifest)
+
+  #:use-module (packages dev)
+  #:use-module (packages vim)
   #:use-module (packages base)
   #:use-module (packages misc)
-  #:use-module (packages vim)
   #:use-module (packages tmux)
-  #:use-module (packages dev)
-  #:use-module (packages spellcheck)
   #:use-module (packages fonts)
+  #:use-module (packages spellcheck)
 
-  #:use-module (home services manifest)
-  #:use-module (home services shells)
-
-  #:use-module (gnu packages gnupg)
   #:use-module (gnu home)
+  #:use-module (gnu services)
+  #:use-module (gnu home services guix)
+  #:use-module (gnu home services gnupg)
+  #:use-module (gnu packages gnupg)
 
+  #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 rdelim)  ; For reading environment variables
   #:use-module (ice-9 textual-ports)) ; For get-string-all  

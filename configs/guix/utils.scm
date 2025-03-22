@@ -1,13 +1,21 @@
 (define-module (utils)
   #:use-module (hack modify-services)
+
+  #:use-module (guix packages)
+  #:use-module (gnu services)
+
+  #:use-module (srfi srfi-1)
   #:use-module (ice-9 ftw)
   #:use-module (ice-9 match)
   #:use-module (ice-9 regex)
   #:use-module (ice-9 rdelim)
-  #:use-module (srfi srfi-1)
-  #:re-export (modify-services-silently)
-  #:export (export-list
+
+  #:re-export (modify-services-silently
+	       delete) ; for modify-services clause
+  #:export (symbol->value
+	    export-list
 	    re-export-list
+	    re-export-all
 	    ensure-list
 	    pick-field
 	    service->name-string
@@ -19,6 +27,12 @@
 	    load-channels
 	    load-dir))
 
+(define-syntax symbol->value
+  (syntax-rules ()
+    ((_ sym)
+     (module-ref (current-module) (if (string? sym)
+				    (string->symbol sym)
+				    sym)))))
 
 (define-syntax export-list
   (syntax-rules ()
@@ -29,6 +43,14 @@
   (syntax-rules ()
     ((_ lst)
       (macroexpand `(re-export ,@lst)))))
+
+(define-syntax re-export-all
+  (syntax-rules ()
+    ((_)
+     (re-export-list
+       (apply append (map (lambda (inter)
+			    (module-map (lambda (sym var) sym) inter))
+			  (module-uses (current-module))))))))
 
 (define (ensure-list val)
   (cond ((list? val) val)
@@ -57,7 +79,7 @@
   (lambda* (field #:optional (leqp equal?) #:key (replace? #f))
     (let ((a-field (field a))
 	  (b-field (field b))
-	  (null-field (field nullish)))
+	  (nullish-field (field nullish)))
 	 (cond
 	   ;((nullish? a) b) ; ensures the nullish values (in the case of lists) will still be included
 	   ((equal? b-field nullish-field) a-field)

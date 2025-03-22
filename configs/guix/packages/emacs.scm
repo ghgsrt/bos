@@ -18,6 +18,6 @@
         packages/emacs:supplementary))
 
 (define packages/emacs:no-x
-  (cons emacs-no-x-toolkit
+  (cons emacs-no-x
         packages/emacs:supplementary))
 

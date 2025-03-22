@@ -1,6 +1,8 @@
 (define-module (home)
-  #:use-module (services)
   #:use-module (utils)
+  #:use-module (gnu services)
+  #:use-module (gnu home)
+  #:use-module (gnu home services)
   #:use-module (srfi srfi-1)
   #:export (bos-home-services
 	    home/empty

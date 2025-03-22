@@ -25,9 +25,8 @@
 	packages/hunspell))
 
 (define packages/spellcheck:full
-  (cons* enchant
-	 ispell
-	 packages/aspell
-	 packages/hunspell
-	 packages/nuspell))
+  (append packages/spellcheck
+	  packages/aspell
+	  packages/nuspell
+	  (list ispell)))
 

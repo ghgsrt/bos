@@ -2,16 +2,18 @@
   #:use-module (channels)
   #:use-module (system)
   #:use-module (users)
-  #:use-module (services)
 
-  #:use-module (home no-x)
+  #:use-module (home main)
   #:use-module (home services desktop)
 
   #:use-module (packages base)
   #:use-module (packages vim)
   #:use-module (packages tmux)
   
+  #:use-module (gnu services)
+  #:use-module (gnu services desktop) ; bluetooth
   #:use-module (gnu system)
+  #:use-module (gnu system shadow) ; user-group
   #:use-module (gnu system keyboard)
   #:use-module (gnu system nss)
   #:use-module (gnu bootloader)
@@ -21,8 +23,8 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages firmware)
   
-  #:use-module (srfi srfi-1)
-  #:use-module (ice-9 rdelim))
+  #:use-module (guix gexp)
+  #:use-module (srfi srfi-1))
   
 (define-public system/base
   (bos-operating-system 'base

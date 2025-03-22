@@ -1,8 +1,7 @@
 (define-module (modules desktop)
   #:use-module (utils)
   #:use-module (modules)
-  #:use-module (system)
-  #:use-module (home)
+
   #:use-module (gnu packages gnome) ; libnotify
   #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages wm)
@@ -15,9 +14,12 @@
   #:use-module (gnu packages crates-gtk)
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages image)
+
   #:use-module (gnu services)
   #:use-module (gnu services desktop)
+
   #:use-module (ice-9 rdelim)
+
   #:export (packages/desktop
             
             services/desktop:sway

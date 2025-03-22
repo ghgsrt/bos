@@ -20,8 +20,8 @@
             bos-module->services
             bos-module->home-services
 
-            transform-and-re-export:modules->services
-            transform-and-re-export:modules->home-services))
+            re-export:modules->services
+            re-export:modules->home-services))
 
 (define-record-type <bos-module>
   (make-bos-module name packages env-vars includes excludes)
@@ -44,58 +44,70 @@
                     (not (member pkg excludes-list)))
                   pkg-list)))))
 
-(define (process-module mod)
-  (let* ((excludes (ensure-list (bos-module-excludes mod)))
-         (includes (ensure-list (bos-module-includes mod))))
-    
+(define* (process-module mod #:optional (excludes (ensure-list (bos-module-excludes mod))))
+  (unless (null? excludes)
     (for-each (lambda (included-mod)
-                (process-module included-mod))
-              includes)
-    
+                (process-module included-mod excludes))
+              (ensure-list (bos-module-includes mod)))
+
     (when (bos-module-packages mod) 
-      (bos-module-packages-set! mod (filter-module-packages mod excludes)))
-    
-    mod))
+      (bos-module-packages-set! mod (filter-module-packages mod excludes))))
 
-(define-syntax transform-and-re-export:modules->services
+  mod)
+
+(define-syntax re-export:modules->services
   (lambda (x)
     (syntax-case x ()
       ((_ imodule)
        (let* ((module (syntax->datum #'imodule))
               (syms (filter (lambda (x) x) 
                             (module-map
-                              (lambda (sym var) (if (string-prefix? "module/" (symbol->string sym))
-                                                  (list sym (string->symbol (string-replace-substring (symbol->string sym) "module/" "services/")))
-                                                  #f))
+                              (lambda (sym var)
+                                (let ((sym-string (symbol->string sym)))
+                                  (cond ((string-prefix? "module/" sym-string)
+                                         (list sym (string->symbol (string-replace-substring
+                                                                     sym-string "module/" "services/"))))
+                                        ((string-prefix? "services/" sym-string)
+                                         (list sym sym))
+                                        (else #f))))
                               (resolve-interface module)))))
          #`(begin
              (use-modules imodule)
              #,@(append-map (lambda (sym)
                               (let ((mod (datum->syntax #'imodule (car sym)))
                                     (name (datum->syntax #'imodule (cadr sym))))
-                       (list #`(define #,name (bos-module->services #,mod))
-                             #`(export #,name))))
-                     syms)))))))
+                                (append (if (not (eq? (car sym) (cadr sym)))
+                                          (list #`(define #,name (bos-module->services #,mod)))
+                                          '())
+                                        (list #`(export #,name)))))
+                            syms)))))))
 
-(define-syntax transform-and-re-export:modules->home-services
+(define-syntax re-export:modules->home-services
   (lambda (x)
     (syntax-case x ()
       ((_ imodule)
        (let* ((module (syntax->datum #'imodule))
               (syms (filter (lambda (x) x) 
                             (module-map
-                              (lambda (sym var) (if (string-prefix? "module/" (symbol->string sym))
-                                                  (list sym (string->symbol (string-replace-substring (symbol->string sym) "module/" "home/services/")))
-                                                  #f))
+                              (lambda (sym var)
+                                (let ((sym-string (symbol->string sym)))
+                                  (cond ((string-prefix? "module/" sym-string)
+                                         (list sym (string->symbol (string-replace-substring
+                                                                     sym-string "module/" "home/services/"))))
+                                        ((string-prefix? "home/services/" sym-string)
+                                         (list sym sym))
+                                        (else #f))))
                               (resolve-interface module)))))
          #`(begin
              (use-modules imodule)
              #,@(append-map (lambda (sym)
                               (let ((mod (datum->syntax #'imodule (car sym)))
                                     (name (datum->syntax #'imodule (cadr sym))))
-                       (list #`(define #,name (bos-module->home-services #,mod))
-                             #`(export #,name))))
-                     syms)))))))
+                                (append (if (not (eq? (car sym) (cadr sym)))
+                                          (list #`(define #,name (bos-module->home-services #,mod)))
+                                          '())
+                                        (list #`(export #,name)))))
+                            syms)))))))
 
 (define* (bos-module->services module #:optional (extra-services '()))
   (cond ((list? module) (bos-modules->services module extra-services))

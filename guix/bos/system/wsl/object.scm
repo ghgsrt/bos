@@ -3,7 +3,7 @@
   #:use-module (bos system wsl)
   #:use-module (gnu system)
   #:use-module (ice-9 rdelim))
-(display "\n\nOBJECT\n\n")
+
 (define boot-user (getenv "BOOT_USER"))
 
 (define base-system (load "../object.scm"))

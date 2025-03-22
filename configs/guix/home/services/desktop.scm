@@ -1,13 +1,16 @@
 (define-module (home services desktop)
   #:use-module (home)
   #:use-module (modules)
+
   #:use-module (gnu packages audio)
   #:use-module (gnu packages pulseaudio)
+
   #:use-module (gnu services)
   #:use-module (gnu home services sound)
+
   #:export (home/services/pipewire))
 
-(transform-and-re-export:bos-modules->home-services (modules desktop))
+(re-export:modules->home-services (modules desktop))
 
 ;; ~~ Pipewire ~~
 

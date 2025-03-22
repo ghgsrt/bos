@@ -6,10 +6,9 @@
 ;; ~~ PODMAN ~~
 
 (define home/services/podman
-  (list (bos-home-service
-	  'bos-podman
+  (bos-home-services 'podman
 	  #:packages packages/podman
-	  #:env-vars `(("DOCKER_HOST" . "unix:///tmp/podman.sock")))))
+	  #:env-vars `(("DOCKER_HOST" . "unix:///tmp/podman.sock"))))
 
 ;; ~~ QEMU ~~
 

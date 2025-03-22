@@ -3,18 +3,22 @@
   #:use-module (system base)
   #:use-module (system extension laptop)
   #:use-module (system extension broadcom)
-  #:use-module (services)
+  #:use-module (system extension desktop)
+
   #:use-module (home main)
   #:use-module (home services desktop)
+
   #:use-module (gnu system)
   #:use-module (gnu system file-systems))
 
 (define-public system/thinkpad
   (bos-operating-system 'thinkpad
-    #:default-home home/main:light
-    #:inherits (list system/base
-		     system/laptop:ext
-		     system/broadcom:ext)
+    #:default-home home/has-x:light
+    #:inherits (list
+		  system/base
+		  extension/laptop
+		  extension/broadcom)
+    #:modified-by (extension/desktop:sway)
     #:system (operating-system
       (inherit system/empty)
 

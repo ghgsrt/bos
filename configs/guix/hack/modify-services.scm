@@ -3,6 +3,7 @@
   #:use-module (guix gexp)
   #:use-module (ice-9 match)
   #:use-module (srfi srfi-1)
+  #:re-export (delete)
   #:export (modify-services-silently))
 
 ;; A variation of 'modify-services' that simply skips clauses which are not found in the service list

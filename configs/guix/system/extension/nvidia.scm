@@ -7,22 +7,11 @@
   #:use-module (nongnu packages nvidia)
   #:use-module (nongnu services nvidia)
   #:use-module (nongnu packages linux)
-  #:export (system/nvidia:ext))
+  #:export (extension/nvidia))
 
-;(define (modify-profile-packages cb services)
-;  ;; cb exposes a profile service value (package list), expecting the new service value as result
-;  ;; collect all "profile-" prefixed service type names
-;  ;; probably need to pull out the main profile sevice independently? (is there even one exposed here??)
-;  ;; 
-;  (map (lambda (svc)
-;	 (if (not (profile-service? svc))
-;	   svc
-;	   (simple-service (service-type-name (service-kind svc)) profile-service-type
-;			   (cb (service-value svc)))))
-;       services))
+;; Should be the very last item in 'modified-by'
 
-
-(define* (system/nvidia:ext #:key (no-display? #f) (wayland? #f) (gnome? #f))
+(define* (extension/nvidia #:key (no-display? #f) (wayland? #f) (gnome? #f))
   (lambda (base-os) (operating-system
       (inherit system/empty)
       (kernel-arguments (append '("modprobe.blacklist=nouveau")
