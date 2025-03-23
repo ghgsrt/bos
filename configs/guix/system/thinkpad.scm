@@ -6,7 +6,6 @@
   #:use-module (system extension desktop)
 
   #:use-module (home main)
-  #:use-module (home services desktop)
 
   #:use-module (gnu system)
   #:use-module (gnu system file-systems))

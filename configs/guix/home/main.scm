@@ -55,7 +55,7 @@
 		        packages/fonts
 		        packages/spellcheck:full ; temporary while figuring it out
 		        (list foot)))
-      (services (append home/services/pipewire
+      (services (append ;home/services/pipewire
 			home/services/podman)))))
 
 (define-public home/has-x:full

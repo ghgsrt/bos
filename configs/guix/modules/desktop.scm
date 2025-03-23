@@ -16,8 +16,12 @@
   #:use-module (gnu packages image)
 
   #:use-module (gnu services)
+  #:use-module (gnu services base)
   #:use-module (gnu services desktop)
+  #:use-module (gnu services xorg)
 
+  #:use-module (guix gexp)
+  #:use-module (srfi srfi-1)
   #:use-module (ice-9 rdelim)
 
   #:export (packages/desktop
@@ -95,7 +99,7 @@
 
 ;; ~~ Sway ~~
 
-(define-lazy services/desktop:sway
+(define (services/desktop:sway services)
   (let* ((greetd-dotfile (string-append %dotfiles-dir "/home/.config/sway/greetd.conf"))
 	 (greetd-conf (if (file-exists? greetd-dotfile)
 			greetd-dotfile
@@ -127,7 +131,9 @@
 		       (terminal-vt "5"))
 		     (greetd-terminal-configuration
 		       (terminal-vt "6"))))))
-      (modify-services %desktop-services
+      (modify-services (lset-union svc-eq?
+                                   %desktop-services
+                                   services)
 		       (delete gdm-service-type)
 		       (delete screen-locker-service-type)
 		       (delete login-service-type)

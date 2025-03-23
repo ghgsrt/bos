@@ -39,18 +39,18 @@ bindgesture swipe:3:down move to scratchpad
 bindgesture swipe:3:up scratchpad show
 
 # Floating window rules
-for_window [app_id="org.kde.kcalc"] floating enable
-for_window [app_id="org.gnome.Calculator"] floating enable
-for_window [app_id="pavucontrol"] floating enable
-for_window [app_id="org.jointhefreeworld.metainfog"] floating enable
+#for_window [app_id="org.kde.kcalc"] floating enable
+#for_window [app_id="org.gnome.Calculator"] floating enable
+#for_window [app_id="pavucontrol"] floating enable
+#for_window [app_id="org.jointhefreeworld.metainfog"] floating enable
 
 # Visual Settings
 default_border pixel 1
 hide_edge_borders smart
-gaps inner 8
+gaps inner 0
 gaps outer 0
 ## THESE ARE SWAYFX SETTINGS !!!
-corner_radius 8
+#corner_radius 8
 #shadows enable
 #blur enable
 #default_dim_inactive 0.2
@@ -161,4 +161,4 @@ exec $term
 #exec swww-daemon
 
 # Cursor configuration
-seat seat0 xcursor_theme Yaru 24
+#seat seat0 xcRrsor_theme Yaru 24

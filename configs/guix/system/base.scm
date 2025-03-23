@@ -4,13 +4,13 @@
   #:use-module (users)
 
   #:use-module (home main)
-  #:use-module (home services desktop)
 
   #:use-module (packages base)
   #:use-module (packages vim)
   #:use-module (packages tmux)
   
   #:use-module (gnu services)
+  #:use-module (gnu services base)
   #:use-module (gnu services desktop) ; bluetooth
   #:use-module (gnu system)
   #:use-module (gnu system shadow) ; user-group
@@ -55,7 +55,7 @@
 			       (bluetooth-configuration
 				 (auto-enable? #t)))
 		      (modify-services
-			services/desktop:sway
+			%base-services
 			(guix-service-type config =>
 					   (guix-configuration
 					     (inherit config)

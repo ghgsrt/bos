@@ -2,6 +2,7 @@
   #:use-module (system)
   #:use-module (gnu system)
   #:use-module (gnu packages linux)
+  #:use-module (gnu services)
   #:use-module (gnu services pm))
 
 (define-public extension/laptop

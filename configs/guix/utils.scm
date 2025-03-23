@@ -30,9 +30,11 @@
 (define-syntax symbol->value
   (syntax-rules ()
     ((_ sym)
-     (module-ref (current-module) (if (string? sym)
+     (catch #t
+	    (lambda _ (module-ref (current-module) (if (string? sym)
 				    (string->symbol sym)
-				    sym)))))
+				    sym)))
+	    (lambda _ *unspecified*)))))
 
 (define-syntax export-list
   (syntax-rules ()
