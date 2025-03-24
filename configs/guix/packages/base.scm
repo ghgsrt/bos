@@ -1,4 +1,7 @@
 (define-module (packages base)
+  #:use-module (packages vim)
+  #:use-module (packages tmux)
+
   #:use-module (gnu packages)
   #:use-module (gnu packages base) ; coreutils, make
   #:use-module (gnu packages version-control)
@@ -16,21 +19,22 @@
             packages:core))
 
 (define packages:essential
-  (list git-minimal
-        openssl
-        openssh
-        coreutils
-        ncurses
-        net-tools
-        curl
-        wget2))
+  (append packages/tmux
+          (list git-minimal
+                openssl
+                openssh
+                coreutils
+                ncurses
+                net-tools
+                curl
+                wget2)))
 
 (define packages:core
-  (cons* git
-         gcc-toolchain
-         (specification->package "make")
-         watchexec
-         lz4
-         dstat
-         packages:essential))
+  (append packages:essential
+          packages/vim
+          (list gcc-toolchain
+                (specification->package "make")
+                watchexec
+                lz4
+                dstat)))
 

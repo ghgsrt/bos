@@ -6,9 +6,8 @@
   #:use-module (home main)
 
   #:use-module (packages base)
-  #:use-module (packages vim)
-  #:use-module (packages tmux)
   
+  #:use-module (gnu packages audio) ; bluez-alsa
   #:use-module (gnu services)
   #:use-module (gnu services base)
   #:use-module (gnu services desktop) ; bluetooth
@@ -29,6 +28,7 @@
 (define-public system/base
   (bos-operating-system 'base
     #:default-home home/no-x:light
+    #:env-vars '(("SYSTEM_BIN" . "/run/current-system/profile/bin"))
     #:system (operating-system
       (inherit system/empty)
 
@@ -38,7 +38,7 @@
       (timezone "America/New_York")
       (keyboard-layout (keyboard-layout "us"))
 
-      (kernel linux)
+      (kernel linux-lts) ; linux-6.13 seems to have introduced a breaking change for broadcom-sta firmware. let's just stick with lts under the assumption any breaking changes will be remedied prior to them bumping the version (and also to reduce how often we have to wait five hours on the thinkpad to rebuild the kernel)
       (initrd microcode-initrd)
 
       (firmware (list sof-firmware
@@ -48,9 +48,8 @@
 		    (user-group (name "bitlbee") (system? #t))))
       (users users/bos)
 
-      (packages (append packages:essential
-			packages/vim
-			packages/tmux))
+      (packages (cons* bluez-alsa
+		       packages:essential))
       (services (cons (service bluetooth-service-type
 			       (bluetooth-configuration
 				 (auto-enable? #t)))

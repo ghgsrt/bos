@@ -9,6 +9,7 @@
   #:use-module (gnu packages serialization)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages libevent)
+  #:use-module (gnu packages commencement)
   #:use-module (guix packages)
   #:use-module (guix utils)
   #:use-module (guix gexp)
@@ -169,5 +170,6 @@ refactor Vim in order to:
     (license (list license:asl2.0 license:vim))))
 
 (define packages/vim
-  (list neovim@0.10.4))
+  (list neovim@0.10.4
+        gcc-toolchain)) ; can't remember if for tree-sitter or lsp, but necessary
 

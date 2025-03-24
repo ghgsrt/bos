@@ -42,9 +42,9 @@
     libnotify ; library for sending notifications to notif daemon
     dunst ; notification daemon
     libxkbcommon
-    mesa
+    ;mesa ; pretty sure unecessary as anything that would rely on it should receive it as a build input. maybe worth bringing back if we start installing certain programs outside of guix that can use it?
     mesa-utils
-    pango
+    ; pango ; same as mesa
     xdg-utils
     xdg-dbus-proxy
     xdg-desktop-portal

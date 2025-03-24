@@ -6,10 +6,8 @@
   #:use-module (home services manifest)
 
   #:use-module (packages dev)
-  #:use-module (packages vim)
   #:use-module (packages base)
   #:use-module (packages misc)
-  #:use-module (packages tmux)
   #:use-module (packages fonts)
   #:use-module (packages spellcheck)
 
@@ -37,8 +35,6 @@
     #:home (home-environment
       (packages (append packages:core
 		        packages/fonts:essential
-		        packages/vim
-		        packages/tmux
 		        packages/shell
 		        packages/guile
 		        packages/http,server
