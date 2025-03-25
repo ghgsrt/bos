@@ -6,6 +6,7 @@
 [subrepo]
 	remote = git@github.com:ghgsrt/dotfiles.git
 	branch = master
-	commit = 
+	commit = c52b11365ef3bc7112b11f49980c3499f61b437e
 	method = merge
 	cmdver = 0.4.9
+	parent = 99ce44040345ad9717e7c0d9775f05070e7637f8
