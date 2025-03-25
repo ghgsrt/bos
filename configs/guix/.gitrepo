@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:ghgsrt/guix.git
 	branch = main
-	commit = aa0431987b3b5e60255e9f583f900d5ca2c1fff3
-	parent = 8c8a59283c3fcc664d3986e001352112d77ee91e
+	commit = d1fddefa8b5d1133862ece5ddf18982002df5cd6
+	parent = fffc9ff59a8b8ef27143ccd3a56ac4e9ab01f4cb
 	method = merge
 	cmdver = 0.4.9
