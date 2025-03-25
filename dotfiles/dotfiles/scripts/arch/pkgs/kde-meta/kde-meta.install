@@ -1,4 +1,0 @@
-post_install() {
-    systemctl enable --now sddm
-    systemctl enable --now bluetooth
-}
