@@ -12,7 +12,7 @@
 
   #:re-export (modify-services-silently
 	       delete) ; for modify-services clause
-  #:export (symbol->value
+  #:export (name->value
 	    export-list
 	    re-export-list
 	    re-export-all
@@ -27,14 +27,15 @@
 	    load-channels
 	    load-dir))
 
-(define-syntax symbol->value
+(define-syntax name->value
   (syntax-rules ()
     ((_ sym)
      (catch #t
-	    (lambda _ (module-ref (current-module) (if (string? sym)
+	    (lambda _ (module-ref (current-module)
+				  (if (string? sym)
 				    (string->symbol sym)
 				    sym)))
-	    (lambda _ *unspecified*)))))
+	    (lambda _ #f)))))
 
 (define-syntax export-list
   (syntax-rules ()

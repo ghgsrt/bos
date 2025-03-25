@@ -1,6 +1,4 @@
 (define-module (home main)
-  #:use-module (utils)
-
   #:use-module (home)
   #:use-module (home base)
   #:use-module (home services desktop)
@@ -89,5 +87,4 @@
 
 (define home (getenv "TARGET"))
 (when home
-  (symbol->value home))
-
+  (name->home-environment home))

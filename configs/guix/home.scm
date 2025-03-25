@@ -4,7 +4,8 @@
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (srfi srfi-1)
-  #:export (bos-home-services
+  #:export (name->home-environment
+	    bos-home-services
 	    home/empty
 	    bos-home-environment
 
@@ -13,6 +14,15 @@
 
 	    home-environment-service-prefix
 	    home-environment-service?))
+
+(define-syntax name->home-environment
+  (syntax-rules ()
+    ((_ sym)
+     (or (name->value sym)
+	 (find (lambda (sym)
+		 (and (bos-home-environment? sym)
+		      (eq? (bos-home-environment-name sym) home)))
+	       (module-interface (current-module)))))))
 
 (define home-profile-service-prefix 'home-profile-)
 (define home-environment-service-prefix 'home-environment-)
