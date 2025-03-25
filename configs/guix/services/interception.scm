@@ -1,11 +1,14 @@
 (define-module (services interception)
   #:use-module (utils)
   #:use-module (system)
+
   #:use-module (gnu packages linux)
   #:use-module (gnu services)
   #:use-module (gnu services shepherd)
+
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
+
   #:export (services/interception))
 
 (define (udevmon-shepherd-service keyboards)
