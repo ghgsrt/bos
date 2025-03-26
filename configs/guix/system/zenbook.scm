@@ -19,7 +19,8 @@
 
   #:use-module (nongnu packages linux)
 
-  #:use-module (ice-9 rdelim))
+  #:use-module (ice-9 rdelim)
+  #:use-module (ice-9 popen))
 
 (define-public system/zenbook
   (bos-operating-system 'zenbook
