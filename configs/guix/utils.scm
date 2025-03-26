@@ -12,7 +12,8 @@
 
   #:re-export (modify-services-silently
 	       delete) ; for modify-services clause
-  #:export (name->value
+  #:export (partition-name->uuid
+	    name->value
 	    export-list
 	    re-export-list
 	    re-export-all
@@ -26,6 +27,14 @@
 	    try-load
 	    load-channels
 	    load-dir))
+
+(define (partition-name->uuid name)
+  (let* ((port (open-input-pipe (format #f
+					"blkid -s UUID -o value ~a"
+					name)))
+	 (str (read-line port)))
+    (close-pipe port)
+    str))
 
 (define-syntax name->value
   (syntax-rules ()
