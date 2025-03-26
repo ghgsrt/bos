@@ -9,6 +9,7 @@
   #:use-module (ice-9 match)
   #:use-module (ice-9 regex)
   #:use-module (ice-9 rdelim)
+  #:use-module (ice-9 popen)
 
   #:re-export (modify-services-silently
 	       delete) ; for modify-services clause

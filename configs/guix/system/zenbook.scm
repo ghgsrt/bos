@@ -16,11 +16,9 @@
   #:use-module (gnu bootloader)
   #:use-module (gnu bootloader grub)
 
-
   #:use-module (nongnu packages linux)
 
-  #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 popen))
+  #:use-module (ice-9 rdelim))
 
 (define-public system/zenbook
   (bos-operating-system 'zenbook
