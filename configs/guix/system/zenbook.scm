@@ -38,7 +38,7 @@
 		    (targets '("/boot/efi"))))
 
       (mapped-devices (list (mapped-device
-			      (source (uuid (partition-name->uuid "/dev/nvme0n1p2"))
+			      (source (uuid (partition-name->uuid "/dev/nvme0n1p2")))
 			      (target "root")
 			      (type luks-device-mapping))))
       (file-systems (append (list (file-system
