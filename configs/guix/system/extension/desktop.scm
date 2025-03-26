@@ -11,7 +11,7 @@
 
 (define* (extension/desktop:sway #:optional (type 'light))
   (lambda (base-os) (operating-system
-    (inherit system/empty)
+    (inherit base-os)
     (services (append (services/desktop:sway
 			(operating-system-user-services base-os))
 		      (if (eq? type 'light)

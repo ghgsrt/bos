@@ -67,42 +67,61 @@
 ;
 ;)))
 
+;; Merge two operating-system definitions into one
+;; a => the current system state
+;; b => the modification to be applied
+;;
+;; Pass 'b' in as a procedure for access to 'a' and
+;; for manually overriding the merge process
+;;  - in this case the return should be a manually merged system
+;;  - e.g., (lambda (base-os)
+;;	      (operating-system
+;;		(inherit base-os)
+;;		(services %base-services)
+;;		...))
+;;  - passing as a procedure would be the only means for resetting a field to its defualt/nullish value as shown above
+;;
+;; A field marked with 'replace?' denotes list types that will always
+;; use b's value rather than taking their union
+;; This means if you want those particular fields to merge, you will
+;; have to pass 'b' as a procedure and merge manually
+
 ;; ignores the following fields:
 ;;    essential-services
-(define (merge-systems _b a) ; fold order
-  (let* ((b-proc? (procedure? _b))
-	(b (if b-proc? (_b a) _b)))
-    (define pick (pick-field a b system/empty))
-    (operating-system
-      (inherit a)
-      (file-systems (pick operating-system-file-systems #:replace? #t))
-      (mapped-devices (pick operating-system-mapped-devices #:replace? #t))
-      (swap-devices (pick operating-system-swap-devices #:replace? #t))
-      (users (pick operating-system-users #:replace? #t))
-      (groups (pick operating-system-groups #:replace? b-proc?))
-      (kernel (pick operating-system-kernel))
-      (hurd (pick operating-system-hurd))
-      (kernel-loadable-modules (pick operating-system-kernel-loadable-modules #:replace? b-proc?))
-      (kernel-arguments (pick operating-system-user-kernel-arguments #:replace? b-proc?))
-      (bootloader (pick operating-system-bootloader))
-      (label (pick operating-system-label))
-      (keyboard-layout (pick operating-system-keyboard-layout))
-      (initrd (pick operating-system-initrd))
-      (firmware (pick operating-system-firmware #:replace? b-proc?))
-      (host-name (pick operating-system-host-name))
-      (hosts-file (pick operating-system-hosts-file))
-      (skeletons (pick operating-system-skeletons #:replace? b-proc?))
-      (issue (pick operating-system-issue))
-      (packages (pick operating-system-packages pkg-eq? #:replace? b-proc?))
-      (timezone (pick operating-system-timezone))
-      (locale (pick operating-system-locale))
-      (locale-definitions (pick operating-system-locale-definitions #:replace? b-proc?))
-      (locale-libcs (pick operating-system-locale-libcs #:replace? b-proc?))
-      (name-service-switch (pick operating-system-name-service-switch))
-      (services (pick operating-system-user-services svc-eq? #:replace? b-proc?))
-      (pam-services (pick operating-system-pam-services svc-eq? #:replace? b-proc?))
-      (setuid-programs (pick operating-system-setuid-programs #:replace? b-proc?))
-      (sudoers-file (pick operating-system-sudoers-file)))))
+(define (merge-systems b a) ; fold order
+  (if (procedure? b)
+    (b a)
+    (let ((pick (pick-field a b system/empty)))
+      (operating-system
+	(inherit a)
+	(file-systems (pick operating-system-file-systems #:replace? #t))
+	(mapped-devices (pick operating-system-mapped-devices #:replace? #t))
+	(swap-devices (pick operating-system-swap-devices #:replace? #t))
+	(users (pick operating-system-users #:replace? #t))
+	(groups (pick operating-system-groups))
+	(kernel (pick operating-system-kernel))
+	(hurd (pick operating-system-hurd))
+	(kernel-loadable-modules (pick operating-system-kernel-loadable-modules))
+	(kernel-arguments (pick operating-system-user-kernel-arguments))
+	(bootloader (pick operating-system-bootloader))
+	(label (pick operating-system-label))
+	(keyboard-layout (pick operating-system-keyboard-layout))
+	(initrd (pick operating-system-initrd))
+	(firmware (pick operating-system-firmware))
+	(host-name (pick operating-system-host-name))
+	(hosts-file (pick operating-system-hosts-file))
+	(skeletons (pick operating-system-skeletons))
+	(issue (pick operating-system-issue))
+	(packages (pick operating-system-packages pkg-eq?))
+	(timezone (pick operating-system-timezone))
+	(locale (pick operating-system-locale))
+	(locale-definitions (pick operating-system-locale-definitions))
+	(locale-libcs (pick operating-system-locale-libcs))
+	(name-service-switch (pick operating-system-name-service-switch))
+	(services (pick operating-system-user-services svc-eq?))
+	(pam-services (pick operating-system-pam-services svc-eq?))
+	(setuid-programs (pick operating-system-setuid-programs))
+	(sudoers-file (pick operating-system-sudoers-file))))))
 
 (define (default-home-service os default)
   (service guix-home-service-type 

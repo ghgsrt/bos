@@ -13,7 +13,7 @@
 
 (define* (extension/nvidia #:key (no-display? #f) (wayland? #f) (gnome? #f))
   (lambda (base-os) (operating-system
-      (inherit system/empty)
+      (inherit base-os)
       (kernel-arguments (append '("modprobe.blacklist=nouveau")
   			        (if (or no-display? wayland?)
   				  '("nvidia_drm.modeset=1")
@@ -22,8 +22,6 @@
       (services (append (cons service nvidia-service-type
 			      (modify-services-silently (operating-system-user-services base-os)
 				(prefix profile-service-prefix pkgs => (map replace-mesa pkgs))))
-			      ;(modify-profile-packages (lambda (pkg-list) (map replace-mesa pkg-list))
-			      ;			       (operating-system-user-services base-os)))
   		        (if (not (no-display?))
   			  (append (if (gnome?)
   				    (list (service gnome-desktop-service-type

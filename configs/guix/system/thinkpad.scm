@@ -8,7 +8,9 @@
   #:use-module (home main)
 
   #:use-module (gnu system)
-  #:use-module (gnu system file-systems))
+  #:use-module (gnu system file-systems)
+  #:use-module (gnu bootloader)
+  #:use-module (gnu bootloader grub))
 
 (define-public system/thinkpad
   (bos-operating-system 'thinkpad
@@ -23,10 +25,12 @@
 
       (host-name "thinkpad")
 
-      (swap-devices (list (swap-space
-			    (target (uuid
-				      "07b04b86-97e2-40d2-a905-c25d25782e1e")))))
-      (file-systems (list (file-system
+      (bootloader (bootloader-configuration
+		    (bootloader grub-efi-bootloader)
+		    (targets '("/boot/efi"))
+		    (keyboard-layout keyboard-layout)))
+
+      (file-systems (cons* (file-system
 			     (mount-point "/boot/efi")
 			     (device (uuid "474C-5E8A"
 					   'fat32))
@@ -36,7 +40,11 @@
 			     (device (uuid
 				       "f68a484e-ed0b-41b8-8d98-41ad6a88560d"
 				       'ext4))
-			     (type "ext4")))))))
+			     (type "ext4"))
+			   %base-file-systems))
+      (swap-devices (list (swap-space
+			    (target (uuid
+				      "07b04b86-97e2-40d2-a905-c25d25782e1e"))))))))
 
 system/thinkpad
 
