@@ -1,4 +1,6 @@
 (define-module (system zenbook)
+  #:use-module (utils)
+
   #:use-module (system)
   #:use-module (system base)
   #:use-module (system extension laptop)
