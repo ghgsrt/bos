@@ -12,17 +12,21 @@
   #:export (services/interception))
 
 (define (udevmon-shepherd-service keyboards)
-  "Return a shepherd service for udevmon (interception-tools) with KEYBOARD"
-  (let ((keyboard-configs (map (lambda (kb)
-                                 (string-append "-c /etc/interception/udevmon.d/" kb))
-                               keyboards)))
-  (list (shepherd-service
-          (documentation "Run udevmon for key remapping")
-          (provision '(udevmon))
-          (start #~(make-forkexec-constructor
-                     (cons (string-append #$interception-tools "/bin/udevmon")
-                             keyboard-configs)))
-          (stop #~(make-kill-destructor))))))
+  "Return a shepherd service for udevmon (interception-tools) with KEYBOARDS"
+  (let ((keyboard-configs (string-join
+                            (map (lambda (kb)
+                                 (string-append "-c /etc/interception/udevmon.d/" kb ".yaml"))
+                               keyboards)
+                            " ")))
+    (list (shepherd-service
+            (documentation "Run udevmon for key remapping")
+            (provision '(udevmon))
+            (start #~(make-forkexec-constructor
+                       (list (string-append
+                               "/run/current-system/profile/bin/udevmon "
+                               #$keyboard-configs))
+                       #:log-file "/var/log/udevmon.log"))
+            (stop #~(make-kill-destructor))))))
 
 (define udevmon-service-type
   (service-type
