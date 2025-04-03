@@ -24,12 +24,20 @@ return {
       -- set use_icons to true if you have a Nerd Font
       statusline.setup { use_icons = vim.g.have_nerd_font }
 
+      -- statusline.section_mode({ trunc_width = math.huge })
+      local original_section_mode = statusline.section_mode
+      statusline.section_mode = function(args)
+        local mode, mode_hl = original_section_mode(args)
+        local short_mode = string.sub(mode, 1, 1)
+        return short_mode, mode_hl
+      end
+
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function()
-        return '%2l:%-2v'
+        return '%1l:%-1v'
       end
 
       -- ... and there is more!

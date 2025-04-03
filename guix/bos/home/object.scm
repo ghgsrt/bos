@@ -17,7 +17,7 @@
 (if (home-environment? base-home)
   (begin
     (display (string-append "\nBos-Guix: Using home '" target "'\n"))
-    (extend-home base-home))
+    (extend-home base-home target))
   (begin
     (display (string-append "\nBos-Guix: Using empty (minimal) home "
 			    (if free "[free]" "[nonfree]")

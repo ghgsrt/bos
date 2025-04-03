@@ -205,7 +205,7 @@
   if [[ $POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_CHAR != ' ' ]]; then
     # The color of the filler.
     typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_FOREGROUND=$COLOR_GRAY
-    # Add a space between the end of left prompt and the filler.
+    # Add a space between the end of leftfalseprompt and the filler.
     typeset -g POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL=' '
     # Add a space between the filler and the start of right prompt.
     typeset -g POWERLEVEL9K_RIGHT_PROMPT_FIRST_SEGMENT_START_SYMBOL=' '
@@ -286,6 +286,8 @@
     go.mod
     package.json
     stack.yaml
+    manifest.scm
+    guix.scm
   )
   typeset -g POWERLEVEL9K_SHORTEN_FOLDER_MARKER="(${(j:|:)anchor_files})"
   # If set to "first" ("last"), remove everything before the first (last) subdirectory that contains
@@ -410,17 +412,17 @@
     if (( $1 )); then
       # Styling for up-to-date Git status.
       local       meta='%f'     # default foreground
-      local      clean=$COLOR_GREEN # '%76F'   # green foreground
-      local   modified=$COLOR_YELLOW # '%178F'  # yellow foreground
-      local  untracked=$COLOR_BLUE # '%39F'   # blue foreground
-      local conflicted=$COLOR_RED # '%196F'  # red foreground
+      local      clean="%F{$COLOR_GREEN}" # '%76F'   # green foreground
+      local   modified="%F{$COLOR_YELLOW}" # '%178F'  # yellow foreground
+      local  untracked="%F{$COLOR_BLUE}" # '%39F'   # blue foreground
+      local conflicted="%F{$COLOR_RED}" # '%196F'  # red foreground
     else
       # Styling for incomplete and stale Git status.
-      local       meta=$COLOR_GRAY # '%244F'  # grey foreground
-      local      clean=$COLOR_GRAY # '%244F'  # grey foreground
-      local   modified=$COLOR_GRAY # '%244F'  # grey foreground
-      local  untracked=$COLOR_GRAY # '%244F'  # grey foreground
-      local conflicted=$COLOR_GRAY # '%244F'  # grey foreground
+      local       meta="%F{$COLOR_GRAY}" # '%244F'  # grey foreground
+      local      clean="%F{$COLOR_GRAY}" # '%244F'  # grey foreground
+      local   modified="%F{$COLOR_GRAY}" # '%244F'  # grey foreground
+      local  untracked="%F{$COLOR_GRAY}" # '%244F'  # grey foreground
+      local conflicted="%F{$COLOR_GRAY}" # '%244F'  # grey foreground
     fi
 
     local res
@@ -1723,7 +1725,7 @@
   #   - same-dir: Trim down prompt when accepting a command line unless this is the first command
   #               typed after changing current working directory.
   typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=same-dir
-
+  
   # Instant prompt mode.
   #
   #   - off:     Disable instant prompt. Choose this if you've tried instant prompt and found

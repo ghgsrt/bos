@@ -18,11 +18,12 @@
 
 (define packages/avi@viewing
   (list feh
+	imv
+	playerctl
 	mpv))
 
 (define packages/avi@viewing:full
   (cons* mpv-mpris
-	 playerctl
 	 vlc
 	 packages/avi@viewing))
 

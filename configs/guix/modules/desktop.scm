@@ -15,26 +15,13 @@
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages image)
 
-  #:use-module (gnu services)
-  #:use-module (gnu services base)
-  #:use-module (gnu services desktop)
-  #:use-module (gnu services xorg)
-
-  #:use-module (guix gexp)
-  #:use-module (srfi srfi-1)
-  #:use-module (ice-9 rdelim)
-
   #:export (packages/desktop
-            
-            services/desktop:sway
 
             module/qt
             module/qt:wayland
             module/wayland
             module/sway:light
             module/sway))
-
-(define %dotfiles-dir (getenv "DOTFILES_DIR"))
 
 (define packages/desktop
   (list
@@ -78,8 +65,10 @@
 (define module/wayland
   (bos-module 'wayland
     #:packages (cons* 
+                 egl-wayland
                  wl-clipboard
                  wl-color-picker
+                 wlsunset
                  tofi
                  ;rofi-wayland
                  ;fuzzel
@@ -89,6 +78,8 @@
                  packages/desktop)
     #:env-vars `(("XDG_SESSION_TYPE" . "wayland")
                  ("GDK_BACKEND" . "wayland")
+                 ("MOZ_ENABLE_WAYLAND" . "0")
+                 ("MOZ_DBUS_REMOTE" . "1")
                  ("GTK_IM_MODULE" . "wayland")
                  ("SDL_VIDEODRIVER" . "wayland")
                  ("CLUTTER_BACKEND" . "wayland")
@@ -99,56 +90,13 @@
 
 ;; ~~ Sway ~~
 
-(define (services/desktop:sway services)
-  (let* ((greetd-dotfile (string-append %dotfiles-dir "/home/.config/sway/greetd.conf"))
-	 (greetd-conf (if (file-exists? greetd-dotfile)
-			greetd-dotfile
-			"files/sway/greetd.conf")))
-    (cons*
-      ;; this is the only login/seat service that will actually get sway to work 🤷🏻‍♂️
-      (service greetd-service-type
-	       (greetd-configuration
-		 (greeter-supplementary-groups '("video" "input" "users"))
-		 (terminals
-		   (list
-		     (greetd-terminal-configuration
-		       (terminal-vt "1")
-		       (terminal-switch #t)
-		       (default-session-command
-			 ;; https://guix.gnu.org/manual/en/html_node/Base-Services.html
-			 ;; issues.guix.gnu.org/65769
-			 (greetd-wlgreet-sway-session
-			   (sway-configuration
-			     (local-file greetd-conf
-					 #:recursive? #t)))))
-		     (greetd-terminal-configuration
-		       (terminal-vt "2"))
-		     (greetd-terminal-configuration
-		       (terminal-vt "3"))
-		     (greetd-terminal-configuration
-		       (terminal-vt "4"))
-		     (greetd-terminal-configuration
-		       (terminal-vt "5"))
-		     (greetd-terminal-configuration
-		       (terminal-vt "6"))))))
-      (modify-services (lset-union svc-eq?
-                                   %desktop-services
-                                   services)
-		       (delete gdm-service-type)
-		       (delete screen-locker-service-type)
-		       (delete login-service-type)
-		       (delete mingetty-service-type)))))
-;
-;(define-syntax services/desktop:sway
-;  (identifier-syntax (_services/desktop:sway)))
-;
-
 (define module/sway:light
   (bos-module 'sway:light
     #:includes module/wayland
     #:packages (list
-                 swayfx
-                 swaylock	
+                 sway
+                 swayidle
+                 swaylock
                  swaybg)
     #:env-vars `(("XDG_CURRENT_DESKTOP" . "sway"))))
 
@@ -156,16 +104,18 @@
   (bos-module 'sway
     #:includes module/sway:light
     #:packages (list
-                 swayidle
-                 swww
+                 swayfx
+                 ;swww
                  swaylock-effects
-                 gdk-pixbuf ; swaylock-effects dependency
-                 cairo ; swaylock-effects dependency
-                 grim
-                 slurp
-                 waybar)
+                 ;gdk-pixbuf ; swaylock-effects dependency
+                 ;cairo ; swaylock-effects dependency
+                 ;grim ; grimshot wraps these so don't need, right?
+                 ;slurp
+                 flameshot
+                 grimshot)
     #:excludes (list
-                 swaylock
-                 swaybg)))
+                 sway
+                 ;swaybg
+                 swaylock)))
 
 

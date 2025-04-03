@@ -1,9 +1,9 @@
 source $BOS_DIR/scripts/utils.sh
 
 hrec() {
-	if [ "$BOS_HOME_TYPE" = "guix" ]; then
+	if [ -x "$(command -v guix)" ]; then
 		h_guix 'guix' 'home' 'reconfigure' "$@"
-	elif [ "$BOS_HOME_TYPE" = "nix" ]; then
+	elif [ -x "$(command -v ___)" ]; then
 		hrec_nix "$@"
 	else
 		echo "Error: no home manager available"
@@ -11,9 +11,9 @@ hrec() {
 }
 
 hrep() {
-	if [ "$BOS_HOME_TYPE" = "guix" ]; then
+	if [ -x "$(command -v guix)" ]; then
 		h_guix 'guix' 'repl' '' "$@"
-	elif [ "$BOS_HOME_TYPE" = "nix" ]; then
+	elif [ -x "$(command -v ___)" ]; then
 		hrec_nix "$@"
 	else
 		echo "Error: no home manager available"

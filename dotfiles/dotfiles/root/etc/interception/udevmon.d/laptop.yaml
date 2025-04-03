@@ -1,3 +1,3 @@
-- JOB: "$SYSTEM_BIN/intercept -g $DEVNODE | $SYSTEM_BIN/dual-function-keys -c /etc/interception/dual-function-keys/thinkpad.yaml | $SYSTEM_BIN/uinput -d $DEVNODE"
+- JOB: "/run/current-system/profile/bin/intercept -g $DEVNODE | /run/current-system/profile/bin/dual-function-keys -c /etc/interception/dual-function-keys/laptop.yaml | /run/current-system/profile/bin/uinput -d $DEVNODE"
   DEVICE:
     NAME: "AT Translated Set 2 keyboard"

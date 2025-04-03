@@ -18,6 +18,7 @@
   (list guile-3.0
 	guile-fibers
 	guile-colorized
+	guile-readline
 	guile-g-golf
 	;guile-uuid
 	guile-json-4))

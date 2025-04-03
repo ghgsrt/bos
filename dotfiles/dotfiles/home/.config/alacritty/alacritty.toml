@@ -1,0 +1,11 @@
+[general]
+import = [
+"base-alacritty.toml",
+"system-alacritty.toml",
+"nix-alacritty.toml",
+"guix-alacritty.toml",
+"user-alacritty.toml",
+]
+
+live_config_reload = true
+

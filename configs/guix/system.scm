@@ -20,20 +20,21 @@
 (define environment-service? (service-has-prefix environment-service-prefix))
 
 (define* (bos-services name #:key (modules #f) (packages #f) (env-vars #f) (services #f))
-  (append (if modules
-	    (bos-module->services modules)
-	    '())
-	  (if packages
-	    `(,(simple-service (symbol-append profile-service-prefix name '-bos)
-			       profile-service-type
-			       (ensure-list packages)))
-	    '())
-	  (if env-vars
-	    `(,(simple-service (symbol-append environment-service-prefix name '-bos)
-			       session-environment-service-type
-			       env-vars))
-	    '())
-	  (if services (ensure-list services) '())))
+  (append (if packages
+      `(,(simple-service (symbol-append profile-service-prefix name '-bos)
+			 profile-service-type
+			 (ensure-list packages)))
+      '())
+    (if env-vars
+      `(,(simple-service (symbol-append environment-service-prefix name '-bos)
+			 session-environment-service-type
+			 env-vars))
+      '())
+    (lset-union svc-eq?
+		(if services (ensure-list services) '())
+		(if modules
+		  (bos-module->services modules)
+		  '()))))
 
 (define system/empty
   (operating-system
@@ -71,6 +72,12 @@
 ;; a => the current system state
 ;; b => the modification to be applied
 ;;
+;; Any field in 'b' which does not correlate with a nullish value
+;; will either replace or union (lists) with 'a' (in the union
+;; case, using 'b's for same service-type)
+;; Fields explicitly marked with #:replace? #t will use 'b's value no matter what
+;;
+;; This means if you want those particular fields to merge, you will have to:
 ;; Pass 'b' in as a procedure for access to 'a' and
 ;; for manually overriding the merge process
 ;;  - in this case the return should be a manually merged system
@@ -79,13 +86,9 @@
 ;;		(inherit base-os)
 ;;		(services %base-services)
 ;;		...))
-;;  - passing as a procedure would be the only means for resetting a field to its defualt/nullish value as shown above
+;;  - passing as a procedure would be the only means for resetting a field to its default/nullish value as shown above
 ;;
-;; A field marked with 'replace?' denotes list types that will always
-;; use b's value rather than taking their union
-;; This means if you want those particular fields to merge, you will
-;; have to pass 'b' as a procedure and merge manually
-
+;;
 ;; ignores the following fields:
 ;;    essential-services
 (define (merge-systems b a) ; fold order
@@ -129,12 +132,13 @@
 		  `(,(user-account-name user) ,default))
 		(operating-system-users os))))
 
-(define* (bos-operating-system name #:key (modules #f)
-					  (inherits '())
-					  (modified-by '())
-					  (default-home #f)
-					  (env-vars '())
-					  (system system/empty))
+(define* (bos-operating-system name #:key
+			       (modules #f)
+			       (inherits '())
+			       (modified-by '())
+			       (default-home #f)
+			       (env-vars '())
+			       (system system/empty))
   (let ((os (fold merge-systems
 		  system/empty
 		  (append (ensure-list inherits)

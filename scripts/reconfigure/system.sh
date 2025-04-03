@@ -26,7 +26,7 @@ s_guix() {
     fi
 	local SYSTEM="${4-$BOS_SYSTEM}"
 
-     DOTFILES_DIR="$BOS_DOTFILES_DIR" SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" "$1" "$2" -L "$BOS_DIR/guix" -L "$BOS_CONFIG_DIR" $3 "$BOS_DIR/guix/bos/system/object.scm"
+     sudo DOTFILES_DIR="$BOS_DOTFILES_DIR" SYSTEM_DIR="$BOS_SYSTEM_DIR" TARGET="$SYSTEM" "$1" "$2" -L "$BOS_DIR/guix" -L "$BOS_CONFIG_DIR" $3 "$BOS_DIR/guix/bos/system/object.scm"
 }
 
 if [ "$BOS_DISTRO" = "guix" ]; then

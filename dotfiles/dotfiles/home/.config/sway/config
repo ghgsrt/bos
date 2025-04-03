@@ -1,3 +1,6 @@
+#TODO lookup what includes does in case I do actually have to manually call this shit
+include .config/sway/scripts/autoload/*
+
 # Variables
 set $mod Mod4
 set $left Left
@@ -5,16 +8,40 @@ set $down Down
 set $up Up
 set $right Right
 set $term footclient
-set $browser QT_QPA_PLATFORM=xcb qutebrowser
-set $bloated_browser google-chrome
 set $editor emacsclient -c
-set $menu rofi -show drun
-set $runner rofi -show run
-set $windower rofi -show window
+set $menu tofi-drun | xargs swaymsg exec --
+set $runner tofi-run | xargs swaymsg exec --
+set $windower tofi -show window
 set $password_manager ~/.nix-profile/bin/1password
 set $gnome_schema org.gnome.desktop.interface
 
-output * background /wallpapers/eva/de-necked.png fill
+set $white #d4be98
+set $red #ea6962
+set $orange #e78a4e
+set $yellow #d8a657
+set $green #a9b665
+set $cyan #89b482
+set $blue #7daea3
+set $purple #d3869b
+set $gray #928374
+set $background #181313
+set $trans_background #000000cd
+#output * background ~/wallpapers/eva/de-necked.png fill
+
+set $set_wallpaper ~/.config/sway/scripts/set-wallpaper.sh
+
+# Wallpaper mode
+mode "wallpaper" {
+    bindsym 1 exec $set_wallpaper ~/wallpapers/eva/de-necked.png -t none; mode "default"
+    bindsym 2 exec $set_wallpaper ~/wallpapers/eva/grab.png -t none; mode "default"
+    bindsym 3 exec $set_wallpaper ~/wallpapers/eva/not-creepy-grab.png -t none; mode "default"
+    bindsym 4 exec $set_wallpaper ~/wallpapers/kono.png -t none; mode "default"
+    bindsym b exec $set_wallpaper "$background"; mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+w mode "wallpaper"
+
 
 # Locker configuration
 set $locker swaylock --screenshots \
@@ -24,11 +51,13 @@ set $locker swaylock --screenshots \
     --indicator-thickness 7 \
     --effect-blur 7x5 \
     --effect-vignette 0.5:0.5 \
-    --ring-color bb00cc \
-    --key-hl-color 880033 \
+    --ring-color e78a4e \
+    --key-hl-color 7daea3 \
     --line-color 00000000 \
     --inside-color 00000088 \
-    --separator-color 00000000 \
+    --inside-caps-lock-color ea6962CD \
+    --separator-color ffffff00 \
+    --text-color d4be98 \
     --grace 2 \
     --fade-in 0.2
 
@@ -47,34 +76,31 @@ bindgesture swipe:3:up scratchpad show
 # Visual Settings
 default_border pixel 1
 hide_edge_borders smart
-gaps inner 0
+gaps inner 4
 gaps outer 0
 ## THESE ARE SWAYFX SETTINGS !!!
 #corner_radius 8
 #shadows enable
 #blur enable
-#default_dim_inactive 0.2
-#dim_inactive_colors.unfocused #000000FF
-#dim_inactive_colors.urgent #900000FF
+default_dim_inactive 0.15
+dim_inactive_colors.unfocused #000000FF
+dim_inactive_colors.urgent #900000FF
 
 # Window Colors
 # class                 border    background  text      indicator  child_border
-client.focused          #e78a4e   #e78a4e     #d4be98   #e78a4e    #e78a4e
+client.focused          #e78a4e   #e78a4e     #d4be98   #e78a4e    #00000000
 client.focused_inactive #e78a4e   #e78a4e     #d4be98   #e78a4e    #e78a4e
-client.unfocused       #1B1D1E00   #1B1D1E     #928374   #1B1D1E    #1B1D1E
+client.unfocused       #1B1D1E00   #1B1D1Eff     #928374   #1B1D1E00    #00000000
 client.urgent          #ea6962   #ea6962     #cfdfd5   #93423d    #93423d
 client.placeholder     #000000   #0c0c0c     #cfdfd5   #000000    #0c0c0c
 
 # Keybindings
 bindsym $mod+Return exec $term
-bindsym $mod+t exec $term
 bindsym $mod+shift+period exec grimshot copy
 bindsym $mod+period exec grimshot save
 bindsym $mod+k kill
 bindsym $mod+l exec $locker
 bindsym $mod+slash exec $menu
-bindsym $mod+i exec $browser
-bindsym $mod+Shift+i exec $bloated_browser
 bindsym $mod+e exec $editor
 bindsym $mod+minus exec $password_manager
 bindsym $mod+Shift+c reload
@@ -120,15 +146,15 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 # Layout controls
-bindsym $mod+b splith
-bindsym $mod+v splitv
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+h layout toggle split
+#bindsym $mod+b splith
+#bindsym $mod+v splitv
+#bindsym $mod+s layout stacking
+#bindsym $mod+w layout tabbed
+#bindsym $mod+h layout toggle split
 bindsym $mod+f fullscreen
-bindsym $mod+Shift+space floating toggle
-bindsym $mod+space focus mode_toggle
-bindsym $mod+a focus parent
+#bindsym $mod+Shift+space floating toggle
+#bindsym $mod+space focus mode_toggle
+#bindsym $mod+a focus parent
 
 # Scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -137,6 +163,30 @@ bindsym $mod+Shift+s scratchpad show
 # Special modes
 bindsym $mod+r exec $runner
 bindsym Alt+tab exec $windower
+
+# Terminal mode
+mode "terminal" {
+    bindsym f exec footclient; mode "default"
+    bindsym Shift+f exec foot; mode "default"
+    bindsym a exec alacritty msg --socket "$XDG_RUNTIME_DIR/alacritty.sock" create-window \
+    || alacritty --socket "$XDG_RUNTIME_DIR/alacritty.sock"; mode "default"
+    bindsym Shift+a exec alacritty; mode "default"
+    bindsym k exec kitty; mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+t mode "terminal"
+
+# Browser mode
+mode "browser" {
+    bindsym b exec brave; mode "default"
+    bindsym i exec icecat; mode "default"
+    bindsym n exec nyxt; mode "default"
+    bindsym c exec chromium; mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+b mode "browser"
 
 # Resize mode
 mode "resize" {
@@ -149,17 +199,42 @@ mode "resize" {
 }
 bindsym $mod+Shift+r mode "resize"
 
+bar {
+    position top
+    
+    tray_bindsym button1 Activate
+    tray_bindsym button2 ContextMenu
+
+    status_command while ~/.config/sway/scripts/swaybar-status.sh; do sleep 1; done
+
+    font pango:FiraCodeNerdFont 10.5
+
+    colors {
+        #statusline #ffffff
+        background $trans_background
+        statusline #ece4da
+        separator  #ff0000
+        focused_statusline $gray
+        focused_separator  #0000ff
+
+        #                  border  bckgrnd text
+        focused_workspace  $trans_background $trans_background $orange
+        active_workspace   $blue $trans_background $blue
+        inactive_workspace $trans_background $trans_background $gray
+        urgent_workspace   $red $trans_background $red
+    }
+}
 # Startup Programs
 #exec lxsession
 #exec mako
 #exec emacs --daemon
-exec dbus-update-activation-environment --all --systemd DISPLAY WAYLAND_DISPLAY
-#exec udevmon
+exec dbus-update-activation-environment --all
 #exec waybar
+exec sudo udevmon
 #exec transmission-daemon
-exec foot -s
-exec $term
-#exec swww-daemon
+exec swww-daemon
+exec foot --server && $term
+
 
 # Cursor configuration
 #seat seat0 xcRrsor_theme Yaru 24

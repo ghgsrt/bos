@@ -4,6 +4,7 @@
 
   #:use-module (gnu packages audio)
   #:use-module (gnu packages pulseaudio)
+  #:use-module (gnu packages linux) ; wireplumber
 
   #:use-module (gnu services)
   #:use-module (gnu home services sound)
@@ -18,6 +19,7 @@
   (bos-home-services 'pipewire
     #:packages (list qpwgraph
  		     ;pavucontrol
-		     pamixer)
+		     pamixer
+		     wireplumber)
     #:services (service home-pipewire-service-type)))
 

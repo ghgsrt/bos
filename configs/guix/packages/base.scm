@@ -10,6 +10,7 @@
   #:use-module (gnu packages curl)
   #:use-module (gnu packages wget)
   #:use-module (gnu packages ncurses)
+  #:use-module (gnu packages web)
   #:use-module (gnu packages commencement) ; gcc-toolchain
   #:use-module (gnu packages compression)
   #:use-module (gnu packages admin) ; dstat
@@ -22,10 +23,11 @@
   (append packages/tmux
           (list git-minimal
                 openssl
-                openssh
+                openssh-sans-x
                 coreutils
                 ncurses
                 net-tools
+                jq
                 curl
                 wget2)))
 

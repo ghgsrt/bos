@@ -3,13 +3,15 @@
   #:use-module (system)
   #:use-module (users)
 
-  #:use-module (home main)
+  ;#:use-module (home main)
 
   #:use-module (packages base)
   
   #:use-module (gnu packages audio) ; bluez-alsa
+  #:use-module (gnu packages ssh)
   #:use-module (gnu services)
   #:use-module (gnu services base)
+  #:use-module (gnu services ssh)
   #:use-module (gnu services desktop) ; bluetooth
   #:use-module (gnu system)
   #:use-module (gnu system shadow) ; user-group
@@ -27,8 +29,7 @@
   
 (define-public system/base
   (bos-operating-system 'base
-    #:default-home home/no-x:light
-    #:env-vars '(("SYSTEM_BIN" . "/run/current-system/profile/bin"))
+    ;#:default-home home/no-x:light
     #:system (operating-system
       (inherit system/empty)
 
@@ -50,15 +51,18 @@
 
       (packages (cons* bluez-alsa
 		       packages:essential))
-      (services (cons (service bluetooth-service-type
-			       (bluetooth-configuration
-				 (auto-enable? #t)))
-		      (modify-services
-			%base-services
-			(guix-service-type config =>
-					   (guix-configuration
-					     (inherit config)
-					     (channels %channels))))))
+      (services (cons* (service openssh-service-type
+				(openssh-configuration
+				  (openssh openssh-sans-x)))
+		       (service bluetooth-service-type
+				(bluetooth-configuration
+				  (auto-enable? #t)))
+		       (modify-services
+			 %base-services
+			 (guix-service-type config =>
+					    (guix-configuration
+					      (inherit config)
+					      (channels %channels))))))
 
       (sudoers-file (plain-file "sudoers"
 				(string-join '("root ALL=(ALL) NOPASSWD:ALL"

@@ -13,19 +13,18 @@
 
 (define (udevmon-shepherd-service keyboards)
   "Return a shepherd service for udevmon (interception-tools) with KEYBOARDS"
-  (let ((keyboard-configs (string-join
+  (let ((keyboard-configs ;(string-join
                             (map (lambda (kb)
                                  (string-append "-c /etc/interception/udevmon.d/" kb ".yaml"))
-                               keyboards)
-                            " ")))
+                               keyboards)))
+                            ;" ")))
     (list (shepherd-service
             (documentation "Run udevmon for key remapping")
             (provision '(udevmon))
+            (requirement '(user-processes udev pam syslogd loopback))
             (start #~(make-forkexec-constructor
-                       (list (string-append
-                               "/run/current-system/profile/bin/udevmon "
-                               #$keyboard-configs))
-                       #:log-file "/var/log/udevmon.log"))
+                       (cons "/run/current-system/profile/bin/udevmon"
+                             #$keyboard-configs)))
             (stop #~(make-kill-destructor))))))
 
 (define udevmon-service-type

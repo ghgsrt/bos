@@ -1,0 +1,48 @@
+[env]
+TERMINAL = "alacritty"
+#TERM = "screen-256color-bce"
+
+[window]
+opacity = 0.8
+dynamic_padding = true
+decorations = "None"
+option_as_alt = "Both"
+padding = { x = 4, y = 3 }
+dynamic_title = false
+
+[font]
+normal = { family = "FiraCodeNerdFont", style = "Regular"}
+size = 12
+
+[colors.primary]
+foreground = "#d4be98"
+background = "#000000"
+
+[colors.normal]
+black = "#292727"
+red = "#ea6962"
+green = "#a9b665"
+yellow = "#d8a657"
+blue = "#7daea3"
+magenta = "#d3869b"
+cyan = "#89b482"
+white = "#d4be98"
+
+[colors.bright]
+black = "#272727"
+red = "#ea6962"
+green = "#a9b665"
+yellow = "#e78a4e"
+blue = "#7daea3"
+magenta = "#d3869b"
+cyan = "#89b482"
+white = "#f6dfba"
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 500
+thickness = 0.1
+
+[mouse]
+hide_when_typing = true
+

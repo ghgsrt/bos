@@ -28,7 +28,7 @@ create_symlink() {
         return 1
     fi
 
-    should_sudo ln -f "$src" "$dst"
+    should_sudo ln -sf "$src" "$dst"
     return $?
 }
 
@@ -82,7 +82,7 @@ recursive_symlink() {
         if create_symlink "$src_path" "$dst_path" $verbose; then
             # Only add to tracking if not already present
             if ! grep -Fxq "$dst_path" "$track_file"; then
-                should_sudo echo "$dst_path" >>"$track_file"
+                echo "$dst_path" | sudo tee -a "track_file" >/dev/null
             fi
             [ "$verbose" = true ] && echo "Created symlink: $src_path"
         else

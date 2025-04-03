@@ -1,4 +1,6 @@
 (define-module (home main)
+  #:use-module (utils)
+
   #:use-module (home)
   #:use-module (home base)
   #:use-module (home services desktop)
@@ -12,9 +14,12 @@
   #:use-module (packages browsers)
   #:use-module (packages spellcheck)
 
-  #:use-module (gnu home)
   #:use-module (gnu packages rust-apps) ; spotifyd
   #:use-module (gnu packages terminals)
+  #:use-module (gnu services)
+  #:use-module (gnu home)
+  #:use-module (gnu home services)
+  #:use-module (gnu home services desktop)
 
   #:use-module (ice-9 rdelim))
 
@@ -41,7 +46,7 @@
 ;; ~~ Has-X ~~ (x provided by system)
 
 (define-public home/has-x:light
-  (bos-home-environment 'has-x:light
+  (bos-home-environment 'has-x-light
     #:inherits home/base
     #:home (home-environment
       (packages (append packages/emacs
@@ -53,11 +58,12 @@
 		        packages/fonts
 		        packages/spellcheck:full ; temporary while figuring it out
 		        (list foot)))
-      (services (append ;home/services/pipewire
-			home/services/podman)))))
+      (services (append home/services/podman
+			;home/services/pipewire
+			(list (service home-dbus-service-type)))))))
 
 (define-public home/has-x:full
-  (bos-home-environment 'has-x:full
+  (bos-home-environment 'has-x-full
     #:inherits home/has-x:light
     #:home (home-environment
       (packages (append packages/networking
@@ -65,19 +71,21 @@
 		        packages/pkg:full
 		        packages/avi@editing:full
 		        packages/avi@viewing:full
-		        packages/browsers:full)))))
+		        packages/browsers:full
+			(list kitty
+			      alacritty))))))
 
 
 ;; ~~ X ~~ (x provided by home)
 
 (define-public home/x:light
-  (bos-home-environment 'x:light
+  (bos-home-environment 'x-light
     #:inherits home/has-x:light
     #:home (home-environment
       (services (append home/services/sway:light)))))
 
 (define-public home/x:full
-  (bos-home-environment 'x:full
+  (bos-home-environment 'x-full
     #:inherits home/has-x:full
     #:home (home-environment
       (services (append home/services/sway)))))
@@ -87,4 +95,5 @@
 
 (define home (getenv "TARGET"))
 (when home
-  (name->home-environment home))
+   (name->value home))
+

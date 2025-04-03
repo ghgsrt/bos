@@ -30,9 +30,10 @@
 	    load-dir))
 
 (define (partition-name->uuid name)
-  (let* ((port (open-input-pipe (format #f
-					"blkid -s UUID -o value ~a"
-					name)))
+  (let* ((port (open-input-pipe
+		 (format #f
+			 "sudo blkid -s UUID -o value ~a"
+			 name)))
 	 (str (read-line port)))
     (close-pipe port)
     str))
@@ -46,6 +47,15 @@
 				    (string->symbol sym)
 				    sym)))
 	    (lambda _ #f)))))
+
+;(define-syntax name->variable
+;  (syntax-rules ()
+;    ((_ sym)
+;     (module-variable
+;       (current-module)
+;       (if (string? sym)
+;	 (string->symbol sym)
+;	 sym)))))
 
 (define-syntax export-list
   (syntax-rules ()

@@ -15,6 +15,7 @@
   #:use-module (gnu services)
   #:use-module (gnu home services guix)
   #:use-module (gnu home services gnupg)
+  #:use-module (gnu home services ssh)
   #:use-module (gnu packages gnupg)
 
   #:use-module (guix gexp)
@@ -28,6 +29,7 @@
   (bos-home-environment 'base
     #:env-vars `(("GUIX_LOCPATH" . "$HOME/.guix-profile/lib/locale")
 		 ("PATH" . "$HOME/.local/bin:$HOME/.config/emacs/bin:$PATH")
+		 ("HOME_PROFILE" . "$HOME/.guix-home/profile")
 		 ("EDITOR" . "nvim")
 		 ("VISUAL" . "nvim")
 		 ("PAGER" . "nvim")
@@ -42,6 +44,7 @@
       (services (append home/services/zsh
 		        home/services/manifest
 		        (list 
+			  (service home-openssh-service-type)
 			  (simple-service
 			    'bos-channels-service
 			    home-channels-service-type

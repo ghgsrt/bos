@@ -1,48 +1,3 @@
-(define-module (packages misc)
-  #:use-module (gnu packages networking)
-  #:use-module (gnu packages dns)
-
-  #:use-module (gnu packages python-web) ; httpie
-  #:use-module (gnu packages web) ; nginx
-
-  #:use-module (gnu packages linux) ; lm-sensors
-  #:use-module (gnu packages admin) ; atop/htop/btop
-
-  #:use-module (gnu packages messaging) ; bitlbee
-  #:use-module (gnu packages rust-apps) ; spotifyd
-
-  #:use-module (gnu packages package-management)
-  #:use-module (gnu packages freedesktop) ; flatpak-xdg-utils
-
-  ;; spotifyd build stuff
-  #:use-module (guix packages)
-  #:use-module (guix download)
-  #:use-module (guix build-system cargo)
-  #:use-module (gnu packages glib)
-  #:use-module (gnu packages crates-io)
-  #:use-module (gnu packages crates-web)
-  #:use-module (gnu packages crates-crypto)
-  #:use-module (gnu packages crates-audio)
-  #:use-module (gnu packages crates-windows)
-  #:use-module (gnu packages crates-gtk)
-  #:use-module (gnu packages crates-check)
-  #:use-module (gnu packages crates-graphics)
-  #:use-module (gnu packages crates-apple)
-  #:use-module (gnu packages crates-compression)
-  #:use-module (gnu packages crates-tls)
-  #:use-module (gnu packages audio)
-  #:use-module (gnu packages pulseaudio)
-  #:use-module (gnu packages pkg-config)
-  #:use-module ((guix licenses) #:prefix license:)
-
-  #:export (packages/networking
-	    packages/http,server
-	    packages/sys-info
-	    packages/apps
-	    packages/pkg
-	    packages/pkg:full))
-
-
 (define-public rust-multimap-0.10
   (package
     (name "rust-multimap")
@@ -1452,7 +1407,7 @@ and should not be relied upon directly.")
     (synopsis "Internal runtime support for the `wit-bindgen` crate.")
     (description
      "This package provides Internal runtime support for the `wit-bindgen` crate.")
-    (license (list license:asl2.0  license:asl2.0
+    (license (list license:asl2.0 unknown-license! license:asl2.0
                    license:expat))))
 
 (define-public rust-wasi-0.14
@@ -1476,7 +1431,7 @@ and should not be relied upon directly.")
     (home-page "https://github.com/bytecodealliance/wasi-rs")
     (synopsis "WASI API bindings for Rust")
     (description "This package provides WASI API bindings for Rust.")
-    (license (list license:asl2.0  license:asl2.0
+    (license (list license:asl2.0 unknown-license! license:asl2.0
                    license:expat))))
 
 (define-public rust-r-efi-5
@@ -2410,7 +2365,7 @@ by `lock_api`.")
     (synopsis "Generated bindings for Linux's userspace API")
     (description
      "This package provides Generated bindings for Linux's userspace API.")
-    (license (list license:asl2.0  license:asl2.0
+    (license (list license:asl2.0 unknown-license! license:asl2.0
                    license:expat))))
 
 (define-public rust-rustix-1
@@ -2439,7 +2394,7 @@ by `lock_api`.")
     (synopsis "Safe Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls")
     (description
      "This package provides Safe Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls.")
-    (license (list license:asl2.0  license:asl2.0
+    (license (list license:asl2.0 unknown-license! license:asl2.0
                    license:expat))))
 
 (define-public rust-gethostname-1
@@ -2595,7 +2550,7 @@ and the Standard Directory guidelines on @code{macOS}.")
      "This package provides AWS-LC is a general-purpose cryptographic library maintained by the AWS
 Cryptography team for AWS and their customers.  It Ñs based on code from the
 Google @code{BoringSSL} project and the @code{OpenSSL} project.")
-    (license (list license:isc  
+    (license (list license:isc unknown-license! unknown-license!
                    license:openssl))))
 
 (define-public rust-aws-lc-fips-sys-0.13
@@ -2625,7 +2580,7 @@ Google @code{BoringSSL} project and the @code{OpenSSL} project.")
      "This package provides AWS-LC is a general-purpose cryptographic library maintained by the AWS
 Cryptography team for AWS and their customers.  This is the FIPS validated
 version of AWS-LC.")
-    (license (list license:isc  
+    (license (list license:isc unknown-license! unknown-license!
                    license:openssl))))
 
 (define-public rust-aws-lc-rs-1
@@ -2653,11 +2608,11 @@ version of AWS-LC.")
      "This package provides aws-lc-rs is a cryptographic library using AWS-LC for its cryptographic
 operations.  This library strives to be API-compatible with the popular Rust
 library named ring.")
-    (license (list license:isc  ))))
+    (license (list license:isc unknown-license! unknown-license!))))
 
-(define-public spotifyd-dbus
+(define-public rust-spotifyd-0.4
   (package
-    (name "spotifyd")
+    (name "rust-spotifyd")
     (version "0.4.1")
     (source
      (origin
@@ -2704,46 +2659,9 @@ library named ring.")
                        ("rust-toml" ,rust-toml-0.8)
                        ("rust-url" ,rust-url-2)
                        ("rust-whoami" ,rust-whoami-1))
-       #:cargo-development-inputs (("rust-env-logger" ,rust-env-logger-0.11))
-       #:features (list "alsa_backend"
-                        "dbus_mpris"
-                        "pulseaudio_backend"
-                        "portaudio_backend"
-                        "rodio_backend"
-                        "rodiojack_backend")))
-    (native-inputs (list pkg-config))
-    (inputs (list alsa-lib dbus pulseaudio portaudio jack-2))
+       #:cargo-development-inputs (("rust-env-logger" ,rust-env-logger-0.11))))
     (home-page "https://github.com/Spotifyd/spotifyd")
     (synopsis "Spotify daemon")
     (description "This package provides a Spotify daemon.")
     (license license:gpl3)))
-
-
-(define packages/networking
-  (list wireshark
-	isc-bind
-	ldns)) ; make sure this gives us drill
-
-(define packages/http,server
-  (list httpie
-	;curlie
-	nginx))
-
-(define packages/sys-info
-  (list lm-sensors
-	atop
-	htop
-	btop))
-
-(define packages/apps
-  (list bitlbee ; might need to get a daemon set up somehow
-	bitlbee-discord
-	spotifyd-dbus))
-
-(define packages/pkg
-  (list flatpak
-	flatpak-xdg-utils))
-(define packages/pkg:full
-  (cons* nix ; might need to get a daemon set up somehow
-	 packages/pkg))
 

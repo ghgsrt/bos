@@ -60,54 +60,66 @@
     (syntax-case x ()
       ((_ imodule)
        (let* ((module (syntax->datum #'imodule))
-              (syms (filter (lambda (x) x) 
-                            (module-map
-                              (lambda (sym var)
-                                (let ((sym-string (symbol->string sym)))
-                                  (cond ((string-prefix? "module/" sym-string)
-                                         (list sym (string->symbol (string-replace-substring
-                                                                     sym-string "module/" "services/"))))
-                                        ((string-prefix? "services/" sym-string)
-                                         (list sym sym))
-                                        (else #f))))
-                              (resolve-interface module)))))
+              (mod/name-pairs
+                (filter
+                  (lambda (x) x) ; truthy
+                  (module-map
+                    (lambda (sym var)
+                      (let ((sym-string (symbol->string sym)))
+                        (cond ((string-prefix? "module/" sym-string)
+                               (list sym (string->symbol (string-replace-substring
+                                                           sym-string "module/" "services/"))))
+                              ((string-prefix? "services/" sym-string)
+                               (list sym sym))
+                              (else #f))))
+                    (resolve-interface module)))))
          #`(begin
              (use-modules imodule)
-             #,@(append-map (lambda (sym)
-                              (let ((mod (datum->syntax #'imodule (car sym)))
-                                    (name (datum->syntax #'imodule (cadr sym))))
-                                (append (if (not (eq? (car sym) (cadr sym)))
-                                          (list #`(define #,name (bos-module->services #,mod)))
-                                          '())
-                                        (list #`(export #,name)))))
-                            syms)))))))
+             #,@(append-map
+                  (lambda (pair)
+                    (if (not (module-variable (current-module) (cadr pair)))
+                      (let ((mod (datum->syntax #'imodule (car pair)))
+                            (name (datum->syntax #'imodule (cadr pair))))
+                        (if (not (eq? (car pair) (cadr pair)))
+                          (list #`(define #,name (bos-module->services #,mod))
+                                #`(export #,name))
+                          (list #`(re-export #,name))
+                          ))
+                      '()))
+                  mod/name-pairs)))))))
 
 (define-syntax re-export:modules->home-services
   (lambda (x)
     (syntax-case x ()
       ((_ imodule)
        (let* ((module (syntax->datum #'imodule))
-              (syms (filter (lambda (x) x) 
-                            (module-map
-                              (lambda (sym var)
-                                (let ((sym-string (symbol->string sym)))
-                                  (cond ((string-prefix? "module/" sym-string)
-                                         (list sym (string->symbol (string-replace-substring
-                                                                     sym-string "module/" "home/services/"))))
-                                        ((string-prefix? "home/services/" sym-string)
-                                         (list sym sym))
-                                        (else #f))))
-                              (resolve-interface module)))))
+              (mod/name-pairs
+                (filter
+                  (lambda (x) x) ; truthy
+                  (module-map
+                    (lambda (sym var)
+                      (let ((sym-string (symbol->string sym)))
+                        (cond ((string-prefix? "module/" sym-string)
+                               (list sym (string->symbol (string-replace-substring
+                                                           sym-string "module/" "home/services/"))))
+                              ((string-prefix? "home/services/" sym-string)
+                               (list sym sym))
+                              (else #f))))
+                    (resolve-interface module)))))
          #`(begin
              (use-modules imodule)
-             #,@(append-map (lambda (sym)
-                              (let ((mod (datum->syntax #'imodule (car sym)))
-                                    (name (datum->syntax #'imodule (cadr sym))))
-                                (append (if (not (eq? (car sym) (cadr sym)))
-                                          (list #`(define #,name (bos-module->home-services #,mod)))
-                                          '())
-                                        (list #`(export #,name)))))
-                            syms)))))))
+             #,@(append-map
+                  (lambda (pair)
+                    (if (not (module-variable (current-module) (cadr pair)))
+                      (let ((mod (datum->syntax #'imodule (car pair)))
+                            (name (datum->syntax #'imodule (cadr pair))))
+                        (if (not (eq? (car pair) (cadr pair)))
+                          (list #`(define #,name (bos-module->home-services #,mod))
+                                #`(export #,name))
+                          (list #`(re-export #,name))
+                          ))
+                      '()))
+                  mod/name-pairs)))))))
 
 (define* (bos-module->services module #:optional (extra-services '()))
   (cond ((list? module) (bos-modules->services module extra-services))
@@ -115,7 +127,9 @@
         (else (bos-services (bos-module-name module)
                  #:packages (bos-module-packages module)
                  #:env-vars (bos-module-env-vars module)
-                 #:services (bos-modules->services (bos-module-includes module) extra-services)))))
+                 #:services (bos-modules->services
+                              (bos-module-includes module)
+                              extra-services)))))
 
 (define* (bos-modules->services modules #:optional (extra-services '()))
   (append (append-map bos-module->services (ensure-list modules))
@@ -127,7 +141,9 @@
         (else (bos-home-services (bos-module-name module)
                       #:packages (bos-module-packages module)
                       #:env-vars (bos-module-env-vars module)
-                      #:services (bos-modules->home-services (bos-module-includes module) extra-home-services)))))
+                      #:services (bos-modules->home-services
+                                   (bos-module-includes module)
+                                   extra-home-services)))))
 
 (define* (bos-modules->home-services modules #:optional (extra-home-services '()))
   (append (append-map bos-module->home-services (ensure-list modules))

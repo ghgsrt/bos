@@ -11,11 +11,11 @@
     (inherit system/empty)
     (packages (list tlp
 		    brightnessctl))
-    (services (list (service
+    (services (cons (service
 		      tlp-service-type
 		      (tlp-configuration
 			(wifi-pwr-on-bat? #f) ; turn off power save mode for wifi on bat
 			(cpu-boost-on-ac? #t)))
-		    ;(services/interception "laptop")
+		    (services/interception "laptop")
 		    ))))
 

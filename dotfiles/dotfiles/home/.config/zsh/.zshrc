@@ -315,14 +315,16 @@ alias fuckgpg='echo UPDATESTARTUPTTY | gpg-connect-agent'
 
 alias ssh_new_key='ssh-keygen -t ed25519 -C "$BOS_EMAIL"'
 
-alias tmuxinstall='$BOS_HOME_PROFILE/share/.tmux/plugins/tpm/scripts/install_plugins.sh'
+alias tmuxinstall='$HOME_PROFILE/share/.tmux/plugins/tpm/scripts/install_plugins.sh'
 
 alias ls='should_sudo ls -CF --color=auto'
 alias la='ls -A'  # show all
 alias ll='ls -l'  # list format
-alias lla='la -l'  # list format (all)
-alias lL='ll -L' # list format, follow symlinks
-alias lLa='lla -L' # list format, follow symlinks (all)
+alias Ls='ls -L'  # follow symlinks
+alias La='la -L'  # follow symlinks (all)
+alias Ll='ll -L'  # follow symlinks (list)
+alias lla='la -l' # list format (all)
+alias Lla='lla -L' # follow symlinks (all,list)
 alias lt='ls -t'  # sort by time
 alias lu='ls -u'  # sort by last access
 alias lss='ls -s' # show size
@@ -334,6 +336,8 @@ alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+
+alias n='nvim'
 
 alias q='exit'
 alias c='clear'
