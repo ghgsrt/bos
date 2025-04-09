@@ -41,7 +41,7 @@ mode "wallpaper" {
     bindsym Escape mode "default"
 }
 bindsym $mod+w mode "wallpaper"
-
+exec $set_wallpaper "$background"
 
 # Locker configuration
 set $locker swaylock --screenshots \
@@ -109,6 +109,25 @@ bindsym $mod+Shift+e exit
 #    -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' \
 #    -B 'Yes, exit sway' 'swaymsg exit'
 
+# Laptop Controls
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# General Media
+#bindsym Fn+c exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+#bindsym Fn+x exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+#bindsym Fn+m exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+#bindsym Fn+f exec playerctl play-pause
+#bindsym Fn+n exec playerctl next
+#bindsym Fn+p exec playerctl previous
+
 # Focus and Movement
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -164,13 +183,15 @@ bindsym $mod+Shift+s scratchpad show
 bindsym $mod+r exec $runner
 bindsym Alt+tab exec $windower
 
+set $align-opac ~/.config/sway/scripts/align-opacity.sh
+
 # Terminal mode
 mode "terminal" {
     bindsym f exec footclient; mode "default"
     bindsym Shift+f exec foot; mode "default"
-    bindsym a exec alacritty msg --socket "$XDG_RUNTIME_DIR/alacritty.sock" create-window \
-    || alacritty --socket "$XDG_RUNTIME_DIR/alacritty.sock"; mode "default"
-    bindsym Shift+a exec alacritty; mode "default"
+    bindsym a exec alacritty msg --socket "$XDG_RUNTIME_DIR/alacritty.sock" create-window && $align-opac \
+    || alacritty --socket "$XDG_RUNTIME_DIR/alacritty.sock" && $align-opac; mode "default"
+    bindsym Shift+a exec alacritty && align-opac; mode "default"
     bindsym k exec kitty; mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -180,9 +201,10 @@ bindsym $mod+t mode "terminal"
 # Browser mode
 mode "browser" {
     bindsym b exec brave; mode "default"
-    bindsym i exec icecat; mode "default"
+    bindsym i exec DISPLAY=wayland-1 icecat; mode "default"
     bindsym n exec nyxt; mode "default"
     bindsym c exec chromium; mode "default"
+    bindsym Shift+c exec google-chrome; mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
@@ -228,9 +250,11 @@ bar {
 #exec lxsession
 #exec mako
 #exec emacs --daemon
+exec $align-opac
 exec dbus-update-activation-environment --all
 #exec waybar
 exec sudo udevmon
+exec spotifyd
 #exec transmission-daemon
 exec swww-daemon
 exec foot --server && $term

@@ -27,28 +27,33 @@ while [[ $# -gt 0 ]]; do
 done
 		
 [[ "${CHOICE:0:1}" == "#" ]] && IS_SOLID=true || IS_SOLID=false
-if $IS_SOLID; then CHOICE=${CHOICE:1:7}; fi # must be format rrggbb
+#if $IS_SOLID; then CHOICE=${CHOICE:1:7}; fi # must be format rrggbb
 REST=$@
 
 get_command() {
 	case "$1" in
 		"swaymsg")
-			if $IS_SOLID; then echo "swaymsg output * background $CHOICE solid_color"
-			else echo "swaymsg output * background $CHOICE fill"; fi
+			if $IS_SOLID; then echo "swaymsg 'output * background $CHOICE solid_color'"
+			else echo "swaymsg 'output * background $CHOICE fill'"; fi
 		;;
 		"swaybg")
-			if $IS_SOLID; then echo "pkill swaybg &>/dev/null; swaybg -c $CHOICE"
+			#TODO store PID and pkill after starting new process to avoid flashing
+			if $IS_SOLID; then
+				choice=${CHOICE:1:7}
+				echo "pkill swaybg &>/dev/null; swaybg -c $choice"
 			else echo "pkill swaybg &>/dev/null; swaybg -i $CHOICE"; fi
 		;;
 		"swww")
-			if $IS_SOLID; then echo "swww init &>/dev/null; swww clear $CHOICE"
+			if $IS_SOLID; then
+				choice=${CHOICE:1:7}
+				echo "swww init &>/dev/null; swww clear $choice"
 			else echo "swww init &>/dev/null; swww img $CHOICE $REST"; fi
 		;;
 	esac
 }
 
 if command -v "sway" &>/dev/null; then
-	declare -a bg_progs=("swww" "swaybg" "swaymsg") # ensure order
+	declare -a bg_progs=("swww" "swaymsg") # ensure order
 fi
 
 if [ -z $bg_progs ]; then
@@ -78,8 +83,6 @@ adjust_terminals() {
 					cmd+="alacritty msg --socket \"$socket\" config -r"
 				fi
 				cmd+=";"
-		  else
-				echo "$socket: Not a valid socket, skipping"
 		  fi
 		done <<< "$sockets"
 	fi
@@ -121,7 +124,7 @@ for key in "${bg_progs[@]}"; do
 		TERM_CMD=$(adjust_terminals)
 		BAR_CMD=$(adjust_bars)
 
-		CMD="$CHANGE_CMD;$BAR_CMD;$TERM_CMD"
+		CMD="$BAR_CMD;$TERM_CMD $CHANGE_CMD"
 
 		if [ $TOGGLE = false ]; then
 			eval "$CMD"

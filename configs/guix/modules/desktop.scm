@@ -107,7 +107,7 @@
                  swayfx
                  ;swww
                  swaylock-effects
-                 ;gdk-pixbuf ; swaylock-effects dependency
+                 gdk-pixbuf ; swaylock-effects dependency
                  ;cairo ; swaylock-effects dependency
                  ;grim ; grimshot wraps these so don't need, right?
                  ;slurp

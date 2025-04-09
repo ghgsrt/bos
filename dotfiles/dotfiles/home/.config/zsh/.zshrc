@@ -315,6 +315,8 @@ alias fuckgpg='echo UPDATESTARTUPTTY | gpg-connect-agent'
 
 alias ssh_new_key='ssh-keygen -t ed25519 -C "$BOS_EMAIL"'
 
+alias nconnect='sudo nmcli d wifi rescan; sudo nmcli d wifi connect --ask'
+
 alias tmuxinstall='$HOME_PROFILE/share/.tmux/plugins/tpm/scripts/install_plugins.sh'
 
 alias ls='should_sudo ls -CF --color=auto'
@@ -514,4 +516,12 @@ bindkey -M viins '\es' sesh-sessions
 
 [ ! -d "$HOME/.git-subrepo" ] && git clone https://github.com/ingydotnet/git-subrepo "$HOME/.git-subrepo"
 source "$HOME/.git-subrepo/.rc"
+
+[ -d "$HOME/.config/spotifyd/scripts/autoload" ] &&
+if test -d "$HOME/.config/spotifyd/scripts/autoload"; then
+    for _script in "$HOME/.config/spotifyd/scripts/autoload"*; do
+        test -r "$_script" && . "$_script"
+    done
+    unset _script
+fi
 

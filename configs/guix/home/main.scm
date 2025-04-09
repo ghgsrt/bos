@@ -59,7 +59,7 @@
 		        packages/spellcheck:full ; temporary while figuring it out
 		        (list foot)))
       (services (append home/services/podman
-			;home/services/pipewire
+			home/services/pipewire
 			(list (service home-dbus-service-type)))))))
 
 (define-public home/has-x:full

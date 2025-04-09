@@ -13,6 +13,12 @@
 
 (re-export:modules->home-services (modules desktop))
 
+;; ~~ Sound ~~
+
+(define home/services/sound:base
+  (bos-home-services 'sound
+     #:packages (list alsa-utils)))
+
 ;; ~~ Pipewire ~~
 
 (define home/services/pipewire
@@ -21,5 +27,6 @@
  		     ;pavucontrol
 		     pamixer
 		     wireplumber)
-    #:services (service home-pipewire-service-type)))
+    #:services (cons (service home-pipewire-service-type)
+		     home/services/sound:base)))
 
