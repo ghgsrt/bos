@@ -317,7 +317,7 @@ alias ssh_new_key='ssh-keygen -t ed25519 -C "$BOS_EMAIL"'
 
 alias nconnect='sudo nmcli d wifi rescan; sudo nmcli d wifi connect --ask'
 
-alias tmuxinstall='$HOME_PROFILE/share/.tmux/plugins/tpm/scripts/install_plugins.sh'
+alias tmuxinstall='$BOS_HOME_PROFILE/share/.tmux/plugins/tpm/scripts/install_plugins.sh'
 
 alias ls='should_sudo ls -CF --color=auto'
 alias la='ls -A'  # show all

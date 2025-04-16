@@ -29,7 +29,7 @@
   (bos-home-environment 'base
     #:env-vars `(("GUIX_LOCPATH" . "$HOME/.guix-profile/lib/locale")
 		 ("PATH" . "$HOME/.local/bin:$HOME/.config/emacs/bin:$PATH")
-		 ("HOME_PROFILE" . "$HOME/.guix-home/profile")
+		 ("BOS_HOME_PROFILE" . "$HOME/.guix-home/profile")
 		 ("EDITOR" . "nvim")
 		 ("VISUAL" . "nvim")
 		 ("PAGER" . "nvim")
