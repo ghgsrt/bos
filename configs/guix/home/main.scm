@@ -38,8 +38,7 @@
     #:home (home-environment
       (packages (append packages/networking
 		        packages/guix-hacking
-		        packages/pkg:full
-		        (list spotifyd)))
+		        packages/pkg:full))
       (services (append home/services/podman)))))
 
 

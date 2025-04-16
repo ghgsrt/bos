@@ -2,7 +2,7 @@
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages chromium)
   #:use-module (gnu packages gnuzilla)
-  #:use-modue (nongnu packages chrome)
+  #:use-module (nongnu packages chrome)
   #:export (packages/browsers
 	    packages/browsers:full))
 
