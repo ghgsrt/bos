@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:ghgsrt/guix-channel-bos.git
 	branch = master
-	commit = 28a6cc3ca7607ae4b9633f1b93e7ae1b76f3c0cd
-	parent = 54bab674ee93098ec65d551db8eadc2b85e62006
+	commit = 0ecee31d794728b7e38a700fb12ff084ee36012a
+	parent = c28dcad8feb639f79728f314f3561f376c48f2b3
 	method = merge
 	cmdver = 0.4.9
