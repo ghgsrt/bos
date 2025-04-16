@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:ghgsrt/guix-channel-bos.git
+	branch = master
+	commit = 28a6cc3ca7607ae4b9633f1b93e7ae1b76f3c0cd
+	parent = 54bab674ee93098ec65d551db8eadc2b85e62006
+	method = merge
+	cmdver = 0.4.9
