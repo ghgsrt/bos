@@ -102,7 +102,8 @@ placeholder-color = #FFFFFFA8
 # alternate-result-background-corner-radius = 0
 
 # Selection text
-selection-color = #e78a4e
+selection-color = #a9b665
+#selection-text = ">"
 #selection-background = #00000000
 #selection-background-padding = 0
 #selection-background-corner-radius = 0
@@ -142,7 +143,7 @@ text-cursor-corner-radius = 0
 ### Text layout
 #
 # Prompt to display.
-prompt-text = ""
+prompt-text = "❯ "
 
 # Extra horizontal padding between prompt and input.
 prompt-padding = 0

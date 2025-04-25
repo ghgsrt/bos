@@ -35,6 +35,7 @@
   (append packages:essential
           packages/vim
           (list gcc-toolchain
+                binutils
                 (specification->package "make")
                 watchexec
                 lz4

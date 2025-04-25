@@ -14,6 +14,11 @@ return {
   'theprimeagen/harpoon',
   'tpope/vim-fugitive',
   'geogitorg/neogit',
+ {
+ 'mrcjkb/rustaceanvim',
+ version = '5.26.0',
+ lazy = false, -- This plugin is already lazy
+ },
   {
     'NeogitOrg/neogit',
     dependencies = {

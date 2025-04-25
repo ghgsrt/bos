@@ -126,14 +126,15 @@ This package includes the @code{libtree-sitter} runtime library.")
                      (setenv "LUA_CPATH"
                              (string-join (map lua-cpath-spec lua-inputs) ";"))
                      #t)))
-               (add-after 'unpack 'prevent-embedding-gcc-store-path
-                 (lambda _
-                   ;; nvim remembers its build options, including the compiler with
-                   ;; its complete path.  This adds gcc to the closure of nvim, which
-                   ;; doubles its size.  We remove the reference here.
-                   (substitute* "cmake.config/versiondef.h.in"
-                     (("\\$\\{CMAKE_C_COMPILER\\}") "/gnu/store/.../bin/gcc"))
-                   #t)))))
+              ; (add-after 'unpack 'prevent-embedding-gcc-store-path
+              ;   (lambda _
+              ;     ;; nvim remembers its build options, including the compiler with
+              ;     ;; its complete path.  This adds gcc to the closure of nvim, which
+              ;     ;; doubles its size.  We remove the reference here.
+              ;     (substitute* "cmake.config/versiondef.h.in"
+              ;       (("\\$\\{CMAKE_C_COMPILER\\}") "/gnu/store/.../bin/gcc"))
+              ;     #t))
+               )))
     (inputs (list libuv-for-luv
                   msgpack
                   libtermkey

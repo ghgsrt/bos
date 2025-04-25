@@ -39,6 +39,7 @@
 		        packages/fonts:essential
 		        packages/shell
 		        packages/guile
+			packages/golang
 		        packages/http,server
 		        packages/pkg))
       (services (append home/services/zsh

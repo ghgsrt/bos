@@ -15,6 +15,7 @@
   #:use-module (gnu packages crates-compression)
   #:use-module (gnu packages crates-tls)
   #:use-module (gnu packages audio)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages pulseaudio)
   #:use-module (gnu packages pkg-config)
   #:use-module ((guix licenses) #:prefix license:))
